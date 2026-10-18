@@ -393,7 +393,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           }</p>
         </div>
 
-        <div class="rotulo-campo" style="margin-top:10px;">ENTREGA ${badgeMudou('entrega')}</div>
+        <div class="rotulo-campo" style="margin-top:10px;">FORMATO DA ENTREGA ${badgeMudou('entrega')}</div>
         <p class="texto-campo" style="margin-bottom:0;">${esc(g.descricao.entrega)}</p>
       </section>
 

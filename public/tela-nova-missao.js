@@ -210,7 +210,7 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
 
           <hr class="divisor" />
           <div class="campo-form">
-            <label for="mis-entrega">Entrega</label>
+            <label for="mis-entrega">Formato da entrega</label>
             <div class="ajuda">O quê, em que formato e onde (padrão: na pasta da missão).</div>
             <input id="mis-entrega" class="input" type="text" value="${esc(m.descricao?.entrega || '')}" required />
           </div>
