@@ -158,5 +158,11 @@ export function linhaPainel(g, r, hoje, feriados = []) {
 export function linhaDoTempo(r) {
   return [...r.registros]
     .sort((a, b) => a.dia.localeCompare(b.dia))
-    .map((x) => ({ dia: x.dia, texto: x.atividade ?? `sem trabalho: ${x.motivo}` }));
+    .map((x) => {
+      const sulfixoHoras = x.horas ? ` (${x.horas}h)` : '';
+      return {
+        dia: x.dia,
+        texto: (x.atividade ? `${x.atividade}${sulfixoHoras}` : `sem trabalho: ${x.motivo}`)
+      };
+    });
 }

@@ -17,11 +17,11 @@
       try {
         var tema = localStorage.getItem('tarefas_tema_fundo') || 'amarelo';
         var temas = {
-          amarelo: { bg: '#FEF9C3', surface: '#FEF08A', surfaceInner: '#FEF9C3', border: '#EAB308', borderStrong: '#CA8A04' },
-          bege: { bg: '#F5EBE1', surface: '#EAD7C0', surfaceInner: '#F5EBE1', border: '#C8A97E', borderStrong: '#997345' },
-          verde: { bg: '#DCFCE7', surface: '#BBF7D0', surfaceInner: '#DCFCE7', border: '#4ADE80', borderStrong: '#16A34A' },
-          azul: { bg: '#DBEAFE', surface: '#BFDBFE', surfaceInner: '#DBEAFE', border: '#60A5FA', borderStrong: '#2563EB' },
-          cinza: { bg: '#F1F5F9', surface: '#E2E8F0', surfaceInner: '#F8FAFC', border: '#94A3B8', borderStrong: '#475569' }
+          amarelo: { bg: '#FDE047', surface: '#FACC15', surfaceInner: '#FEF08A', border: '#CA8A04', borderStrong: '#854D0E' },
+          bege: { bg: '#E5D3BD', surface: '#D2B48C', surfaceInner: '#EAD7C0', border: '#A88456', borderStrong: '#6E4E27' },
+          verde: { bg: '#86EFAC', surface: '#4ADE80', surfaceInner: '#BBF7D0', border: '#16A34A', borderStrong: '#14532D' },
+          azul: { bg: '#93C5FD', surface: '#60A5FA', surfaceInner: '#BFDBFE', border: '#2563EB', borderStrong: '#1E3A8A' },
+          cinza: { bg: '#CBD5E1', surface: '#94A3B8', surfaceInner: '#E2E8F0', border: '#64748B', borderStrong: '#334155' }
         };
         var t = temas[tema] || temas.amarelo;
         var root = document.documentElement;

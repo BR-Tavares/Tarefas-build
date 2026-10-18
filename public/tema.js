@@ -1,58 +1,58 @@
-// Gerenciador de Tema e Cores de Fundo Pastel com Alto Contraste
+// Gerenciador de Tema e Cores de Fundo com Tons Mais Escuros e Profundos (Local)
 // Suporta: amarelo, bege, verde, azul, cinza
 // Altera tanto o fundo da interface (--bg) quanto o fundo da própria folha e de seus cartões (--surface),
-// com amostras bem diferenciadas e visíveis.
+// mantendo contraste absoluto para o texto preto e leitura clara.
 
 export const TEMAS_PASTEL = {
   amarelo: {
     id: 'amarelo',
-    nome: 'Amarelo pastel',
-    corAmostra: '#FDE047', // amarelo vibrante e inconfundível no botão
-    bg: '#FEF9C3',        // fundo externo da tela
-    surface: '#FEF08A',   // fundo da folha e cartões (amarelo pastel nítido)
-    surfaceInner: '#FEF9C3',
-    border: '#EAB308',
-    borderStrong: '#CA8A04',
+    nome: 'Amarelo ocre/mostarda',
+    corAmostra: '#EAB308', // amarelo mais fechado/escuro
+    bg: '#FDE047',        // fundo externo mais encorpado
+    surface: '#FACC15',   // folha e cartões amarelo mais escuro
+    surfaceInner: '#FEF08A',
+    border: '#CA8A04',
+    borderStrong: '#854D0E',
   },
   bege: {
     id: 'bege',
-    nome: 'Bege pastel',
-    corAmostra: '#D7BA89', // bege/areia nítido
-    bg: '#F5EBE1',
-    surface: '#EAD7C0',   // fundo da folha e cartões (bege pastel nítido)
-    surfaceInner: '#F5EBE1',
-    border: '#C8A97E',
-    borderStrong: '#997345',
+    nome: 'Bege camelo/areia escuro',
+    corAmostra: '#C19A6B', // bege bem mais escuro
+    bg: '#E5D3BD',
+    surface: '#D2B48C',   // folha e cartões bege mais escuro/encorpado
+    surfaceInner: '#EAD7C0',
+    border: '#A88456',
+    borderStrong: '#6E4E27',
   },
   verde: {
     id: 'verde',
-    nome: 'Verde pastel',
-    corAmostra: '#86EFAC', // verde pastel nítido
-    bg: '#DCFCE7',
-    surface: '#BBF7D0',   // fundo da folha e cartões (verde pastel nítido)
-    surfaceInner: '#DCFCE7',
-    border: '#4ADE80',
-    borderStrong: '#16A34A',
+    nome: 'Verde sálvia/oliva claro',
+    corAmostra: '#4ADE80', // verde mais fechado
+    bg: '#86EFAC',
+    surface: '#4ADE80',   // folha e cartões verde mais escuro/visível
+    surfaceInner: '#BBF7D0',
+    border: '#16A34A',
+    borderStrong: '#14532D',
   },
   azul: {
     id: 'azul',
-    nome: 'Azul pastel',
-    corAmostra: '#93C5FD', // azul celeste nítido
-    bg: '#DBEAFE',
-    surface: '#BFDBFE',   // fundo da folha e cartões (azul pastel nítido)
-    surfaceInner: '#DBEAFE',
-    border: '#60A5FA',
-    borderStrong: '#2563EB',
+    nome: 'Azul jeans/aço',
+    corAmostra: '#60A5FA', // azul mais encorpado
+    bg: '#93C5FD',
+    surface: '#60A5FA',   // folha e cartões azul mais escuro
+    surfaceInner: '#BFDBFE',
+    border: '#2563EB',
+    borderStrong: '#1E3A8A',
   },
   cinza: {
     id: 'cinza',
-    nome: 'Cinza claro',
-    corAmostra: '#CBD5E1', // cinza nítido
-    bg: '#F1F5F9',
-    surface: '#E2E8F0',   // fundo da folha e cartões (cinza pastel nítido)
-    surfaceInner: '#F8FAFC',
-    border: '#94A3B8',
-    borderStrong: '#475569',
+    nome: 'Cinza chumbo claro',
+    corAmostra: '#94A3B8', // cinza mais escuro
+    bg: '#CBD5E1',
+    surface: '#94A3B8',   // folha e cartões cinza médio
+    surfaceInner: '#E2E8F0',
+    border: '#64748B',
+    borderStrong: '#334155',
   },
 };
 
@@ -100,8 +100,8 @@ export function renderizarSeletorTemaHTML(temaAtivoId = obterTemaAtual()) {
         type="button"
         class="paleta-cor-quadrado ${t.id === temaAtivoId ? 'ativo' : ''}"
         data-tema-id="${t.id}"
-        title="Fundo da folha: ${t.nome}"
-        aria-label="Fundo da folha: ${t.nome}"
+        title="Cor da folha: ${t.nome}"
+        aria-label="Cor da folha: ${t.nome}"
         aria-pressed="${t.id === temaAtivoId ? 'true' : 'false'}"
         style="background:${t.corAmostra} !important;"
       ></button>

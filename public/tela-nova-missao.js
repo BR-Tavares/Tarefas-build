@@ -3,7 +3,7 @@
 import { esc, mostrarAviso } from './dom.js';
 import { hojeSP } from './feriados.js';
 import { situacao } from './analise.js';
-import { montarObjetosAnalise, ROTULO_VERIFICACAO } from './adaptador.js';
+import { montarObjetosAnalise } from './adaptador.js';
 import { db, doc, setDoc, updateDoc, collection } from './firebase-config.js';
 
 function linhasParaArray(texto) {
@@ -216,33 +216,20 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
           </div>
 
           <div class="campo-form">
-            <label>Critérios de conclusão da entrega (até 3 linhas — avaliados na revisão)</label>
-            <div class="ajuda">Formato: "[condição] — verificado por [inspeção / análise / demonstração / teste]"</div>
+            <label>Critérios de conclusão da entrega (até 3 critérios objetivos — avaliados na revisão)</label>
+            <div class="ajuda">Escreva a condição clara para o trabalho ser aceito.</div>
             <div id="lista-criterios" style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
               ${[0, 1, 2]
                 .map((idx) => {
-                  const c = criteriosIniciais[idx] || { condicao: '', verificacao: 'teste' };
+                  const c = criteriosIniciais[idx] || { condicao: '' };
                   return `
-                    <div style="display:grid;grid-template-columns:1fr 150px;gap:6px;">
-                      <input
-                        class="input criterio-condicao"
-                        type="text"
-                        value="${esc(c.condicao)}"
-                        placeholder="${idx === 0 ? 'Ex.: Erro médio ≤ 3 p.p. em 5 níveis × 3 repetições' : 'Critério adicional (opcional)'}"
-                        ${idx === 0 ? 'required' : ''}
-                      />
-                      <select class="select criterio-verificacao">
-                        ${Object.entries(ROTULO_VERIFICACAO)
-                          .map(
-                            ([val, rot]) => `
-                          <option value="${val}" ${c.verificacao === val ? 'selected' : ''}>
-                            verificado por ${rot}
-                          </option>
-                        `
-                          )
-                          .join('')}
-                      </select>
-                    </div>
+                    <input
+                      class="input criterio-condicao"
+                      type="text"
+                      value="${esc(c.condicao)}"
+                      placeholder="${idx === 0 ? 'Ex.: Erro médio ≤ 3 p.p. em 5 níveis × 3 repetições' : 'Critério adicional (opcional)'}"
+                      ${idx === 0 ? 'required' : ''}
+                    />
                   `;
                 })
                 .join('')}
@@ -276,21 +263,27 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
     root.querySelector('#mis-pasta').value = 'https://drive.google.com/drive/folders/exemplo-ms027';
     root.querySelector('#mis-necessidade').value =
       'Saber se o sensor v2 mede bem em solo argiloso para ir ao piloto com agricultores.';
-    root.querySelector('#mis-resultado').value =
-      'A curva de calibração para solo argiloso, com erro conhecido.';
+    if (root.querySelector('#mis-resultado')) {
+      root.querySelector('#mis-resultado').value =
+        'A curva de calibração para solo argiloso, com erro conhecido.';
+    }
     root.querySelector('#mis-tarefa').value =
       'Comparar as leituras do sensor com o método gravimétrico em amostras de solo argiloso.';
     root.querySelector('#mis-entrega').value = 'Planilha e curva de calibração na pasta.';
     const condInputs = root.querySelectorAll('.criterio-condicao');
-    const verSelects = root.querySelectorAll('.criterio-verificacao');
-    condInputs[0].value = 'Erro médio ≤ 3 p.p. frente ao gravimétrico, em 5 níveis × 3 repetições';
-    verSelects[0].value = 'teste';
-    root.querySelector('#mis-insumos').value =
-      'Sensor v2, amostras de solo argiloso, balança analítica e estufa no laboratório.';
+    if (condInputs[0]) {
+      condInputs[0].value = 'Erro médio ≤ 3 p.p. frente ao gravimétrico, em 5 níveis × 3 repetições';
+    }
+    if (root.querySelector('#mis-insumos')) {
+      root.querySelector('#mis-insumos').value =
+        'Sensor v2, amostras de solo argiloso, balança analítica e estufa no laboratório.';
+    }
     root.querySelector('#mis-precisa').value =
       'Registrar todas as leituras, inclusive as descartadas, com o motivo.';
     root.querySelector('#mis-naopode').value = 'Usar solo de outra classe textural.';
-    root.querySelector('#mis-consultar').value = 'Mudar o número de níveis ou de repetições.';
+    if (root.querySelector('#mis-consultar')) {
+      root.querySelector('#mis-consultar').value = 'Mudar o número de níveis ou de repetições.';
+    }
   });
 
   let acaoClicada = ehAlteracao ? 'alterar' : 'emitir';
@@ -314,12 +307,11 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
     const insumos = (root.querySelector('#mis-insumos')?.value || m.descricao?.insumos || '').trim();
 
     const condInputs = [...root.querySelectorAll('.criterio-condicao')];
-    const verSelects = [...root.querySelectorAll('.criterio-verificacao')];
     const criteriosExistentes = m.descricao?.criterios || [];
     const criterios = condInputs
       .map((inp, i) => {
         const condicao = inp.value.trim();
-        const verificacao = verSelects[i].value;
+        const verificacao = criteriosExistentes[i]?.verificacao || 'teste';
         const idExistente = criteriosExistentes[i]?.id;
         const id = idExistente || `cr-${i + 1}-${Date.now()}`;
         return { id, condicao, verificacao };

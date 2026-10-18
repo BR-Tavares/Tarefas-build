@@ -133,11 +133,11 @@ export const exemploDidatico = {
       },
     ],
     registros: [
-      { id: '2026-10-14', dia: '2026-10-14', atividade: 'Listar itens da época' },
-      { id: '2026-10-15', dia: '2026-10-15', atividade: 'Coletar preços mercado A' },
-      { id: '2026-10-16', dia: '2026-10-16', atividade: 'Coletar preços mercado B' },
-      { id: '2026-10-17', dia: '2026-10-17', atividade: 'Preencher tabela nutricional' },
-      { id: '2026-10-18', dia: '2026-10-18', atividade: 'Montar cesta e fechar planilha' },
+      { id: '2026-10-14', dia: '2026-10-14', atividade: 'Listar itens da época', horas: 3 },
+      { id: '2026-10-15', dia: '2026-10-15', atividade: 'Coletar preços mercado A', horas: 4.5 },
+      { id: '2026-10-16', dia: '2026-10-16', atividade: 'Coletar preços mercado B', horas: 4 },
+      { id: '2026-10-17', dia: '2026-10-17', atividade: 'Preencher tabela nutricional', horas: 5 },
+      { id: '2026-10-18', dia: '2026-10-18', atividade: 'Montar cesta e fechar planilha', horas: 3.5 },
     ],
     entregas: [
       {

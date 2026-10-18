@@ -78,6 +78,7 @@ export function montarObjetosAnalise(missaoDoc, subcolecoes = {}, membrosMap = {
       dia: reg.dia || reg.id,
       ...(reg.atividade ? { atividade: reg.atividade } : {}),
       ...(reg.motivo ? { motivo: reg.motivo } : {}),
+      ...(reg.horas != null ? { horas: reg.horas } : {}),
     })),
     pendencias: [...pendencias].sort((a, b) => (a.abertaEm || '').localeCompare(b.abertaEm || '')),
     entregas: [...entregas].sort((a, b) => (a.em || '').localeCompare(b.em || '')),

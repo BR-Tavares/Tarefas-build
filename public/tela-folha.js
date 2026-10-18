@@ -111,10 +111,12 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
     uiFolha.textoAtividade = regHoje
       ? regHoje.atividade || ROTULO_MOTIVO[regHoje.motivo] || ''
       : '';
+    uiFolha.horasDedicadas = regHoje && regHoje.horas != null ? String(regHoje.horas) : '';
   }
 
   const diaReg = uiFolha.diaSelecionado || hoje;
   const regDoDia = r.registros.find((x) => x.dia === diaReg);
+  const horasDoDia = regDoDia && regDoDia.horas != null ? regDoDia.horas : (uiFolha.horasDedicadas || '');
   const abertaParaEscritaResp =
     !somenteLeitura && !ehExemplo && papel === 'responsavel' && sit !== 'concluida' && sit !== 'cancelada';
 
@@ -785,9 +787,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                         <tr>
                           <td>
                             <strong>${esc(item.condicao || critDef?.condicao || `Critério ${i + 1}`)}</strong>
-                            <div style="font-size:11px;color:var(--muted);margin-top:2px;">
-                              verificado por ${esc(ROTULO_VERIFICACAO[critDef?.verificacao] || critDef?.verificacao || 'inspeção')}
-                            </div>
                             ${item.comprovacao ? `<div style="font-size:11.5px;margin-top:4px;color:var(--text);"><span style="color:var(--muted);">Comprovação:</span> ${esc(item.comprovacao)}</div>` : ''}
                           </td>
                           <td style="text-align:center;vertical-align:middle;">
@@ -893,9 +892,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                         <div style="flex:1;">
                           <div style="font-size:12.5px;font-weight:600;">
                             ${esc(c.condicao)}
-                            <span style="font-weight:normal;color:var(--muted);font-size:11px;">
-                              — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
-                            </span>
                           </div>
                           ${
                             revAnt && revAnt.aceito === false
@@ -948,9 +944,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                     <div class="checklist-card">
                       <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">
                         ${esc(c.condicao)}
-                        <span style="font-weight:normal;color:var(--muted);font-size:11px;">
-                          — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
-                        </span>
                       </div>
                       ${
                         itemEnt
@@ -996,16 +989,16 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         }
       </section>
 
-      <!-- BLOCO 5: FOCO DE HOJE (exclusivo para o responsável — 1 linha, sem histórico, sem contagem e sem alerta) -->
+      <!-- BLOCO 5: ATIVIDADE PRINCIPAL (exclusivo para o responsável — atividade do dia e horas dedicadas) -->
       ${
         abertaParaEscritaResp
           ? `
         <section class="card card-destaque-azul">
           <div class="secao-header" style="margin-bottom:4px;">
-            <h2 class="secao-titulo">Foco de hoje</h2>
+            <h2 class="secao-titulo">Atividade principal</h2>
           </div>
           <div class="ajuda" style="margin-bottom:8px;font-size:12px;color:var(--muted);">
-            Em que você focou hoje? Só o nome da atividade.
+            Qual foi sua atividade principal no dia e quanto tempo em horas dedicou a ela?
           </div>
 
           <form id="form-registro-dia" autocomplete="off">
@@ -1021,15 +1014,27 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                 class="input-atividade-registro"
                 type="text"
                 maxlength="80"
-                placeholder="Nome da atividade..."
+                placeholder="Atividade principal..."
                 value="${esc(uiFolha.textoAtividade)}"
+              />
+
+              <input
+                id="inp-registro-horas"
+                class="input-horas-registro"
+                type="number"
+                step="0.5"
+                min="0"
+                max="24"
+                placeholder="Horas"
+                title="Horas dedicadas no dia (ex.: 2 ou 4.5)"
+                value="${esc(horasDoDia)}"
               />
 
               <button
                 type="submit"
                 id="btn-salvar-registro"
                 class="btn-check-registro ${regDoDia ? 'gravado' : ''}"
-                title="Registrar atividade do dia"
+                title="Registrar atividade e horas do dia"
               >
                 <svg width="18" height="18" viewBox="0 0 18 18">
                   <path d="M4 9 l4 4 l7 -8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1221,12 +1226,16 @@ function configurarEventosFolha(root, estadoApp, ctx) {
 
       // Critério A3: Salvar etapas com nomes diferentes grava documento em planos
       if (mudouNomes) {
-        const planoRef = doc(collection(db, 'equipes', equipeId, 'missoes', missaoId, 'planos'));
-        await setDoc(planoRef, {
-          em: hoje,
-          versaoMissao: g.versao || 1,
-          etapas: linhas,
-        });
+        try {
+          const planoRef = doc(collection(db, 'equipes', equipeId, 'missoes', missaoId, 'planos'));
+          await setDoc(planoRef, {
+            em: hoje,
+            versaoMissao: g.versao || 1,
+            etapas: linhas,
+          });
+        } catch (ePlano) {
+          console.warn('Não foi possível gravar histórico do plano:', ePlano);
+        }
       }
 
       uiFolha.editandoEtapas = false;
@@ -1500,14 +1509,26 @@ function configurarEventosFolha(root, estadoApp, ctx) {
   // BLOCO 5: Registro do dia (1 linha + auto-complete em até 3 toques)
   const inpData = root.querySelector('#inp-registro-data');
   const inpAtiv = root.querySelector('#inp-registro-atividade');
+  const inpHoras = root.querySelector('#inp-registro-horas');
   const boxAuto = root.querySelector('#box-autocomplete');
+
+  const obterHoras = () => {
+    const v = parseFloat(inpHoras?.value);
+    return !isNaN(v) && v >= 0 ? v : null;
+  };
 
   const gravarRegistro = async (payload) => {
     const diaAlvo = uiFolha.diaSelecionado || hoje;
+    const horas = obterHoras();
+    const dadosFinais = {
+      ...payload,
+      ...(horas != null ? { horas } : {}),
+    };
+
     try {
       await setDoc(
         doc(db, 'equipes', equipeId, 'missoes', missaoId, 'registros', diaAlvo),
-        payload
+        dadosFinais
       );
       uiFolha.mostrarAutocomplete = false;
       if (boxAuto) boxAuto.style.display = 'none';
@@ -1519,8 +1540,11 @@ function configurarEventosFolha(root, estadoApp, ctx) {
 
   const atualizarAutocomplete = (prefixo) => {
     if (!boxAuto) return;
-    const filtro = Object.values(ROTULO_MOTIVO).includes(prefixo) ? '' : prefixo;
-    const sugestoes = sugerirAtividades(r, filtro, 8);
+    const sugestoes = sugerirAtividades(r, prefixo, 8);
+    if (sugestoes.length === 0) {
+      boxAuto.style.display = 'none';
+      return;
+    }
     boxAuto.innerHTML = `
       ${sugestoes
         .map(
@@ -1531,20 +1555,10 @@ function configurarEventosFolha(root, estadoApp, ctx) {
       `
         )
         .join('')}
-      ${sugestoes.length > 0 ? `<hr class="divisor" style="margin:2px 0;" />` : ''}
-      ${Object.entries(ROTULO_MOTIVO)
-        .map(
-          ([cod, rot]) => `
-        <button type="button" class="autocomplete-item motivo" data-sugestao-motivo="${cod}">
-          ${esc(rot)}
-        </button>
-      `
-        )
-        .join('')}
     `;
     boxAuto.style.display = '';
 
-    // Critério 2: Tocar na sugestão preenche e grava imediatamente (total: 2 toques!)
+    // Tocar na sugestão preenche e grava imediatamente
     boxAuto.querySelectorAll('[data-sugestao-atividade]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const ativ = btn.getAttribute('data-sugestao-atividade').trim();
@@ -1553,25 +1567,19 @@ function configurarEventosFolha(root, estadoApp, ctx) {
         gravarRegistro({ atividade: ativ });
       });
     });
-
-    boxAuto.querySelectorAll('[data-sugestao-motivo]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const motivo = btn.getAttribute('data-sugestao-motivo');
-        uiFolha.textoAtividade = ROTULO_MOTIVO[motivo];
-        if (inpAtiv) inpAtiv.value = ROTULO_MOTIVO[motivo];
-        gravarRegistro({ motivo });
-      });
-    });
   };
 
   inpData?.addEventListener('change', () => {
     const novoDia = inpData.value || hoje;
     uiFolha.diaSelecionado = novoDia;
     const reg = r.registros.find((x) => x.dia === novoDia);
-    uiFolha.textoAtividade = reg
-      ? reg.atividade || ROTULO_MOTIVO[reg.motivo] || ''
-      : '';
+    uiFolha.textoAtividade = reg ? reg.atividade || '' : '';
+    uiFolha.horasDedicadas = reg && reg.horas != null ? String(reg.horas) : '';
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
+  });
+
+  inpHoras?.addEventListener('input', () => {
+    uiFolha.horasDedicadas = inpHoras.value;
   });
 
   inpAtiv?.addEventListener('focus', () => {
@@ -1589,13 +1597,6 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     e.preventDefault();
     const val = (inpAtiv?.value || '').trim();
     if (!val) return;
-    const parMotivo = Object.entries(ROTULO_MOTIVO).find(
-      ([, rot]) => rot.toLowerCase() === val.toLowerCase()
-    );
-    if (parMotivo) {
-      gravarRegistro({ motivo: parMotivo[0] });
-    } else {
-      gravarRegistro({ atividade: val.slice(0, 80).trim() });
-    }
+    gravarRegistro({ atividade: val.slice(0, 80).trim() });
   });
 }
