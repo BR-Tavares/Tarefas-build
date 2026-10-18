@@ -113,6 +113,12 @@ export const ROTULO_VERIFICACAO = {
   teste: 'teste',
 };
 
+export const ROTULO_PRODUTO = {
+  atende: 'Atende ao esperado',
+  nao_atende: 'Não atende aos requisitos',
+  inconclusivo: 'Inconclusivo / precisa rever',
+};
+
 export const ROTULO_MOTIVO = {
   folga_saude: 'Sem trabalho: folga ou saúde',
   outra_missao: 'Sem trabalho: outra missão',

@@ -15,7 +15,7 @@ export const exemploDidatico = {
     emitidaEm: '2026-10-14',
     dataEstimada: '2026-10-21',
     versao: 2,
-    camposMudaramUltimaVersao: ['consultarAntes'],
+    camposMudaramUltimaVersao: ['precisa'],
     descricao: {
       necessidade:
         'Saber se dá para alimentar bem um adulto com pouco dinheiro, usando o que o mercado do bairro tem nesta época, para orientar a compra da semana.',

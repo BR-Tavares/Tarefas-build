@@ -190,17 +190,25 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
           </div>
 
           <div class="campo-form">
-            <label for="mis-resultado">Resultado esperado</label>
-            <div class="ajuda">Como fica a situação quando a missão termina bem.</div>
-            <textarea id="mis-resultado" class="textarea" required>${esc(m.descricao?.resultadoEsperado || '')}</textarea>
-          </div>
-
-          <div class="campo-form">
             <label for="mis-tarefa">Tarefa</label>
             <div class="ajuda">O que fazer, em uma ou duas frases.</div>
             <textarea id="mis-tarefa" class="textarea" required>${esc(m.descricao?.tarefa || '')}</textarea>
           </div>
 
+          <hr class="divisor" />
+          <h3 class="secao-titulo" style="margin-bottom:8px;">Requisitos da tarefa (limites globais à missão)</h3>
+
+          <div class="campo-form">
+            <label for="mis-precisa" style="color:var(--green);">PRECISA ACONTECER (um por linha)</label>
+            <textarea id="mis-precisa" class="textarea" placeholder="Ex.: Registrar todas as leituras, inclusive as descartadas, com o motivo.">${esc(arrayParaLinhas(m.requisitos?.precisa))}</textarea>
+          </div>
+
+          <div class="campo-form">
+            <label for="mis-naopode" style="color:var(--red);">NÃO PODE ACONTECER (um por linha)</label>
+            <textarea id="mis-naopode" class="textarea" placeholder="Ex.: Usar solo de outra classe textural.">${esc(arrayParaLinhas(m.requisitos?.naoPode))}</textarea>
+          </div>
+
+          <hr class="divisor" />
           <div class="campo-form">
             <label for="mis-entrega">Entrega</label>
             <div class="ajuda">O quê, em que formato e onde (padrão: na pasta da missão).</div>
@@ -208,7 +216,7 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
           </div>
 
           <div class="campo-form">
-            <label>Critérios de conclusão (até 3 linhas — se passar de 3, divida a missão)</label>
+            <label>Critérios de conclusão da entrega (até 3 linhas — avaliados na revisão)</label>
             <div class="ajuda">Formato: "[condição] — verificado por [inspeção / análise / demonstração / teste]"</div>
             <div id="lista-criterios" style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
               ${[0, 1, 2]
@@ -239,30 +247,6 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
                 })
                 .join('')}
             </div>
-          </div>
-
-          <div class="campo-form">
-            <label for="mis-insumos">Insumos</label>
-            <div class="ajuda">O que já está disponível e onde.</div>
-            <textarea id="mis-insumos" class="textarea">${esc(m.descricao?.insumos || '')}</textarea>
-          </div>
-
-          <hr class="divisor" />
-          <h3 class="secao-titulo" style="margin-bottom:8px;">Requisitos da tarefa (limites globais à missão)</h3>
-
-          <div class="campo-form">
-            <label for="mis-precisa" style="color:var(--green);">PRECISA ACONTECER (Must — um por linha)</label>
-            <textarea id="mis-precisa" class="textarea" placeholder="Ex.: Registrar todas as leituras, inclusive as descartadas, com o motivo.">${esc(arrayParaLinhas(m.requisitos?.precisa))}</textarea>
-          </div>
-
-          <div class="campo-form">
-            <label for="mis-naopode" style="color:var(--red);">NÃO PODE ACONTECER (Must not — um por linha)</label>
-            <textarea id="mis-naopode" class="textarea" placeholder="Ex.: Usar solo de outra classe textural.">${esc(arrayParaLinhas(m.requisitos?.naoPode))}</textarea>
-          </div>
-
-          <div class="campo-form">
-            <label for="mis-consultar" style="color:var(--blue);">CONSULTAR ANTES (opcional — um por linha)</label>
-            <textarea id="mis-consultar" class="textarea" placeholder="Ex.: Mudar o número de níveis ou de repetições.">${esc(arrayParaLinhas(m.requisitos?.consultarAntes))}</textarea>
           </div>
 
           <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap;">
@@ -324,10 +308,10 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
     const docsUrl = root.querySelector('#mis-docs').value.trim();
     const pastaUrl = root.querySelector('#mis-pasta').value.trim();
     const necessidade = root.querySelector('#mis-necessidade').value.trim();
-    const resultadoEsperado = root.querySelector('#mis-resultado').value.trim();
+    const resultadoEsperado = (root.querySelector('#mis-resultado')?.value || m.descricao?.resultadoEsperado || '').trim();
     const tarefa = root.querySelector('#mis-tarefa').value.trim();
     const entrega = root.querySelector('#mis-entrega').value.trim();
-    const insumos = root.querySelector('#mis-insumos').value.trim();
+    const insumos = (root.querySelector('#mis-insumos')?.value || m.descricao?.insumos || '').trim();
 
     const condInputs = [...root.querySelectorAll('.criterio-condicao')];
     const verSelects = [...root.querySelectorAll('.criterio-verificacao')];
@@ -349,7 +333,7 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
 
     const precisa = linhasParaArray(root.querySelector('#mis-precisa').value);
     const naoPode = linhasParaArray(root.querySelector('#mis-naopode').value);
-    const consultarAntes = linhasParaArray(root.querySelector('#mis-consultar').value);
+    const consultarAntes = root.querySelector('#mis-consultar') ? linhasParaArray(root.querySelector('#mis-consultar').value) : (m.requisitos?.consultarAntes || []);
 
     const hoje = hojeSP();
     const agoraIso = new Date().toISOString();

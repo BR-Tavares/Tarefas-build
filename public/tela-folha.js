@@ -24,6 +24,7 @@ import {
   ROTULO_TIPO_PENDENCIA,
   ROTULO_BLOQUEIO,
   ROTULO_SINAL,
+  ROTULO_PRODUTO,
 } from './adaptador.js';
 import {
   db,
@@ -374,41 +375,8 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         <div class="rotulo-campo">TAREFA ${badgeMudou('tarefa')}</div>
         <p class="texto-campo">${esc(g.descricao.tarefa)}</p>
 
-        <div class="rotulo-campo">ENTREGA ${badgeMudou('entrega')}</div>
-        <p class="texto-campo">${esc(g.descricao.entrega)}</p>
-
-        <div class="rotulo-campo">CRITÉRIO DE CONCLUSÃO ${badgeMudou('criterios')}</div>
-        ${(g.descricao.criterios || [])
-          .map(
-            (c) => `
-          <p class="texto-campo" style="margin-bottom:4px;">
-            ${esc(c.condicao)} — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
-          </p>
-        `
-          )
-          .join('')}
-
-        <div style="margin-top:8px;">
-          <button type="button" id="btn-ver-mais-desc" class="link-acao">
-            ${uiFolha.verMaisDescricao ? 'Ocultar resultado esperado e insumos ▴' : 'Ver resultado esperado e insumos ▾'}
-          </button>
-        </div>
-
-        ${
-          uiFolha.verMaisDescricao
-            ? `
-          <div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border);">
-            <div class="rotulo-campo">RESULTADO ESPERADO ${badgeMudou('resultadoEsperado')}</div>
-            <p class="texto-campo">${esc(g.descricao.resultadoEsperado)}</p>
-            <div class="rotulo-campo">INSUMOS ${badgeMudou('insumos')}</div>
-            <p class="texto-campo">${esc(g.descricao.insumos || '—')}</p>
-          </div>
-        `
-            : ''
-        }
-
-        <div style="margin-top:14px;">
-          <div class="secao-titulo" style="font-size:13px;">Requisitos da tarefa</div>
+        <div style="margin-top:12px;">
+          <div class="secao-titulo" style="font-size:13px;margin-bottom:2px;">Requisitos da tarefa</div>
 
           <div class="rotulo-campo rotulo-verde">PRECISA ACONTECER ${badgeMudou('precisa')}</div>
           <p class="texto-campo">${
@@ -423,14 +391,10 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
               ? g.requisitos.naoPode.map((x) => esc(x)).join('\n')
               : '—'
           }</p>
-
-          <div class="rotulo-campo rotulo-azul">CONSULTAR ANTES ${badgeMudou('consultarAntes')}</div>
-          <p class="texto-campo" style="margin-bottom:0;">${
-            (g.requisitos.consultarAntes || []).length > 0
-              ? g.requisitos.consultarAntes.map((x) => esc(x)).join('\n')
-              : '—'
-          }</p>
         </div>
+
+        <div class="rotulo-campo" style="margin-top:10px;">ENTREGA ${badgeMudou('entrega')}</div>
+        <p class="texto-campo" style="margin-bottom:0;">${esc(g.descricao.entrega)}</p>
       </section>
 
       <!-- BLOCO 2: ETAPAS -->
@@ -868,10 +832,14 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
               ultimaRevisao
                 ? `
               <div class="resposta-box" style="margin-top:10px;">
-                <div class="resposta-titulo">
-                  Revisão do gestor em ${esc(formatarDataCurta(ultimaRevisao.em))} ·
-                  Missão: ${ultimaRevisao.resultado === 'concluida' ? 'CONCLUÍDA' : 'EM AJUSTE'} ·
-                  Produto: ${esc((ultimaRevisao.produto || '').toUpperCase())}
+                <div style="font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:3px;">
+                  <span>Revisão do gestor · ${esc(formatarDataCurta(ultimaRevisao.em))}</span>
+                  <span class="badge ${ultimaRevisao.resultado === 'concluida' ? 'badge-verde' : 'badge-amarelo'}" style="height:20px;font-size:11px;">
+                    ${ultimaRevisao.resultado === 'concluida' ? 'Missão Concluída' : 'Em Ajuste'}
+                  </span>
+                </div>
+                <div style="font-size:12px;color:var(--text);">
+                  <strong>Avaliação do trabalho:</strong> ${esc(ROTULO_PRODUTO[ultimaRevisao.produto] || ultimaRevisao.produto || 'Atende ao esperado')}
                 </div>
               </div>
             `
@@ -1011,11 +979,11 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
             </div>
 
             <div class="campo-form" style="margin-top:8px;">
-              <label for="rev-produto">O que o resultado diz sobre o produto?</label>
+              <label for="rev-produto">Avaliação geral da entrega</label>
               <select id="rev-produto" class="select" required>
-                <option value="atende">Atende</option>
-                <option value="nao_atende">Não atende</option>
-                <option value="inconclusivo">Inconclusivo</option>
+                <option value="atende">Atende ao esperado</option>
+                <option value="nao_atende">Não atende aos requisitos</option>
+                <option value="inconclusivo">Inconclusivo / precisa rever</option>
               </select>
             </div>
 
@@ -1088,11 +1056,6 @@ function configurarEventosFolha(root, estadoApp, ctx) {
   conectarEventosSeletorTema(root);
 
   root.querySelector('#btn-voltar-lista')?.addEventListener('click', () => aoVoltar?.());
-
-  root.querySelector('#btn-ver-mais-desc')?.addEventListener('click', () => {
-    uiFolha.verMaisDescricao = !uiFolha.verMaisDescricao;
-    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
-  });
 
   const abrirLinks = () => {
     uiFolha.editandoLinks = !uiFolha.editandoLinks;
