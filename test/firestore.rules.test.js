@@ -222,4 +222,57 @@ describe('firestore.rules — Critérios de Aceite 1, 6, 12, 13 e Regras de Segu
     await assertSucceeds(deleteDoc(doc(dbGestor, 'equipes', EQUIPE_ID, 'missoes', 'MS-028-RASCUNHO')));
     await assertFails(deleteDoc(doc(dbResp1, 'equipes', EQUIPE_ID, 'missoes', 'MS-027')));
   });
+
+  it('Critério A4 (planos): responsável grava plano, gestor lê, mas responsável não lê planos', async () => {
+    const dbResp1 = ctx(RESP_1).firestore();
+    const dbGestor = ctx(GESTOR).firestore();
+
+    // Responsável grava plano válido
+    await assertSucceeds(
+      setDoc(doc(dbResp1, 'equipes', EQUIPE_ID, 'missoes', 'MS-027', 'planos', 'plano-1'), {
+        em: '2026-10-20',
+        versaoMissao: 1,
+        etapas: ['Etapa A', 'Etapa B'],
+      })
+    );
+
+    // Gestor consegue ler
+    await assertSucceeds(
+      getDoc(doc(dbGestor, 'equipes', EQUIPE_ID, 'missoes', 'MS-027', 'planos', 'plano-1'))
+    );
+
+    // Responsável NÃO tem permissão de leitura em planos
+    await assertFails(
+      getDoc(doc(dbResp1, 'equipes', EQUIPE_ID, 'missoes', 'MS-027', 'planos', 'plano-1'))
+    );
+  });
+
+  it('Critério A9 (entregas): responsável cria entrega com link e pode corrigir a mesma entrega via update', async () => {
+    const dbResp1 = ctx(RESP_1).firestore();
+
+    // Cria entrega com link válido
+    await assertSucceeds(
+      setDoc(doc(dbResp1, 'equipes', EQUIPE_ID, 'missoes', 'MS-027', 'entregas', 'ent-1'), {
+        em: '2026-10-22',
+        link: 'https://docs.google.com/planilha-1',
+        criterios: [{ criterioId: 'cr-1', condicao: 'Cond 1', status: 'atendido' }],
+      })
+    );
+
+    // Rejeita criação com link vazio
+    await assertFails(
+      setDoc(doc(dbResp1, 'equipes', EQUIPE_ID, 'missoes', 'MS-027', 'entregas', 'ent-invalida'), {
+        em: '2026-10-22',
+        link: '',
+      })
+    );
+
+    // Corrigir entrega atualiza o mesmo documento (update)
+    await assertSucceeds(
+      updateDoc(doc(dbResp1, 'equipes', EQUIPE_ID, 'missoes', 'MS-027', 'entregas', 'ent-1'), {
+        link: 'https://docs.google.com/planilha-1-corrigida',
+        corrigidaEm: '2026-10-23',
+      })
+    );
+  });
 });

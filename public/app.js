@@ -306,7 +306,15 @@ function observarSubcolecoesDaMissao(missaoId) {
   }
 
   const base = ['equipes', EQUIPE_ID, 'missoes', missaoId];
-  const nomesCols = ['alteracoes', 'respostas', 'revisoes', 'registros', 'pendencias', 'entregas'];
+  const nomesCols = [
+    'alteracoes',
+    'respostas',
+    'revisoes',
+    'registros',
+    'pendencias',
+    'entregas',
+    ...(estadoApp.papel === 'gestor' ? ['planos'] : []),
+  ];
   const listaUnsubs = [];
 
   for (const nomeCol of nomesCols) {

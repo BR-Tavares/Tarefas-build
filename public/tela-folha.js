@@ -33,6 +33,7 @@ import {
   deleteDoc,
   collection,
 } from './firebase-config.js';
+import { exemploDidatico } from './exemplo-didatico.js';
 
 // Estado local de UI da folha (para não fechar modais/expanders ao receber snapshot)
 const uiFolha = {
@@ -40,9 +41,12 @@ const uiFolha = {
   verMaisDescricao: false,
   editandoLinks: false,
   editandoEtapas: false,
+  menuPendenciasAberto: false,
   abrindoPendencia: false,
   respondendoPendenciaId: null,
   preenchendoEntrega: false,
+  planosHistoricoAberto: false,
+  vendoExemploDidatico: false,
   diaSelecionado: null,
   mostrarAutocomplete: false,
   textoAtividade: '',
@@ -57,9 +61,10 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
     missoesMap,
     subcolecoesMap,
   } = estadoApp;
-  const { missaoId, aoVoltar, aoAbrirEdicaoMissao } = opcoes;
+  const { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura = false } = opcoes;
 
-  const missaoDoc = missoesMap[missaoId];
+  const ehExemplo = uiFolha.vendoExemploDidatico || missaoId === 'MS-000';
+  const missaoDoc = ehExemplo ? exemploDidatico.missaoDoc : missoesMap[missaoId];
   if (!missaoDoc) {
     root.innerHTML = `
       <div class="container-folha">
@@ -75,7 +80,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
 
   const feriados = equipe?.feriados || [];
   const hoje = hojeSP();
-  const subs = subcolecoesMap[missaoId] || {};
+  const subs = ehExemplo ? exemploDidatico.subcolecoes : (subcolecoesMap[missaoId] || {});
   const { g, r } = montarObjetosAnalise(missaoDoc, subs, membros);
   const sit = situacao(g, r);
   const rotSit = ROTULO_SITUACAO[sit] || { texto: sit, classe: 'badge-neutro' };
@@ -93,9 +98,11 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
     uiFolha.verMaisDescricao = false;
     uiFolha.editandoLinks = false;
     uiFolha.editandoEtapas = false;
+    uiFolha.menuPendenciasAberto = false;
     uiFolha.abrindoPendencia = false;
     uiFolha.respondendoPendenciaId = null;
     uiFolha.preenchendoEntrega = false;
+    uiFolha.planosHistoricoAberto = false;
     uiFolha.diaSelecionado = hoje;
     uiFolha.mostrarAutocomplete = false;
     const regHoje = r.registros.find((x) => x.dia === hoje);
@@ -107,7 +114,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
   const diaReg = uiFolha.diaSelecionado || hoje;
   const regDoDia = r.registros.find((x) => x.dia === diaReg);
   const abertaParaEscritaResp =
-    papel === 'responsavel' && sit !== 'concluida' && sit !== 'cancelada';
+    !somenteLeitura && !ehExemplo && papel === 'responsavel' && sit !== 'concluida' && sit !== 'cancelada';
 
   // Critério 5: se o responsável abriu a folha e vistoVersao < g.versao, atualiza vistoVersao
   const versaoEraNaoVista = papel === 'responsavel' && g.versao > (r.vistoVersao || 0);
@@ -262,13 +269,35 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           : ''
       }
 
+      ${
+        ehExemplo
+          ? `
+        <div class="aviso-topo" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;">
+          <div><strong>Exemplo didático — valores ilustrativos</strong> (somente leitura)</div>
+          <button type="button" id="btn-fechar-exemplo" class="btn btn-sm btn-primario">Voltar à minha missão</button>
+        </div>
+      `
+          : ''
+      }
+
       <!-- BLOCO 1: CABEÇALHO -->
       <section class="card">
         <div class="meta-codigo">
-          <span>${esc(g.codigo)} · versão ${g.versao}</span>
-          <button type="button" id="btn-toggle-links" class="link-acao" style="font-size:11px;">
-            ${uiFolha.editandoLinks ? 'fechar links' : 'editar links'}
-          </button>
+          <span>
+            ${esc(g.codigo)} · versão ${g.emitidaEm ? (g.versao || 1) : 0}
+            <button type="button" id="btn-abrir-exemplo" class="link-acao" style="margin-left:8px;font-size:11px;font-weight:normal;">
+              ver um exemplo de folha
+            </button>
+          </span>
+          ${
+            !somenteLeitura && !ehExemplo
+              ? `
+            <button type="button" id="btn-toggle-links" class="link-acao" style="font-size:11px;">
+              ${uiFolha.editandoLinks ? 'fechar links' : 'editar links'}
+            </button>
+          `
+              : ''
+          }
         </div>
 
         <h1 class="titulo-missao">
@@ -279,17 +308,21 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           ${
             links.docsUrl
               ? `<a class="pill-link" href="${esc(links.docsUrl)}" target="_blank" rel="noopener noreferrer">Docs ↗</a>`
-              : `<button type="button" class="pill-link" id="btn-atalho-docs" style="opacity:0.7;cursor:pointer;">+ Docs ↗</button>`
+              : !somenteLeitura && !ehExemplo
+              ? `<button type="button" class="pill-link" id="btn-atalho-docs" style="opacity:0.7;cursor:pointer;">+ Docs ↗</button>`
+              : ''
           }
           ${
             links.pastaUrl
               ? `<a class="pill-link" href="${esc(links.pastaUrl)}" target="_blank" rel="noopener noreferrer">Pasta ↗</a>`
-              : `<button type="button" class="pill-link" id="btn-atalho-pasta" style="opacity:0.7;cursor:pointer;">+ Pasta ↗</button>`
+              : !somenteLeitura && !ehExemplo
+              ? `<button type="button" class="pill-link" id="btn-atalho-pasta" style="opacity:0.7;cursor:pointer;">+ Pasta ↗</button>`
+              : ''
           }
         </div>
 
         ${
-          uiFolha.editandoLinks
+          uiFolha.editandoLinks && !somenteLeitura && !ehExemplo
             ? `
           <form id="form-editar-links" style="background:var(--bg);padding:10px;border-radius:8px;margin-bottom:10px;">
             <div class="campo-form" style="margin-bottom:8px;">
@@ -309,7 +342,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         }
 
         <div class="pills-row" style="margin-bottom:0;">
-          <span class="badge ${rotSit.classe}">${esc(rotSit.texto)}</span>
           <span class="badge badge-neutro">
             Data estimada ${esc(formatarDataCurta(dataEstExibida))}${
               diasSuspensos > 0 ? ` (+${diasSuspensos} por impedimento)` : ''
@@ -444,154 +476,263 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           </div>
         `
         }
-        <div class="secao-sub" style="margin-top:8px;">Uma vez, no início, para alinhar o entendimento.</div>
+
+        ${
+          papel === 'gestor' && (g.planos || []).length > 0
+            ? `
+          <div style="margin-top:12px;border-top:1px dashed var(--border);padding-top:8px;">
+            <button type="button" id="btn-toggle-planos" class="link-acao" style="font-size:12px;">
+              ${uiFolha.planosHistoricoAberto ? 'Ocultar planos anteriores ▴' : `Planos anteriores (${g.planos.length}) ▾`}
+            </button>
+            ${
+              uiFolha.planosHistoricoAberto
+                ? `
+              <div style="margin-top:8px;">
+                ${g.planos
+                  .map((plano, i) => {
+                    const anterior = i > 0 ? g.planos[i - 1].etapas || [] : [];
+                    const atual = plano.etapas || [];
+                    const entrou = atual.filter((x) => !anterior.includes(x));
+                    const saiu = anterior.filter((x) => !atual.includes(x));
+                    return `
+                      <div class="plano-historico-item">
+                        <div style="color:var(--muted);margin-bottom:2px;">
+                          <strong>${esc(formatarDataCurta(plano.em))}</strong> · versão ${plano.versaoMissao || 1}
+                        </div>
+                        <div>${atual.map((e) => esc(e)).join(' → ')}</div>
+                        ${
+                          i > 0
+                            ? `
+                          <div style="color:var(--muted);font-size:11px;margin-top:2px;">
+                            ${entrou.length > 0 ? `<span style="color:var(--green);">entrou: ${esc(entrou.join(', '))}</span> · ` : ''}
+                            ${saiu.length > 0 ? `<span style="color:var(--red);">saiu: ${esc(saiu.join(', '))}</span>` : ''}
+                            ${entrou.length === 0 && saiu.length === 0 ? 'reordenado' : ''}
+                          </div>
+                        `
+                            : ''
+                        }
+                      </div>
+                    `;
+                  })
+                  .join('')}
+              </div>
+            `
+                : ''
+            }
+          </div>
+        `
+            : ''
+        }
       </section>
 
       <!-- BLOCO 3: PENDÊNCIAS -->
       <section class="card">
-        <div class="secao-header">
-          <h2 class="secao-titulo">Pendências</h2>
+        ${
+          !uiFolha.menuPendenciasAberto
+            ? `
+          <div class="menu-pendencias-fechado" id="btn-toggle-menu-pend">
+            <div style="display:flex;align-items:center;gap:8px;flex:1;overflow:hidden;">
+              <h2 class="secao-titulo" style="margin:0;font-size:14px;">Pendências</h2>
+              ${(() => {
+                const abertas = r.pendencias.filter((p) => !p.fechadaEm);
+                if (abertas.length === 0) {
+                  return `<span class="secao-sub" style="font-size:12px;">(nenhuma aberta)</span>`;
+                }
+                const maisRecente = abertas.at(-1);
+                const temResp = g.respostas.some((x) => x.pendenciaId === maisRecente.id);
+                const rotTipo = ROTULO_TIPO_PENDENCIA[maisRecente.tipo] || maisRecente.tipo.toUpperCase();
+                const textoCortado =
+                  maisRecente.texto.length > 40
+                    ? maisRecente.texto.slice(0, 40) + '…'
+                    : maisRecente.texto;
+                return `
+                  <span class="badge ${maisRecente.tipo === 'impedimento' ? 'badge-vermelho' : 'badge-azul'}" style="font-size:11px;">
+                    ${esc(rotTipo)}
+                  </span>
+                  <span style="font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    ${esc(textoCortado)}
+                  </span>
+                  ${temResp ? `<span class="badge badge-neutro" style="font-size:10px;">respondida</span>` : ''}
+                  ${abertas.length > 1 ? `<span class="secao-sub" style="font-size:11px;">+ ${abertas.length - 1} abertas</span>` : ''}
+                `;
+              })()}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              ${
+                abertaParaEscritaResp
+                  ? `<button type="button" id="btn-atalho-abrir-pend" class="link-acao" style="font-size:12px;">+ abrir</button>`
+                  : ''
+              }
+              <span class="link-acao" style="font-size:11px;">abrir ▾</span>
+            </div>
+          </div>
+        `
+            : `
+          <div class="secao-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <h2 class="secao-titulo">Pendências</h2>
+              <button type="button" id="btn-recolher-menu-pend" class="link-acao" style="font-size:12px;">recolher ▴</button>
+            </div>
+            ${
+              abertaParaEscritaResp
+                ? `<button type="button" id="btn-abrir-pendencia" class="link-acao">${uiFolha.abrindoPendencia ? 'fechar' : '+ abrir'}</button>`
+                : ''
+            }
+          </div>
+
           ${
-            abertaParaEscritaResp
-              ? `<button type="button" id="btn-abrir-pendencia" class="link-acao">${uiFolha.abrindoPendencia ? 'fechar' : '+ abrir'}</button>`
+            uiFolha.abrindoPendencia && abertaParaEscritaResp
+              ? `
+            <form id="form-nova-pendencia" style="background:var(--bg);padding:12px;border-radius:8px;margin-bottom:12px;">
+              <div class="campo-form">
+                <label for="pend-tipo">Tipo de pendência</label>
+                <select id="pend-tipo" class="select" required>
+                  <option value="impedimento">Impedimento (andon — algo impede ou requisito em risco)</option>
+                  <option value="duvida">Dúvida (algo na folha não está claro)</option>
+                  <option value="consulta">Consulta (decisão listada em "consultar antes")</option>
+                  <option value="nova_data">Nova data (a data estimada mudou)</option>
+                </select>
+              </div>
+              <div class="campo-form" id="grupo-pend-bloqueio">
+                <label for="pend-bloqueio">Alcance do bloqueio</label>
+                <select id="pend-bloqueio" class="select">
+                  <option value="parte">Bloqueia só uma parte (o resto do trabalho segue)</option>
+                  <option value="tudo">Bloqueia tudo (missão fica Impedida e data estimada avança)</option>
+                </select>
+              </div>
+              <div class="campo-form">
+                <label for="pend-texto">Descrição</label>
+                <div class="ajuda" id="ajuda-pend-texto">
+                  O que impede; se bloqueia tudo ou só uma parte; o que já foi tentado.
+                </div>
+                <textarea id="pend-texto" class="textarea" required></textarea>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:6px;">
+                <button type="button" id="btn-cancelar-pendencia" class="btn btn-sm">Cancelar</button>
+                <button type="submit" class="btn btn-sm btn-primario">Registrar pendência</button>
+              </div>
+            </form>
+          `
               : ''
           }
-        </div>
 
-        ${
-          uiFolha.abrindoPendencia && abertaParaEscritaResp
-            ? `
-          <form id="form-nova-pendencia" style="background:var(--bg);padding:12px;border-radius:8px;margin-bottom:12px;">
-            <div class="campo-form">
-              <label for="pend-tipo">Tipo de pendência</label>
-              <select id="pend-tipo" class="select" required>
-                <option value="impedimento">Impedimento (andon — algo impede ou requisito em risco)</option>
-                <option value="duvida">Dúvida (algo na folha não está claro)</option>
-                <option value="consulta">Consulta (decisão listada em "consultar antes")</option>
-                <option value="nova_data">Nova data (a data estimada mudou)</option>
-              </select>
-            </div>
-            <div class="campo-form" id="grupo-pend-bloqueio">
-              <label for="pend-bloqueio">Alcance do bloqueio</label>
-              <select id="pend-bloqueio" class="select">
-                <option value="parte">Bloqueia só uma parte (o resto do trabalho segue)</option>
-                <option value="tudo">Bloqueia tudo (missão fica Impedida e data estimada avança)</option>
-              </select>
-            </div>
-            <div class="campo-form">
-              <label for="pend-texto">Descrição</label>
-              <div class="ajuda" id="ajuda-pend-texto">
-                O que impede; se bloqueia tudo ou só uma parte; o que já foi tentado.
-              </div>
-              <textarea id="pend-texto" class="textarea" required></textarea>
-            </div>
-            <div style="display:flex;justify-content:flex-end;gap:6px;">
-              <button type="button" id="btn-cancelar-pendencia" class="btn btn-sm">Cancelar</button>
-              <button type="submit" class="btn btn-sm btn-primario">Registrar pendência</button>
-            </div>
-          </form>
-        `
-            : ''
-        }
+          ${(() => {
+            if (r.pendencias.length === 0) {
+              return `<p class="secao-sub" style="margin:0;">Nenhuma pendência aberta.</p>`;
+            }
+            // Ordenação do menu aberto: abertas primeiro (as respondidas antes das que esperam resposta), fechadas depois
+            const abertas = r.pendencias.filter((p) => !p.fechadaEm);
+            const fechadas = r.pendencias.filter((p) => p.fechadaEm);
+            abertas.sort((a, b) => {
+              const respA = g.respostas.some((x) => x.pendenciaId === a.id);
+              const respB = g.respostas.some((x) => x.pendenciaId === b.id);
+              if (respA && !respB) return -1;
+              if (!respA && respB) return 1;
+              return (b.abertaEm || '').localeCompare(a.abertaEm || '');
+            });
 
-        ${
-          r.pendencias.length === 0
-            ? `<p class="secao-sub" style="margin:0;">Nenhuma pendência aberta.</p>`
-            : r.pendencias
-                .map((p) => {
-                  const resp = g.respostas.find((x) => x.pendenciaId === p.id);
-                  const ehImpedimento = p.tipo === 'impedimento';
-                  const badgeClasse = p.fechadaEm
-                    ? 'badge-neutro'
-                    : ehImpedimento
-                    ? 'badge-vermelho'
-                    : 'badge-azul';
-                  const rotTipo = ROTULO_TIPO_PENDENCIA[p.tipo] || p.tipo.toUpperCase();
-                  const rotBloq =
-                    ehImpedimento && p.bloqueio !== 'nenhum'
-                      ? ` · ${ROTULO_BLOQUEIO[p.bloqueio] || p.bloqueio}`
-                      : '';
+            const listaOrdenada = [...abertas, ...fechadas];
 
-                  return `
-                    <div class="pendencia-card">
-                      <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;">
-                        <span class="badge ${badgeClasse}">
-                          ${esc(rotTipo)}${esc(rotBloq)}${p.fechadaEm ? ' · FECHADA' : ''}
-                        </span>
-                        <span class="secao-sub">aberta em ${esc(formatarDataCurta(p.abertaEm))}</span>
-                      </div>
-                      <p class="texto-campo" style="margin-top:6px;">${esc(p.texto)}</p>
+            return listaOrdenada
+              .map((p) => {
+                const resp = g.respostas.find((x) => x.pendenciaId === p.id);
+                const altAssociada = resp?.tipo === 'alteracao'
+                  ? g.alteracoes.find((a) => a.pendenciaId === p.id)
+                  : null;
+                const versaoCriada = altAssociada?.versao || g.versao;
+                const ehImpedimento = p.tipo === 'impedimento';
+                const badgeClasse = p.fechadaEm
+                  ? 'badge-neutro'
+                  : ehImpedimento
+                  ? 'badge-vermelho'
+                  : 'badge-azul';
+                const rotTipo = ROTULO_TIPO_PENDENCIA[p.tipo] || p.tipo.toUpperCase();
+                const rotBloq =
+                  ehImpedimento && p.bloqueio !== 'nenhum'
+                    ? ` · ${ROTULO_BLOQUEIO[p.bloqueio] || p.bloqueio}`
+                    : '';
 
-                      ${
-                        resp
-                          ? `
-                        <div class="resposta-box">
-                          <div class="resposta-titulo">
-                            Resposta do gestor · ${
-                              resp.tipo === 'alteracao' ? `ALTERAÇÃO → v${g.versao}` : 'RESPOSTA'
-                            }
-                          </div>
-                          <p class="texto-campo" style="margin:0;">${esc(resp.texto)}</p>
-                        </div>
-                      `
-                          : ''
-                      }
+                return `
+                  <div class="pendencia-card">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;">
+                      <span class="badge ${badgeClasse}">
+                        ${esc(rotTipo)}${esc(rotBloq)}${p.fechadaEm ? ' · FECHADA' : ''}
+                      </span>
+                      <span class="secao-sub">aberta em ${esc(formatarDataCurta(p.abertaEm))}</span>
+                    </div>
+                    <p class="texto-campo" style="margin-top:6px;">${esc(p.texto)}</p>
 
-                      ${
-                        !p.fechadaEm && abertaParaEscritaResp
-                          ? `
-                        <div class="pendencia-rodape">
-                          <span class="secao-sub">Você abriu, você fecha.</span>
-                          <button type="button" class="btn btn-sm btn-outline-azul" data-fechar-pendencia="${esc(p.id)}">
-                            Fechar pendência
-                          </button>
-                        </div>
-                      `
-                          : ''
-                      }
-
-                      ${
-                        !p.fechadaEm && papel === 'gestor'
-                          ? `
-                        <div style="margin-top:8px;">
-                          ${
-                            uiFolha.respondendoPendenciaId === p.id
-                              ? `
-                            <form class="form-responder-pendencia" data-pendencia-id="${esc(p.id)}" style="background:var(--bg);padding:10px;border-radius:8px;">
-                              <div class="campo-form" style="margin-bottom:8px;">
-                                <label>Resposta (esclarece sem mudar o cabeçalho)</label>
-                                <textarea class="textarea inp-resposta-texto" rows="2" placeholder="Escreva o esclarecimento..." required>${esc(resp?.texto || '')}</textarea>
-                              </div>
-                              <div style="display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;">
-                                <button type="button" class="btn btn-sm btn-outline-azul" data-responder-com-alteracao="${esc(p.id)}">
-                                  Responder com Alteração (editar folha → v${g.versao + 1})
-                                </button>
-                                <div style="display:flex;gap:6px;">
-                                  <button type="button" class="btn btn-sm btn-fechar-form-resp">Cancelar</button>
-                                  <button type="submit" class="btn btn-sm btn-primario">Enviar resposta</button>
-                                </div>
-                              </div>
-                            </form>
-                          `
-                              : `
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                              <button type="button" class="btn btn-sm btn-outline-azul" data-abrir-form-resp="${esc(p.id)}">
-                                ${resp ? 'Editar resposta' : 'Responder'}
-                              </button>
-                              <button type="button" class="btn btn-sm btn-primario" data-responder-com-alteracao="${esc(p.id)}">
-                                Alterar folha (v${g.versao + 1})
-                              </button>
-                            </div>
-                          `
+                    ${
+                      resp
+                        ? `
+                      <div class="resposta-box">
+                        <div class="resposta-titulo">
+                          Resposta do gestor · ${
+                            resp.tipo === 'alteracao' ? `ALTERAÇÃO → v${versaoCriada}` : 'RESPOSTA'
                           }
                         </div>
-                      `
-                          : ''
-                      }
-                    </div>
-                  `;
-                })
-                .join('')
+                        <p class="texto-campo" style="margin:0;">${esc(resp.texto)}</p>
+                      </div>
+                    `
+                        : ''
+                    }
+
+                    ${
+                      !p.fechadaEm && abertaParaEscritaResp
+                        ? `
+                      <div class="pendencia-rodape" style="justify-content:flex-end;">
+                        <button type="button" class="btn btn-sm btn-outline-azul" data-fechar-pendencia="${esc(p.id)}">
+                          Fechar pendência
+                        </button>
+                      </div>
+                    `
+                        : ''
+                    }
+
+                    ${
+                      !p.fechadaEm && papel === 'gestor' && !ehExemplo
+                        ? `
+                      <div style="margin-top:8px;">
+                        ${
+                          uiFolha.respondendoPendenciaId === p.id
+                            ? `
+                          <form class="form-responder-pendencia" data-pendencia-id="${esc(p.id)}" style="background:var(--bg);padding:10px;border-radius:8px;">
+                            <div class="campo-form" style="margin-bottom:8px;">
+                              <label>Resposta (esclarece sem mudar o cabeçalho)</label>
+                              <textarea class="textarea inp-resposta-texto" rows="2" placeholder="Escreva o esclarecimento..." required>${esc(resp?.texto || '')}</textarea>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;">
+                              <button type="button" class="btn btn-sm btn-outline-azul" data-responder-com-alteracao="${esc(p.id)}">
+                                Responder com Alteração (editar folha → v${g.versao + 1})
+                              </button>
+                              <div style="display:flex;gap:6px;">
+                                <button type="button" class="btn btn-sm btn-fechar-form-resp">Cancelar</button>
+                                <button type="submit" class="btn btn-sm btn-primario">Enviar resposta</button>
+                              </div>
+                            </div>
+                          </form>
+                        `
+                            : `
+                          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <button type="button" class="btn btn-sm btn-outline-azul" data-abrir-form-resp="${esc(p.id)}">
+                              ${resp ? 'Editar resposta' : 'Responder'}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-primario" data-responder-com-alteracao="${esc(p.id)}">
+                              Alterar folha (v${g.versao + 1})
+                            </button>
+                          </div>
+                        `
+                        }
+                      </div>
+                    `
+                        : ''
+                    }
+                  </div>
+                `;
+              })
+              .join('');
+          })()}
+        `
         }
       </section>
 
@@ -600,52 +741,132 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         <div class="secao-header">
           <div>
             <h2 class="secao-titulo">Entrega</h2>
-            <div class="secao-sub">Resultado, evidência por critério, desvios.</div>
+            <div class="secao-sub">Link do trabalho entregue e checklist por critério.</div>
           </div>
-          ${
-            abertaParaEscritaResp
-              ? `<button type="button" id="btn-preencher-entrega" class="btn btn-sm">${uiFolha.preenchendoEntrega ? 'Fechar' : 'Preencher'}</button>`
-              : ''
-          }
+          ${(() => {
+            if (!abertaParaEscritaResp || ehExemplo) return '';
+            // Ciclo de entrega v1.1:
+            // - Sem entrega: "Preencher entrega"
+            // - Última entrega sem revisão: "Corrigir entrega"
+            // - Última entrega com revisão e algum critério não aceito: "Atualizar entrega"
+            if (!ultimaEntrega) {
+              return `<button type="button" id="btn-preencher-entrega" class="btn btn-sm btn-primario">${uiFolha.preenchendoEntrega ? 'Fechar' : 'Preencher entrega'}</button>`;
+            }
+            if (!ultimaRevisao) {
+              return `<button type="button" id="btn-preencher-entrega" class="btn btn-sm btn-outline-azul">${uiFolha.preenchendoEntrega ? 'Fechar' : 'Corrigir entrega'}</button>`;
+            }
+            const temCriterioNaoAceito =
+              ultimaRevisao.resultado === 'em_ajuste' ||
+              (ultimaRevisao.criterios || []).some((c) => c.aceito === false);
+            if (temCriterioNaoAceito) {
+              return `<button type="button" id="btn-preencher-entrega" class="btn btn-sm btn-primario">${uiFolha.preenchendoEntrega ? 'Fechar' : 'Atualizar entrega'}</button>`;
+            }
+            return '';
+          })()}
         </div>
 
         ${
           ultimaEntrega
             ? `
           <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px;">
-            <div class="rotulo-campo" style="margin-top:0;">Entrega registrada em ${esc(formatarDataCurta(ultimaEntrega.em))}</div>
-            <p class="texto-campo"><strong>Resultado:</strong> ${esc(ultimaEntrega.resultado)}</p>
-            <div class="rotulo-campo">Evidências por critério</div>
-            ${(ultimaEntrega.evidencias || [])
-              .map((ev, i) => {
-                const crit = g.descricao.criterios?.[i];
-                return `
-                  <p class="texto-campo" style="margin-bottom:4px;">
-                    • <strong>${esc(crit?.condicao || `Critério ${i + 1}`)}:</strong>
-                    [${esc(ev.status)}] — ${esc(ev.onde)}
-                  </p>
-                `;
-              })
-              .join('')}
-            <p class="texto-campo"><strong>Desvios e limites:</strong> ${esc(ultimaEntrega.desvios || 'Nenhum')}</p>
+            <div class="rotulo-campo" style="margin-top:0;">
+              Entrega registrada em ${esc(formatarDataCurta(ultimaEntrega.em))}
+            </div>
+            ${
+              ultimaEntrega.link
+                ? `<p class="texto-campo"><strong>Link:</strong> <a href="${esc(ultimaEntrega.link)}" target="_blank" rel="noopener noreferrer" class="link-acao">${esc(ultimaEntrega.link)} ↗</a></p>`
+                : ''
+            }
+            ${
+              ultimaEntrega.resultado
+                ? `<p class="texto-campo" style="color:var(--muted);font-size:12px;"><strong>Resultado (legado):</strong> ${esc(ultimaEntrega.resultado)}</p>`
+                : ''
+            }
+
+            <!-- Checklist da Entrega -->
+            <div class="rotulo-campo">Checklist dos critérios de conclusão</div>
+            ${
+              ultimaEntrega.criterios && ultimaEntrega.criterios.length > 0
+                ? `
+              <table class="checklist-tabela">
+                <thead>
+                  <tr>
+                    <th>Critério</th>
+                    <th style="width:140px;">Responsável</th>
+                    <th style="width:160px;">Gestor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${ultimaEntrega.criterios
+                    .map((item, i) => {
+                      const critDef = (g.descricao.criterios || []).find((c, idx) => (c.id || `idx-${idx}`) === item.criterioId) || g.descricao.criterios?.[i];
+                      const revCrit = (ultimaRevisao?.criterios || []).find((c, idx) => (c.criterioId || `idx-${idx}`) === item.criterioId) || ultimaRevisao?.criterios?.[i];
+                      const statusRot =
+                        item.status === 'atendido'
+                          ? '<span style="color:var(--green);font-weight:600;">Atendido</span>'
+                          : item.status === 'parcial'
+                          ? '<span style="color:var(--amber);font-weight:600;">Parcial</span>'
+                          : '<span style="color:var(--red);font-weight:600;">Não atendido</span>';
+
+                      return `
+                        <tr>
+                          <td>
+                            <strong>${esc(item.condicao || critDef?.condicao || `Critério ${i + 1}`)}</strong>
+                            <div style="font-size:11px;color:var(--muted);margin-top:2px;">
+                              verificado por ${esc(ROTULO_VERIFICACAO[critDef?.verificacao] || critDef?.verificacao || 'inspeção')}
+                            </div>
+                            ${item.comprovacao ? `<div style="font-size:11.5px;margin-top:4px;color:var(--text);"><span style="color:var(--muted);">Comprovação:</span> ${esc(item.comprovacao)}</div>` : ''}
+                          </td>
+                          <td>
+                            ${statusRot}
+                            ${item.porque ? `<div style="font-size:11.5px;color:var(--muted);margin-top:2px;">Por quê: ${esc(item.porque)}</div>` : ''}
+                          </td>
+                          <td>
+                            ${
+                              revCrit
+                                ? revCrit.aceito
+                                  ? `<span style="color:var(--green);font-weight:600;">Aceito</span>${revCrit.falta ? ` <span style="font-size:11px;color:var(--muted);">("${esc(revCrit.falta)}")</span>` : ''}`
+                                  : `<span style="color:var(--red);font-weight:600;">Não aceito</span><div style="font-size:11.5px;color:var(--red);margin-top:2px;">O que falta: ${esc(revCrit.falta || '—')}</div>`
+                                : '<span style="color:var(--muted);">Aguardando</span>'
+                            }
+                          </td>
+                        </tr>
+                      `;
+                    })
+                    .join('')}
+                </tbody>
+              </table>
+            `
+                : (ultimaEntrega.evidencias || [])
+                    .map((ev, i) => {
+                      const crit = g.descricao.criterios?.[i];
+                      return `
+                        <p class="texto-campo" style="margin-bottom:4px;">
+                          • <strong>${esc(crit?.condicao || `Critério ${i + 1}`)}:</strong>
+                          [${esc(ev.status)}] — ${esc(ev.onde)}
+                        </p>
+                      `;
+                    })
+                    .join('')
+            }
 
             ${
               ultimaRevisao
                 ? `
-              <div class="resposta-box" style="margin-top:8px;">
+              <div class="resposta-box" style="margin-top:10px;">
                 <div class="resposta-titulo">
                   Revisão do gestor em ${esc(formatarDataCurta(ultimaRevisao.em))} ·
                   Missão: ${ultimaRevisao.resultado === 'concluida' ? 'CONCLUÍDA' : 'EM AJUSTE'} ·
-                  Produto: ${esc(ultimaRevisao.produto.toUpperCase())}
+                  Produto: ${esc((ultimaRevisao.produto || '').toUpperCase())}
                 </div>
                 ${
                   (ultimaRevisao.ajustes || []).length > 0
-                    ? `<p class="texto-campo" style="margin:4px 0 0 0;"><strong>Ajustes necessários:</strong> ${esc(ultimaRevisao.ajustes.join('; '))}</p>`
+                    ? `<p class="texto-campo" style="margin:4px 0 0 0;"><strong>Ajustes necessários (legado):</strong> ${esc(ultimaRevisao.ajustes.join('; '))}</p>`
                     : ''
                 }
               </div>
             `
-                : `<div class="secao-sub" style="margin-top:6px;">Aguardando revisão do gestor.</div>`
+                : `<div class="secao-sub" style="margin-top:8px;">Aguardando revisão do gestor.</div>`
             }
           </div>
         `
@@ -657,41 +878,79 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
             ? `
           <form id="form-entrega" style="background:var(--bg);padding:12px;border-radius:8px;margin-top:10px;">
             <div class="campo-form">
-              <label for="ent-resultado">Resultado (separe o dado da interpretação)</label>
-              <textarea id="ent-resultado" class="textarea" required placeholder="Ex.: Erro médio de 2,4 p.p. nas 12 medições.">${esc(ultimaEntrega?.resultado || '')}</textarea>
+              <label for="ent-link">Link da entrega (obrigatório)</label>
+              <div class="ajuda">O documento ou o arquivo onde está o trabalho entregue.</div>
+              <input
+                id="ent-link"
+                class="input"
+                type="url"
+                required
+                placeholder="https://docs.google.com/... ou link do arquivo na pasta"
+                value="${esc(ultimaEntrega?.link || '')}"
+              />
             </div>
 
             <div class="campo-form">
-              <label>Evidência por critério de conclusão</label>
+              <label>Checklist por critério da versão vigente</label>
               ${(g.descricao.criterios || [])
-                .map(
-                  (c, idx) => `
-                <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;margin-bottom:6px;">
-                  <div style="font-size:12px;font-weight:600;margin-bottom:6px;">
-                    ${esc(c.condicao)} (${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)})
-                  </div>
-                  <div style="display:grid;grid-template-columns:130px 1fr;gap:6px;">
-                    <select class="select ev-status" data-idx="${idx}">
-                      <option value="atendido">Atendido</option>
-                      <option value="parcial">Parcial</option>
-                      <option value="nao_atendido">Não atendido</option>
-                    </select>
-                    <input class="input ev-onde" type="text" placeholder="Onde está a evidência (no Docs ou na pasta)" required />
-                  </div>
-                </div>
-              `
-                )
+                .map((c, idx) => {
+                  const cId = c.id || `idx-${idx}`;
+                  const itemAnt = (ultimaEntrega?.criterios || []).find((x) => x.criterioId === cId);
+                  const revAnt = (ultimaRevisao?.criterios || []).find((x) => x.criterioId === cId);
+                  const statusVal = itemAnt?.status || '';
+                  const ehNovo = !itemAnt && g.versao > 1;
+
+                  return `
+                    <div class="checklist-card ${revAnt && revAnt.aceito === false ? 'falta-ajuste' : ''}">
+                      <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">
+                        ${esc(c.condicao)}
+                        <span style="font-weight:normal;color:var(--muted);font-size:11px;">
+                          — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
+                        </span>
+                      </div>
+
+                      ${
+                        revAnt && revAnt.aceito === false
+                          ? `<div style="color:var(--red);font-size:12px;margin-bottom:6px;"><strong>O que falta (apontado pelo gestor):</strong> ${esc(revAnt.falta)}</div>`
+                          : ''
+                      }
+
+                      <div style="display:grid;grid-template-columns:140px 1fr;gap:8px;margin-top:6px;">
+                        <select class="select ent-status-crit" data-crit-id="${esc(cId)}" required>
+                          <option value="">Selecione...</option>
+                          <option value="atendido" ${statusVal === 'atendido' && !ehNovo ? 'selected' : ''}>Atendido</option>
+                          <option value="parcial" ${statusVal === 'parcial' && !ehNovo ? 'selected' : ''}>Parcial</option>
+                          <option value="nao_atendido" ${statusVal === 'nao_atendido' && !ehNovo ? 'selected' : ''}>Não atendido</option>
+                        </select>
+                        <input
+                          class="input ent-porque-crit"
+                          data-crit-id="${esc(cId)}"
+                          type="text"
+                          placeholder="Por quê (obrigatório se parcial ou não atendido)"
+                          value="${esc(itemAnt?.porque || '')}"
+                        />
+                      </div>
+
+                      <div style="margin-top:6px;">
+                        <input
+                          class="input ent-comprovacao-crit"
+                          data-crit-id="${esc(cId)}"
+                          type="text"
+                          placeholder="Onde está a comprovação (opcional, só se estiver fora do documento entregue)"
+                          value="${esc(itemAnt?.comprovacao || '')}"
+                        />
+                      </div>
+                    </div>
+                  `;
+                })
                 .join('')}
             </div>
 
-            <div class="campo-form">
-              <label for="ent-desvios">Desvios e limites</label>
-              <div class="ajuda">O que mudou em relação ao combinado, se algum requisito ficou em risco e o que o resultado não permite concluir.</div>
-              <textarea id="ent-desvios" class="textarea" placeholder="Ex.: O resultado não vale para umidade acima do nível 4.">${esc(ultimaEntrega?.desvios || '')}</textarea>
-            </div>
-
-            <div style="display:flex;justify-content:flex-end;gap:6px;">
-              <button type="submit" class="btn btn-sm btn-primario">Registrar entrega</button>
+            <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:8px;">
+              <button type="button" id="btn-cancelar-entrega" class="btn btn-sm">Cancelar</button>
+              <button type="submit" class="btn btn-sm btn-primario">
+                ${!ultimaEntrega ? 'Registrar entrega' : !ultimaRevisao ? 'Salvar correção' : 'Salvar nova entrega'}
+              </button>
             </div>
           </form>
         `
@@ -699,36 +958,67 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         }
 
         ${
-          papel === 'gestor' && ultimaEntrega && !ultimaRevisao
+          papel === 'gestor' && ultimaEntrega && !ultimaRevisao && !ehExemplo
             ? `
           <form id="form-revisao-gestor" style="background:var(--bg);padding:12px;border-radius:8px;margin-top:12px;">
             <h3 class="secao-titulo" style="margin-bottom:8px;">Revisão do Gestor</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <div class="campo-form">
-                <label for="rev-resultado">1. A missão foi concluída?</label>
-                <select id="rev-resultado" class="select" required>
-                  <option value="concluida">Concluída (critérios e requisitos cumpridos)</option>
-                  <option value="em_ajuste">Em ajuste (critério ou requisito pendente)</option>
-                </select>
-              </div>
-              <div class="campo-form">
-                <label for="rev-produto">2. O que o resultado diz sobre o produto?</label>
-                <select id="rev-produto" class="select" required>
-                  <option value="atende">Atende</option>
-                  <option value="nao_atende">Não atende</option>
-                  <option value="inconclusivo">Inconclusivo</option>
-                </select>
-              </div>
-            </div>
+
             <div class="campo-form">
-              <label for="rev-ajustes">Ajustes (se ficar "Em ajuste", aponte o critério/requisito não cumprido, um por linha)</label>
-              <textarea id="rev-ajustes" class="textarea" rows="2"></textarea>
+              <label>Avaliação por critério de conclusão</label>
+              ${(g.descricao.criterios || [])
+                .map((c, idx) => {
+                  const cId = c.id || `idx-${idx}`;
+                  const itemEnt = (ultimaEntrega.criterios || []).find((x) => x.criterioId === cId);
+                  return `
+                    <div class="checklist-card">
+                      <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">
+                        ${esc(c.condicao)}
+                        <span style="font-weight:normal;color:var(--muted);font-size:11px;">
+                          — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
+                        </span>
+                      </div>
+                      ${
+                        itemEnt
+                          ? `<div style="font-size:12px;color:var(--text);margin-bottom:6px;">
+                              Marca do responsável: <strong>${esc(itemEnt.status)}</strong>
+                              ${itemEnt.porque ? ` · <span style="color:var(--muted);">Por quê:</span> ${esc(itemEnt.porque)}` : ''}
+                              ${itemEnt.comprovacao ? ` · <span style="color:var(--muted);">Comprovação:</span> ${esc(itemEnt.comprovacao)}` : ''}
+                            </div>`
+                          : ''
+                      }
+                      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px;">
+                        <select class="select rev-aceito-crit" data-crit-id="${esc(cId)}" required>
+                          <option value="true">Aceito</option>
+                          <option value="false">Não aceito</option>
+                        </select>
+                        <input
+                          class="input rev-falta-crit"
+                          data-crit-id="${esc(cId)}"
+                          type="text"
+                          placeholder="O que falta (obrigatório se não aceito)"
+                        />
+                      </div>
+                    </div>
+                  `;
+                })
+                .join('')}
             </div>
+
+            <div class="campo-form" style="margin-top:8px;">
+              <label for="rev-produto">O que o resultado diz sobre o produto?</label>
+              <select id="rev-produto" class="select" required>
+                <option value="atende">Atende</option>
+                <option value="nao_atende">Não atende</option>
+                <option value="inconclusivo">Inconclusivo</option>
+              </select>
+            </div>
+
             <div class="campo-form">
               <label for="rev-frase-gestor">Encerramento do gestor (1 frase): O que muda na próxima folha?</label>
               <input id="rev-frase-gestor" class="input" type="text" value="${esc(g.fraseGestor || '')}" placeholder="Ex.: Nas próximas calibrações, a capacidade da estufa entra nos insumos." />
             </div>
-            <div style="display:flex;justify-content:flex-end;">
+
+            <div style="display:flex;justify-content:flex-end;margin-top:8px;">
               <button type="submit" class="btn btn-sm btn-primario">Salvar revisão</button>
             </div>
           </form>
@@ -742,7 +1032,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:10px;">
             <div class="rotulo-campo" style="margin-top:0;">Encerramento (aprendizado para as próximas folhas)</div>
             ${
-              papel === 'responsavel'
+              papel === 'responsavel' && !ehExemplo
                 ? `
               <form id="form-frase-responsavel" style="margin-top:6px;">
                 <div class="campo-form" style="margin-bottom:6px;">
@@ -755,7 +1045,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                 : `<p class="texto-campo"><strong>Responsável (o que a folha deveria ter dito):</strong> ${esc(r.fraseResponsavel || 'Ainda não preenchido')}</p>`
             }
             ${
-              papel === 'gestor'
+              papel === 'gestor' && !ehExemplo
                 ? `
               <form id="form-frase-gestor" style="margin-top:8px;">
                 <div class="campo-form" style="margin-bottom:6px;">
@@ -775,13 +1065,16 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         }
       </section>
 
-      <!-- BLOCO 5: REGISTRO DO DIA (exclusivo para o responsável — 1 linha, sem histórico, sem contagem e sem alerta) -->
+      <!-- BLOCO 5: FOCO DE HOJE (exclusivo para o responsável — 1 linha, sem histórico, sem contagem e sem alerta) -->
       ${
         abertaParaEscritaResp
           ? `
         <section class="card card-destaque-azul">
-          <div class="secao-header" style="margin-bottom:8px;">
-            <h2 class="secao-titulo">Registro do dia</h2>
+          <div class="secao-header" style="margin-bottom:4px;">
+            <h2 class="secao-titulo">Foco de hoje</h2>
+          </div>
+          <div class="ajuda" style="margin-bottom:8px;font-size:12px;color:var(--muted);">
+            Em que você focou hoje? Só o nome da atividade.
           </div>
 
           <form id="form-registro-dia" autocomplete="off">
@@ -797,7 +1090,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                 class="input-atividade-registro"
                 type="text"
                 maxlength="80"
-                placeholder="Atividade principal do dia..."
+                placeholder="Nome da atividade..."
                 value="${esc(uiFolha.textoAtividade)}"
               />
 
@@ -887,6 +1180,7 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     try {
       await updateDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId), {
         emitidaEm: hoje,
+        versao: 1,
       });
       mostrarAviso(`Missão ${g.codigo} emitida!`, 'sucesso');
     } catch (err) {
@@ -922,6 +1216,17 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     }
   });
 
+  // Exemplo didático (toggle)
+  root.querySelector('#btn-abrir-exemplo')?.addEventListener('click', () => {
+    uiFolha.vendoExemploDidatico = true;
+    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
+  });
+
+  root.querySelector('#btn-fechar-exemplo')?.addEventListener('click', () => {
+    uiFolha.vendoExemploDidatico = false;
+    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: false });
+  });
+
   // Etapas (responsável)
   root.querySelector('#btn-editar-etapas')?.addEventListener('click', () => {
     uiFolha.editandoEtapas = !uiFolha.editandoEtapas;
@@ -929,6 +1234,12 @@ function configurarEventosFolha(root, estadoApp, ctx) {
   });
   root.querySelector('#btn-cancelar-etapas')?.addEventListener('click', () => {
     uiFolha.editandoEtapas = false;
+    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
+  });
+
+  // Histórico de planos (gestor)
+  root.querySelector('#btn-toggle-planos')?.addEventListener('click', () => {
+    uiFolha.planosHistoricoAberto = !uiFolha.planosHistoricoAberto;
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
   });
 
@@ -940,6 +1251,11 @@ function configurarEventosFolha(root, estadoApp, ctx) {
       .map((s) => s.trim())
       .filter(Boolean);
     if (linhas.length === 0) return;
+
+    const nomesAntigos = (r.etapas || []).map((x) => x.nome);
+    const mudouNomes =
+      linhas.length !== nomesAntigos.length ||
+      linhas.some((nome, i) => nome !== nomesAntigos[i]);
 
     const novasEtapas = linhas.map((nome, i) => {
       const anterior = r.etapas.find((x) => x.nome.toLowerCase() === nome.toLowerCase());
@@ -962,6 +1278,17 @@ function configurarEventosFolha(root, estadoApp, ctx) {
         },
         { merge: true }
       );
+
+      // Critério A3: Salvar etapas com nomes diferentes grava documento em planos
+      if (mudouNomes) {
+        const planoRef = doc(collection(db, 'equipes', equipeId, 'missoes', missaoId, 'planos'));
+        await setDoc(planoRef, {
+          em: hoje,
+          versaoMissao: g.versao || 1,
+          etapas: linhas,
+        });
+      }
+
       uiFolha.editandoEtapas = false;
       mostrarAviso('Etapas salvas.', 'sucesso');
     } catch (err) {
@@ -993,11 +1320,25 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     });
   });
 
-  // Pendências
-  root.querySelector('#btn-abrir-pendencia')?.addEventListener('click', () => {
-    uiFolha.abrindoPendencia = !uiFolha.abrindoPendencia;
+  // Pendências (Menu suspenso v1.1)
+  root.querySelector('#btn-toggle-menu-pend')?.addEventListener('click', (e) => {
+    if (e.target.closest('#btn-atalho-abrir-pend')) return;
+    uiFolha.menuPendenciasAberto = true;
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
   });
+  root.querySelector('#btn-recolher-menu-pend')?.addEventListener('click', () => {
+    uiFolha.menuPendenciasAberto = false;
+    uiFolha.abrindoPendencia = false;
+    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
+  });
+
+  const abrirNovaPendencia = () => {
+    uiFolha.menuPendenciasAberto = true;
+    uiFolha.abrindoPendencia = !uiFolha.abrindoPendencia;
+    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
+  };
+  root.querySelector('#btn-atalho-abrir-pend')?.addEventListener('click', abrirNovaPendencia);
+  root.querySelector('#btn-abrir-pendencia')?.addEventListener('click', abrirNovaPendencia);
   root.querySelector('#btn-cancelar-pendencia')?.addEventListener('click', () => {
     uiFolha.abrindoPendencia = false;
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
@@ -1102,36 +1443,73 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     });
   });
 
-  // Entrega e Revisão
+  // Entrega e Revisão (v1.1)
   root.querySelector('#btn-preencher-entrega')?.addEventListener('click', () => {
     uiFolha.preenchendoEntrega = !uiFolha.preenchendoEntrega;
+    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
+  });
+  root.querySelector('#btn-cancelar-entrega')?.addEventListener('click', () => {
+    uiFolha.preenchendoEntrega = false;
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao });
   });
 
   root.querySelector('#form-entrega')?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const resultado = root.querySelector('#ent-resultado').value.trim();
-    const desvios = root.querySelector('#ent-desvios').value.trim();
-    const statusEls = [...root.querySelectorAll('.ev-status')];
-    const ondeEls = [...root.querySelectorAll('.ev-onde')];
-    const evidencias = statusEls.map((sEl, idx) => ({
-      criterio: idx,
-      status: sEl.value,
-      onde: ondeEls[idx].value.trim(),
-    }));
+    const link = root.querySelector('#ent-link').value.trim();
+    if (!link) {
+      mostrarAviso('O link da entrega é obrigatório.', 'erro');
+      return;
+    }
+
+    const criterios = (g.descricao.criterios || []).map((c, idx) => {
+      const cId = c.id || `idx-${idx}`;
+      const status = root.querySelector(`.ent-status-crit[data-crit-id="${cId}"]`)?.value;
+      const porque = (root.querySelector(`.ent-porque-crit[data-crit-id="${cId}"]`)?.value || '').trim();
+      const comprovacao = (root.querySelector(`.ent-comprovacao-crit[data-crit-id="${cId}"]`)?.value || '').trim();
+
+      return {
+        criterioId: cId,
+        condicao: c.condicao,
+        status,
+        porque,
+        comprovacao,
+      };
+    });
+
+    // Validação A8: exige "por quê" quando parcial ou não atendido
+    for (const item of criterios) {
+      if ((item.status === 'parcial' || item.status === 'nao_atendido') && !item.porque) {
+        mostrarAviso(`Informe o "por quê" para o critério: "${item.condicao}".`, 'erro');
+        return;
+      }
+    }
 
     try {
-      const entRef = doc(collection(db, 'equipes', equipeId, 'missoes', missaoId, 'entregas'));
-      await setDoc(entRef, {
-        em: hoje,
-        resultado,
-        evidencias,
-        desvios,
-      });
+      const ultimaEntrega = r.entregas.at(-1);
+      const ultimaRevisao = ultimaEntrega && g.revisoes.find((v) => v.entregaId === ultimaEntrega.id);
+
+      // A9: Se a entrega ainda não tem revisão, "Corrigir entrega" edita o mesmo documento
+      if (ultimaEntrega && !ultimaRevisao) {
+        await updateDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId, 'entregas', ultimaEntrega.id), {
+          link,
+          criterios,
+          corrigidaEm: hoje,
+        });
+        mostrarAviso('Entrega corrigida!', 'sucesso');
+      } else {
+        // Primeira entrega ou nova entrega pós-revisão com ajuste
+        const entRef = doc(collection(db, 'equipes', equipeId, 'missoes', missaoId, 'entregas'));
+        await setDoc(entRef, {
+          em: hoje,
+          link,
+          criterios,
+        });
+        mostrarAviso('Entrega registrada!', 'sucesso');
+      }
+
       uiFolha.preenchendoEntrega = false;
-      mostrarAviso('Entrega registrada!', 'sucesso');
     } catch (err) {
-      mostrarAviso('Erro ao registrar entrega: ' + err.message, 'erro');
+      mostrarAviso('Erro ao salvar entrega: ' + err.message, 'erro');
     }
   });
 
@@ -1139,13 +1517,29 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     e.preventDefault();
     const ultimaEntrega = r.entregas.at(-1);
     if (!ultimaEntrega) return;
-    const resultado = root.querySelector('#rev-resultado').value;
+
+    const criterios = (g.descricao.criterios || []).map((c, idx) => {
+      const cId = c.id || `idx-${idx}`;
+      const aceitoVal = root.querySelector(`.rev-aceito-crit[data-crit-id="${cId}"]`)?.value === 'true';
+      const falta = (root.querySelector(`.rev-falta-crit[data-crit-id="${cId}"]`)?.value || '').trim();
+      return {
+        criterioId: cId,
+        aceito: aceitoVal,
+        falta,
+      };
+    });
+
+    // Validação: não aceito exige "o que falta"
+    for (const item of criterios) {
+      if (!item.aceito && !item.falta) {
+        mostrarAviso('Para critérios não aceitos, descreva o que falta.', 'erro');
+        return;
+      }
+    }
+
+    const todosAceitos = criterios.every((c) => c.aceito);
+    const resultado = todosAceitos ? 'concluida' : 'em_ajuste';
     const produto = root.querySelector('#rev-produto').value;
-    const ajustes = root
-      .querySelector('#rev-ajustes')
-      .value.split('\n')
-      .map((s) => s.trim())
-      .filter(Boolean);
     const fraseGestor = root.querySelector('#rev-frase-gestor').value.trim();
 
     try {
@@ -1155,7 +1549,7 @@ function configurarEventosFolha(root, estadoApp, ctx) {
           em: hoje,
           resultado,
           produto,
-          ajustes,
+          criterios,
         }
       );
       await updateDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId), {

@@ -103,6 +103,14 @@ service cloud.firestore {
           allow delete: if false;
         }
 
+        match /planos/{planoId} {
+          allow read: if isGestor(equipeId);
+          allow create: if missaoAbertaParaResponsavel(equipeId, missaoId)
+            && request.resource.data.keys().hasOnly(['em', 'versaoMissao', 'etapas'])
+            && request.resource.data.etapas is list;
+          allow update, delete: if false;
+        }
+
         match /respostas/{pendenciaId} {
           allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
           allow create, update: if isGestor(equipeId)
@@ -151,7 +159,12 @@ service cloud.firestore {
 
         match /entregas/{entregaId} {
           allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
-          allow create, update: if missaoAbertaParaResponsavel(equipeId, missaoId);
+          allow create, update: if missaoAbertaParaResponsavel(equipeId, missaoId)
+            && (
+              // Legado ou v1.1 com link como string não vazia
+              !request.resource.data.keys().hasAny(['link'])
+              || (request.resource.data.link is string && request.resource.data.link.size() > 0)
+            );
           allow delete: if false;
         }
       }

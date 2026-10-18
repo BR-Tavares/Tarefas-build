@@ -2,6 +2,25 @@
 
 Todas as alterações relevantes deste projeto seguem o padrão [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/) e o versionamento semântico.
 
+## [1.1.0] - 2026-10-18
+
+### Modificado (Changed)
+- **Folha da Missão v1.1 (`public/tela-folha.js` e `public/styles.css`):**
+  - **F2 / A1:** Removido selo de situação da folha nas duas vistas; o cabeçalho agora reflete exclusivamente código e versão ("MS-NNN · versão N").
+  - **F2 / A2:** Rascunhos agora iniciam e exibem "versão 0", e a emissão oficial grava "versão 1".
+  - **F4 / A3 / A4 / A5:** Criação da subcoleção `planos` no Firestore. Salvar alterações nos nomes das etapas grava histórico com timestamp e versão; somente o gestor tem acesso de leitura, com visualizador recolhido de "Planos anteriores" destacando o que entrou e o que saiu.
+  - **F5 / A6:** Bloco de **Pendências** reformulado em menu suspenso de uma linha por padrão; ao abrir, ordena pendências abertas primeiro (respondidas antes das não respondidas) e fechadas depois. Rótulo de alteração agora aponta a versão criada pela alteração.
+  - **F6 / A7:** Bloco do registro renomeado para **"Foco de hoje"** com texto de ajuda "Em que você focou hoje? Só o nome da atividade.".
+  - **F7 / F8 / A8 / A9 / A10 / A11:** Novo modelo de entrega e revisão por contrato:
+    - Campo obrigatório de **Link da entrega** (o documento de entrega vive fora da folha).
+    - Tabela de **Checklist dos critérios de conclusão** com marcas (*Atendido*, *Parcial*, *Não atendido*), exigindo justificativa obrigatória para parcial/não atendido.
+    - Ciclo de entrega: "Preencher entrega" $\to$ "Corrigir entrega" (edita o mesmo documento sem duplicar entregas) $\to$ "Atualizar entrega" (gera nova entrega caso haja critérios com ajuste).
+    - Revisão do gestor com aprovação critério a critério (*Aceito* / *Não aceito* com "O que falta").
+  - **F9 / A12:** Adicionado link "ver um exemplo de folha" e módulo `public/exemplo-didatico.js` (MS-000 da cesta nutritiva) para consulta didática em modo somente leitura.
+  - **A13:** Compatibilidade garantida para leitura de entregas legadas da v1.0.
+
+---
+
 ## [1.0.0] - 2026-10-18
 
 ### Adicionado (Added)

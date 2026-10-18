@@ -331,11 +331,15 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
 
     const condInputs = [...root.querySelectorAll('.criterio-condicao')];
     const verSelects = [...root.querySelectorAll('.criterio-verificacao')];
+    const criteriosExistentes = m.descricao?.criterios || [];
     const criterios = condInputs
-      .map((inp, i) => ({
-        condicao: inp.value.trim(),
-        verificacao: verSelects[i].value,
-      }))
+      .map((inp, i) => {
+        const condicao = inp.value.trim();
+        const verificacao = verSelects[i].value;
+        const idExistente = criteriosExistentes[i]?.id;
+        const id = idExistente || `cr-${i + 1}-${Date.now()}`;
+        return { id, condicao, verificacao };
+      })
       .filter((c) => c.condicao.length > 0);
 
     if (criterios.length === 0) {
@@ -421,6 +425,7 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
       }
 
       const emitidaEm = acaoClicada === 'emitir' ? m.emitidaEm || hoje : null;
+      const versaoInicial = emitidaEm ? 1 : 0;
       await setDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId), {
         codigo,
         titulo,
@@ -431,7 +436,7 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
         linksEm: agoraIso,
         emitidaEm,
         dataEstimada,
-        versao: 1,
+        versao: versaoInicial,
         camposMudaramUltimaVersao: [],
         descricao: { necessidade, resultadoEsperado, tarefa, entrega, criterios, insumos },
         requisitos: { precisa, naoPode, consultarAntes },

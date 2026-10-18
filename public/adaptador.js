@@ -10,6 +10,7 @@ export function montarObjetosAnalise(missaoDoc, subcolecoes = {}, membrosMap = {
     registros = [],
     pendencias = [],
     entregas = [],
+    planos = [],
   } = subcolecoes;
 
   const respEmail = missaoDoc.responsavelEmail || '';
@@ -61,6 +62,7 @@ export function montarObjetosAnalise(missaoDoc, subcolecoes = {}, membrosMap = {
       ...x,
       entregaId: x.entregaId || x.id,
     })),
+    planos: [...planos].sort((a, b) => (a.em || '').localeCompare(b.em || '')),
   };
 
   const est = estado || {};
