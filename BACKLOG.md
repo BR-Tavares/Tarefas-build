@@ -31,6 +31,7 @@ A arquitetura de evolução respeita a separação clara entre três papéis:
 1. **A Tela da Tarefa (Responsável):** Foco na execução da missão, autogestão e qualidade na fonte.
 2. **A Tela de Gestão de Tarefas (Gestor):** Foco no fluxo entre missões, dependências, nivelamento e aprendizados da equipe.
 3. **O Avaliador Independente (IA / JEV):** Um terceiro elemento neutro entre gestor e responsável para avaliar o andamento sem gerar atrito pessoal.
+4. **Engenharia Reversa de Demandas e Verificação Epistêmica (Inspirado no REA):** Ferramental para transformar pedidos vagos em contratos estruturados e auditar evidências de entrega.
 
 ---
 
@@ -84,7 +85,19 @@ Para eliminar a "trica" (atrito pessoal ou desgaste subjetivo) entre gerente e r
 
 ---
 
-## 5. Evoluções Funcionais Originais do Protocolo (Seção 13 da Especificação)
+## 5. Estratégias do Projeto REA (*Reverse Engineer Anything*) Aplicadas a Missões
+
+**Repositório de Origem:** [`morluto/rea`](https://github.com/morluto/rea) (GitHub) — Ferramenta e servidor MCP para engenharia reversa automatizada por agentes de IA, operando por inspeção de fronteiras externas, desconstrução em evidências e reconstrução verificada.
+
+| ID | Funcionalidade Proposta | Conceito Estratégico no REA | Como funciona Operacionalmente no App de Missões | Status |
+|---|---|---|---|---|
+| **REA-01** | **Engenharia Reversa de Demandas Vagas (Gerador de Missão por Caixa-Preta)** | *Black-Box Inspection & Interface Tracing* | Muitas vezes o gestor tem apenas uma ordem vaga ou um documento final desejado (ex.: "precisamos de um laudo do concreto igual ao da obra tal"), mas não sabe fatiar a especificação. Um assistente inteligente no app permite ao gestor colar o texto livre ou anexar o exemplo de saída, e a IA faz a "engenharia reversa" da demanda: deduz o objetivo (`OV-1`), sugere o entregável (`OV-5b`) e propõe a tríade de critérios (*Precisa acontecer*, *Não pode acontecer*, *Consultar antes*), restando ao gestor apenas revisar e assinar. | Proposto |
+| **REA-02** | **Auditoria Epistêmica no Acompanhamento (*Seen vs. Guessed vs. Unknown*)** | *Epistemic State Tracking (Seen / Guessed / Unknown)* | No REA, para evitar que o agente alucine conclusões técnicas, cada fato é explicitamente rotulado como verificado (*Seen*), deduzido/suposto (*Guessed*) ou desconhecido (*Unknown*). No app de missões, o avaliador JEV ou a própria interface ajuda o responsável a separar no plano: o que já é premissa validada na prática e o que é mera suposição de prazo/capacidade, evitando que etapas inteiras sejam construídas em cima de hipóteses frágeis sem teste prévio. | Proposto |
+| **REA-03** | **Verificação de Entrega Baseada em Evidência Direta (*Evidence-Backed Verification*)** | *Proof-backed Clean-room Reconstruction* | O REA não aceita que uma reconstrução está pronta sem confrontar as evidências de teste contra a especificação de entrada. No app de missões, no momento em que o responsável clica em "Fazer entrega", o sistema cruza automaticamente o link/documento anexado com os itens do *Precisa acontecer*, destacando para o gestor uma checagem ponto a ponto antes da homologação final. | Proposto |
+
+---
+
+## 6. Evoluções Funcionais Originais do Protocolo (Seção 13 da Especificação)
 
 | ID | Item | Por que ficou para depois da v1 | Quando implementar |
 |---|---|---|---|
