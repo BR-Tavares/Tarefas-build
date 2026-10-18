@@ -2,7 +2,9 @@
 
 Este documento centraliza todas as melhorias observadas no uso real e as evoluções estratégicas planejadas para as próximas versões (`v1.1`, `v2.0`), seguindo a regra do protocolo: *"Ideias novas vão para o backlog, não para o código da versão em andamento."*
 
-## 0. Hierarquia dos documentos e decisões vigentes (18/10/2026)
+## 0. Hierarquia dos documentos e decisões de concepção (18/10/2026)
+
+> **Estado deste backlog:** a próxima versão ainda está em concepção. **Nenhum item aqui está aprovado para implementação.** A implementação de qualquer item só começa com aprovação explícita do demandante.
 
 **Qual documento define o quê:**
 
@@ -12,7 +14,7 @@ Este documento centraliza todas as melhorias observadas no uso real e as evoluç
 | **`BACKLOG.md` (este)** | **Define os próximos passos e as decisões das próximas versões (o *quê fazer*)** | Futuro |
 | `especificacao_app_missoes.md` e `protocolo_missoes.md` | Descrevem o que já está implementado e as regras de uso atuais | Presente |
 
-Quando um item deste backlog é implementado, a especificação é atualizada para descrevê-lo. A especificação antiga **não bloqueia** item aprovado aqui; um conflito com ela é resolvido aqui e depois refletido nela.
+Quando um item deste backlog é implementado, a especificação é atualizada para descrevê-lo. A especificação antiga **não bloqueia** item que o demandante aprovar aqui; um conflito com ela é resolvido aqui e depois refletido nela.
 
 **Princípio de projeto (lean com acompanhamento Toyota, só o de eficiência máxima):** os responsáveis não são máquinas; têm dinâmica própria, como plantas. Quem se adapta é a interface, não a pessoa. Nada novo é exigido do responsável além do que já existe.
 
@@ -27,13 +29,15 @@ Quando um item deste backlog é implementado, a especificação é atualizada pa
 | D7 | **O JEV fica para depois que o app estiver definido** (telas do gestor e do responsável estáveis). | IA-01, RESP-01 e RESP-03 ficam como *Adiado*. A especificação do JEV continua registrada aqui para não se perder. |
 | D8 | **Sugestão (não decidida):** para o gestor gerar a tarefa, usar uma IA do Gemini via API. | Anotada em REA-01. Avaliar quando o REA-01 entrar na fila. |
 
-### Ordem de implementação recomendada
+### Sequência sugerida para discussão (não aprovada)
+
+Proposta de encadeamento lógico entre os itens, para orientar a concepção da próxima versão. Não é um plano de execução.
 
 1. **GEST-03** (natureza da missão e modelos de critério): barato e sem IA.
 2. **GEST-01** (painel completo da equipe e dependências entre missões).
 3. **GEST-02** (incorporar lições com 1 clique) e **UI-01**.
 4. **REA-01** (gerar a missão a partir de demanda vaga), com a sugestão do Gemini (D8).
-5. **IA-01 + RESP-03** (JEV), depois que o app estiver definido (D7).
+5. **IA-01 + RESP-03** (JEV), só depois que o app estiver definido (D7).
 
 ---
 
