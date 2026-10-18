@@ -317,8 +317,7 @@ body {
 }
 
 .etapa-nome.concluida {
-  color: var(--muted);
-  text-decoration: line-through;
+  color: var(--text);
 }
 
 /* Pendências */

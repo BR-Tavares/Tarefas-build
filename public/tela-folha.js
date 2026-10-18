@@ -314,27 +314,37 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           ${esc(g.titulo)} ${badgeMudou('titulo')}
         </h1>
 
-        <div class="pills-row">
-          ${
-            links.docsUrl
-              ? `<a class="pill-link" href="${esc(links.docsUrl)}" target="_blank" rel="noopener noreferrer">Docs ↗</a>`
-              : !somenteLeitura && !ehExemplo
-              ? `<button type="button" class="pill-link" id="btn-atalho-docs" style="opacity:0.7;cursor:pointer;">+ Docs ↗</button>`
-              : ''
-          }
-          ${
-            links.pastaUrl
-              ? `<a class="pill-link" href="${esc(links.pastaUrl)}" target="_blank" rel="noopener noreferrer">Pasta ↗</a>`
-              : !somenteLeitura && !ehExemplo
-              ? `<button type="button" class="pill-link" id="btn-atalho-pasta" style="opacity:0.7;cursor:pointer;">+ Pasta ↗</button>`
-              : ''
-          }
+        <div class="pills-row" style="margin-bottom:0;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            ${
+              links.docsUrl
+                ? `<a class="pill-link" href="${esc(links.docsUrl)}" target="_blank" rel="noopener noreferrer">Docs ↗</a>`
+                : !somenteLeitura && !ehExemplo
+                ? `<button type="button" class="pill-link" id="btn-atalho-docs" style="opacity:0.7;cursor:pointer;">+ Docs ↗</button>`
+                : ''
+            }
+            ${
+              links.pastaUrl
+                ? `<a class="pill-link" href="${esc(links.pastaUrl)}" target="_blank" rel="noopener noreferrer">Pasta ↗</a>`
+                : !somenteLeitura && !ehExemplo
+                ? `<button type="button" class="pill-link" id="btn-atalho-pasta" style="opacity:0.7;cursor:pointer;">+ Pasta ↗</button>`
+                : ''
+            }
+          </div>
+          <div>
+            <span class="badge badge-neutro">
+              Data estimada ${esc(formatarDataCurta(dataEstExibida))}${
+                diasSuspensos > 0 ? ` (+${diasSuspensos} por impedimento)` : ''
+              }
+            </span>
+            ${badgeMudou('dataEstimada')}
+          </div>
         </div>
 
         ${
           uiFolha.editandoLinks && !somenteLeitura && !ehExemplo
             ? `
-          <form id="form-editar-links" style="background:var(--bg);padding:10px;border-radius:8px;margin-bottom:10px;">
+          <form id="form-editar-links" style="background:var(--bg);padding:10px;border-radius:8px;margin-top:10px;margin-bottom:10px;">
             <div class="campo-form" style="margin-bottom:8px;">
               <label for="inp-link-docs">Link do Google Docs</label>
               <input id="inp-link-docs" class="input" type="url" value="${esc(links.docsUrl)}" placeholder="https://docs.google.com/..." />
@@ -350,15 +360,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         `
             : ''
         }
-
-        <div class="pills-row" style="margin-bottom:0;">
-          <span class="badge badge-neutro">
-            Data estimada ${esc(formatarDataCurta(dataEstExibida))}${
-              diasSuspensos > 0 ? ` (+${diasSuspensos} por impedimento)` : ''
-            }
-          </span>
-          ${badgeMudou('dataEstimada')}
-        </div>
 
         <hr class="divisor" />
 
@@ -746,19 +747,12 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         }
       </section>
 
-      <!-- BLOCO 4: ENTREGA, REVISÃO E ENCERRAMENTO -->
+      <!-- BLOCO 4: ENTREGA E REVISÃO -->
       <section class="card">
         <div class="secao-header">
-          <div>
-            <h2 class="secao-titulo">Entrega</h2>
-            <div class="secao-sub">Link do trabalho entregue e checklist por critério.</div>
-          </div>
+          <h2 class="secao-titulo">Entrega</h2>
           ${(() => {
             if (!abertaParaEscritaResp || ehExemplo) return '';
-            // Ciclo de entrega v1.1:
-            // - Sem entrega: "Preencher entrega"
-            // - Última entrega sem revisão: "Corrigir entrega"
-            // - Última entrega com revisão e algum critério não aceito: "Atualizar entrega"
             if (!ultimaEntrega) {
               return `<button type="button" id="btn-preencher-entrega" class="btn btn-sm btn-primario">${uiFolha.preenchendoEntrega ? 'Fechar' : 'Preencher entrega'}</button>`;
             }
@@ -784,7 +778,12 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
             </div>
             ${
               ultimaEntrega.link
-                ? `<p class="texto-campo"><strong>Link:</strong> <a href="${esc(ultimaEntrega.link)}" target="_blank" rel="noopener noreferrer" class="link-acao">${esc(ultimaEntrega.link)} ↗</a></p>`
+                ? `<p class="texto-campo" style="margin-bottom:6px;"><strong>Link:</strong> <a href="${esc(ultimaEntrega.link)}" target="_blank" rel="noopener noreferrer" class="link-acao">${esc(ultimaEntrega.link)} ↗</a></p>`
+                : ''
+            }
+            ${
+              ultimaEntrega.observacoes
+                ? `<p class="texto-campo" style="margin-bottom:6px;"><span style="color:var(--muted);">Observações do responsável:</span> ${esc(ultimaEntrega.observacoes)}</p>`
                 : ''
             }
             ${
@@ -793,8 +792,8 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                 : ''
             }
 
-            <!-- Checklist da Entrega -->
-            <div class="rotulo-campo">Checklist dos critérios de conclusão</div>
+            <!-- Checklist dos critérios de conclusão -->
+            <div class="rotulo-campo" style="margin-top:8px;">Checklist dos critérios de conclusão</div>
             ${
               ultimaEntrega.criterios && ultimaEntrega.criterios.length > 0
                 ? `
@@ -802,8 +801,8 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                 <thead>
                   <tr>
                     <th>Critério</th>
-                    <th style="width:140px;">Responsável</th>
-                    <th style="width:160px;">Gestor</th>
+                    <th style="width:110px;text-align:center;">Responsável</th>
+                    <th style="width:140px;">Gestor</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -811,12 +810,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                     .map((item, i) => {
                       const critDef = (g.descricao.criterios || []).find((c, idx) => (c.id || `idx-${idx}`) === item.criterioId) || g.descricao.criterios?.[i];
                       const revCrit = (ultimaRevisao?.criterios || []).find((c, idx) => (c.criterioId || `idx-${idx}`) === item.criterioId) || ultimaRevisao?.criterios?.[i];
-                      const statusRot =
-                        item.status === 'atendido'
-                          ? '<span style="color:var(--green);font-weight:600;">Atendido</span>'
-                          : item.status === 'parcial'
-                          ? '<span style="color:var(--amber);font-weight:600;">Parcial</span>'
-                          : '<span style="color:var(--red);font-weight:600;">Não atendido</span>';
+                      const foiAtendido = item.atendido === true || item.status === 'atendido';
 
                       return `
                         <tr>
@@ -827,9 +821,14 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                             </div>
                             ${item.comprovacao ? `<div style="font-size:11.5px;margin-top:4px;color:var(--text);"><span style="color:var(--muted);">Comprovação:</span> ${esc(item.comprovacao)}</div>` : ''}
                           </td>
-                          <td>
-                            ${statusRot}
-                            ${item.porque ? `<div style="font-size:11.5px;color:var(--muted);margin-top:2px;">Por quê: ${esc(item.porque)}</div>` : ''}
+                          <td style="text-align:center;vertical-align:middle;">
+                            <span class="etapa-check ${foiAtendido ? 'concluida' : ''}" style="margin:0 auto;cursor:default;">
+                              ${
+                                foiAtendido
+                                  ? `<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6 l3 3 l5 -6" stroke="#fff" stroke-width="2" fill="none"/></svg>`
+                                  : ''
+                              }
+                            </span>
                           </td>
                           <td>
                             ${
@@ -869,11 +868,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                   Missão: ${ultimaRevisao.resultado === 'concluida' ? 'CONCLUÍDA' : 'EM AJUSTE'} ·
                   Produto: ${esc((ultimaRevisao.produto || '').toUpperCase())}
                 </div>
-                ${
-                  (ultimaRevisao.ajustes || []).length > 0
-                    ? `<p class="texto-campo" style="margin:4px 0 0 0;"><strong>Ajustes necessários (legado):</strong> ${esc(ultimaRevisao.ajustes.join('; '))}</p>`
-                    : ''
-                }
               </div>
             `
                 : `<div class="secao-sub" style="margin-top:8px;">Aguardando revisão do gestor.</div>`
@@ -889,7 +883,6 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
           <form id="form-entrega" style="background:var(--bg);padding:12px;border-radius:8px;margin-top:10px;">
             <div class="campo-form">
               <label for="ent-link">Link da entrega (obrigatório)</label>
-              <div class="ajuda">O documento ou o arquivo onde está o trabalho entregue.</div>
               <input
                 id="ent-link"
                 class="input"
@@ -901,55 +894,53 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
             </div>
 
             <div class="campo-form">
-              <label>Checklist por critério da versão vigente</label>
+              <label for="ent-observacoes">Observações do responsável</label>
+              <textarea id="ent-observacoes" class="textarea" rows="2" placeholder="Observações, ressalvas ou notas sobre o trabalho...">${esc(ultimaEntrega?.observacoes || '')}</textarea>
+            </div>
+
+            <div class="campo-form">
+              <label>Checklist dos critérios de conclusão</label>
               ${(g.descricao.criterios || [])
                 .map((c, idx) => {
                   const cId = c.id || `idx-${idx}`;
                   const itemAnt = (ultimaEntrega?.criterios || []).find((x) => x.criterioId === cId);
                   const revAnt = (ultimaRevisao?.criterios || []).find((x) => x.criterioId === cId);
-                  const statusVal = itemAnt?.status || '';
-                  const ehNovo = !itemAnt && g.versao > 1;
+                  const marcado = itemAnt ? (itemAnt.atendido === true || itemAnt.status === 'atendido') : false;
 
                   return `
                     <div class="checklist-card ${revAnt && revAnt.aceito === false ? 'falta-ajuste' : ''}">
-                      <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">
-                        ${esc(c.condicao)}
-                        <span style="font-weight:normal;color:var(--muted);font-size:11px;">
-                          — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
-                        </span>
-                      </div>
-
-                      ${
-                        revAnt && revAnt.aceito === false
-                          ? `<div style="color:var(--red);font-size:12px;margin-bottom:6px;"><strong>O que falta (apontado pelo gestor):</strong> ${esc(revAnt.falta)}</div>`
-                          : ''
-                      }
-
-                      <div style="display:grid;grid-template-columns:140px 1fr;gap:8px;margin-top:6px;">
-                        <select class="select ent-status-crit" data-crit-id="${esc(cId)}" required>
-                          <option value="">Selecione...</option>
-                          <option value="atendido" ${statusVal === 'atendido' && !ehNovo ? 'selected' : ''}>Atendido</option>
-                          <option value="parcial" ${statusVal === 'parcial' && !ehNovo ? 'selected' : ''}>Parcial</option>
-                          <option value="nao_atendido" ${statusVal === 'nao_atendido' && !ehNovo ? 'selected' : ''}>Não atendido</option>
-                        </select>
+                      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin:0;">
                         <input
-                          class="input ent-porque-crit"
+                          type="checkbox"
+                          class="ent-chk-crit"
                           data-crit-id="${esc(cId)}"
-                          type="text"
-                          placeholder="Por quê (obrigatório se parcial ou não atendido)"
-                          value="${esc(itemAnt?.porque || '')}"
+                          style="margin-top:2px;width:17px;height:17px;accent-color:var(--green);cursor:pointer;"
+                          ${marcado ? 'checked' : ''}
                         />
-                      </div>
-
-                      <div style="margin-top:6px;">
-                        <input
-                          class="input ent-comprovacao-crit"
-                          data-crit-id="${esc(cId)}"
-                          type="text"
-                          placeholder="Onde está a comprovação (opcional, só se estiver fora do documento entregue)"
-                          value="${esc(itemAnt?.comprovacao || '')}"
-                        />
-                      </div>
+                        <div style="flex:1;">
+                          <div style="font-size:12.5px;font-weight:600;">
+                            ${esc(c.condicao)}
+                            <span style="font-weight:normal;color:var(--muted);font-size:11px;">
+                              — verificado por ${esc(ROTULO_VERIFICACAO[c.verificacao] || c.verificacao)}
+                            </span>
+                          </div>
+                          ${
+                            revAnt && revAnt.aceito === false
+                              ? `<div style="color:var(--red);font-size:11.5px;margin-top:4px;"><strong>O que falta:</strong> ${esc(revAnt.falta)}</div>`
+                              : ''
+                          }
+                          <div style="margin-top:6px;">
+                            <input
+                              class="input ent-comprovacao-crit"
+                              data-crit-id="${esc(cId)}"
+                              type="text"
+                              style="font-size:12px;padding:4px 8px;"
+                              placeholder="Onde está a comprovação (opcional)"
+                              value="${esc(itemAnt?.comprovacao || '')}"
+                            />
+                          </div>
+                        </div>
+                      </label>
                     </div>
                   `;
                 })
@@ -979,6 +970,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                 .map((c, idx) => {
                   const cId = c.id || `idx-${idx}`;
                   const itemEnt = (ultimaEntrega.criterios || []).find((x) => x.criterioId === cId);
+                  const marcadoResp = itemEnt ? (itemEnt.atendido === true || itemEnt.status === 'atendido') : false;
                   return `
                     <div class="checklist-card">
                       <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">
@@ -990,8 +982,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
                       ${
                         itemEnt
                           ? `<div style="font-size:12px;color:var(--text);margin-bottom:6px;">
-                              Marca do responsável: <strong>${esc(itemEnt.status)}</strong>
-                              ${itemEnt.porque ? ` · <span style="color:var(--muted);">Por quê:</span> ${esc(itemEnt.porque)}` : ''}
+                              Marca do responsável: <strong>${marcadoResp ? 'Atendido [✓]' : 'Não marcado [ ]'}</strong>
                               ${itemEnt.comprovacao ? ` · <span style="color:var(--muted);">Comprovação:</span> ${esc(itemEnt.comprovacao)}` : ''}
                             </div>`
                           : ''
@@ -1023,53 +1014,10 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
               </select>
             </div>
 
-            <div class="campo-form">
-              <label for="rev-frase-gestor">Encerramento do gestor (1 frase): O que muda na próxima folha?</label>
-              <input id="rev-frase-gestor" class="input" type="text" value="${esc(g.fraseGestor || '')}" placeholder="Ex.: Nas próximas calibrações, a capacidade da estufa entra nos insumos." />
-            </div>
-
             <div style="display:flex;justify-content:flex-end;margin-top:8px;">
               <button type="submit" class="btn btn-sm btn-primario">Salvar revisão</button>
             </div>
           </form>
-        `
-            : ''
-        }
-
-        ${
-          sit === 'concluida'
-            ? `
-          <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:10px;">
-            <div class="rotulo-campo" style="margin-top:0;">Encerramento (aprendizado para as próximas folhas)</div>
-            ${
-              papel === 'responsavel' && !ehExemplo
-                ? `
-              <form id="form-frase-responsavel" style="margin-top:6px;">
-                <div class="campo-form" style="margin-bottom:6px;">
-                  <label for="inp-frase-resp">Em uma frase: O que a folha deveria ter dito desde o início?</label>
-                  <input id="inp-frase-resp" class="input" type="text" value="${esc(r.fraseResponsavel || '')}" placeholder="Ex.: A folha deveria ter dito a capacidade da estufa." required />
-                </div>
-                <button type="submit" class="btn btn-sm btn-primario">Salvar frase de encerramento</button>
-              </form>
-            `
-                : `<p class="texto-campo"><strong>Responsável (o que a folha deveria ter dito):</strong> ${esc(r.fraseResponsavel || 'Ainda não preenchido')}</p>`
-            }
-            ${
-              papel === 'gestor' && !ehExemplo
-                ? `
-              <form id="form-frase-gestor" style="margin-top:8px;">
-                <div class="campo-form" style="margin-bottom:6px;">
-                  <label for="inp-frase-gest">Em uma frase: O que muda na próxima folha?</label>
-                  <input id="inp-frase-gest" class="input" type="text" value="${esc(g.fraseGestor || '')}" placeholder="Ex.: Nas próximas calibrações, a capacidade da estufa entra nos insumos." required />
-                </div>
-                <button type="submit" class="btn btn-sm btn-primario">Salvar frase do gestor</button>
-              </form>
-            `
-                : g.fraseGestor
-                ? `<p class="texto-campo" style="margin-top:6px;"><strong>Gestor (o que muda na próxima folha):</strong> ${esc(g.fraseGestor)}</p>`
-                : ''
-            }
-          </div>
         `
             : ''
         }
@@ -1483,28 +1431,20 @@ function configurarEventosFolha(root, estadoApp, ctx) {
       return;
     }
 
+    const observacoes = (root.querySelector('#ent-observacoes')?.value || '').trim();
+
     const criterios = (g.descricao.criterios || []).map((c, idx) => {
       const cId = c.id || `idx-${idx}`;
-      const status = root.querySelector(`.ent-status-crit[data-crit-id="${cId}"]`)?.value;
-      const porque = (root.querySelector(`.ent-porque-crit[data-crit-id="${cId}"]`)?.value || '').trim();
+      const atendido = root.querySelector(`.ent-chk-crit[data-crit-id="${cId}"]`)?.checked || false;
       const comprovacao = (root.querySelector(`.ent-comprovacao-crit[data-crit-id="${cId}"]`)?.value || '').trim();
 
       return {
         criterioId: cId,
         condicao: c.condicao,
-        status,
-        porque,
+        atendido,
         comprovacao,
       };
     });
-
-    // Validação A8: exige "por quê" quando parcial ou não atendido
-    for (const item of criterios) {
-      if ((item.status === 'parcial' || item.status === 'nao_atendido') && !item.porque) {
-        mostrarAviso(`Informe o "por quê" para o critério: "${item.condicao}".`, 'erro');
-        return;
-      }
-    }
 
     try {
       const ultimaEntrega = r.entregas.at(-1);
@@ -1514,6 +1454,7 @@ function configurarEventosFolha(root, estadoApp, ctx) {
       if (ultimaEntrega && !ultimaRevisao) {
         await updateDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId, 'entregas', ultimaEntrega.id), {
           link,
+          observacoes,
           criterios,
           corrigidaEm: hoje,
         });
@@ -1524,6 +1465,7 @@ function configurarEventosFolha(root, estadoApp, ctx) {
         await setDoc(entRef, {
           em: hoje,
           link,
+          observacoes,
           criterios,
         });
         mostrarAviso('Entrega registrada!', 'sucesso');
@@ -1562,7 +1504,6 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     const todosAceitos = criterios.every((c) => c.aceito);
     const resultado = todosAceitos ? 'concluida' : 'em_ajuste';
     const produto = root.querySelector('#rev-produto').value;
-    const fraseGestor = root.querySelector('#rev-frase-gestor').value.trim();
 
     try {
       await setDoc(
@@ -1575,7 +1516,6 @@ function configurarEventosFolha(root, estadoApp, ctx) {
         }
       );
       await updateDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId), {
-        fraseGestor: fraseGestor || g.fraseGestor || '',
         concluidaEm: resultado === 'concluida' ? hoje : null,
       });
       mostrarAviso(
@@ -1584,31 +1524,6 @@ function configurarEventosFolha(root, estadoApp, ctx) {
       );
     } catch (err) {
       mostrarAviso('Erro ao salvar revisão: ' + err.message, 'erro');
-    }
-  });
-
-  root.querySelector('#form-frase-responsavel')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const fraseResponsavel = root.querySelector('#inp-frase-resp').value.trim();
-    try {
-      await updateDoc(
-        doc(db, 'equipes', equipeId, 'missoes', missaoId, 'responsavel', 'estado'),
-        { fraseResponsavel }
-      );
-      mostrarAviso('Frase de encerramento salva.', 'sucesso');
-    } catch (err) {
-      mostrarAviso('Erro ao salvar frase: ' + err.message, 'erro');
-    }
-  });
-
-  root.querySelector('#form-frase-gestor')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const fraseGestor = root.querySelector('#inp-frase-gest').value.trim();
-    try {
-      await updateDoc(doc(db, 'equipes', equipeId, 'missoes', missaoId), { fraseGestor });
-      mostrarAviso('Frase do gestor salva.', 'sucesso');
-    } catch (err) {
-      mostrarAviso('Erro ao salvar frase: ' + err.message, 'erro');
     }
   });
 

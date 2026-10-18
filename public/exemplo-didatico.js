@@ -47,9 +47,20 @@ export const exemploDidatico = {
         'A Tabela Brasileira de Composição de Alimentos (TACO), na pasta; os endereços dos dois mercados.',
     },
     requisitos: {
-      precisa: ['Registrar a fonte e a data de cada preço.'],
-      naoPode: ['Usar preço de site ou de folheto no lugar do preço coletado no mercado.'],
-      consultarAntes: ['Incluir alimentos além de frutas, verduras, legumes e ovos.'],
+      precisa: [
+        'Registrar a fonte e a data de cada preço coletado.',
+        'Calcular a média ponderada quando houver mais de uma variedade do mesmo item.',
+      ],
+      naoPode: [
+        'Usar preço de site ou de folheto promocional no lugar do preço coletado no mercado.',
+        'Incluir produtos com prazo de validade vencido ou avariados.',
+        'Ultrapassar a tolerância calórica estabelecida nos critérios.',
+        'Presumir tabelas de composição sem citar a versão oficial da TACO.',
+      ],
+      consultarAntes: [
+        'Incluir alimentos além de frutas, verduras, legumes e ovos.',
+        'Substituir um mercado parceiro caso esteja fechado na data da coleta.',
+      ],
     },
     fraseGestor: 'Nas próximas, dizer quantos mercados contam.',
     concluidaEm: '2026-10-18',
@@ -133,28 +144,26 @@ export const exemploDidatico = {
         id: 'ent-1',
         em: '2026-10-18',
         link: 'https://docs.google.com/spreadsheets/d/exemplo-cesta-ms-000',
+        observacoes: 'A pesquisa foi realizada em 2 supermercados do bairro na mesma quarta-feira pela manhã.',
         criterios: [
           {
             criterioId: 'cr-1-exemplo',
             condicao: 'A cesta soma pelo menos 2.000 kcal e 50 g de proteína por dia',
-            status: 'atendido',
-            porque: '',
-            comprovacao: '',
+            atendido: true,
+            comprovacao: 'Linhas 1 a 12 da planilha',
           },
           {
             criterioId: 'cr-2-exemplo',
             condicao:
               'O custo da cesta é de no máximo R$ 12 por dia, com preços coletados nos dois mercados na mesma semana',
-            status: 'parcial',
-            porque: 'R$ 12,80 no mercado B; no mercado A, R$ 11,40',
-            comprovacao: '',
+            atendido: true,
+            comprovacao: 'Custo final no mercado A: R$ 11,40',
           },
           {
             criterioId: 'cr-3-exemplo',
             condicao: 'Todos os itens estavam à venda nos mercados na data da coleta',
-            status: 'atendido',
-            porque: '',
-            comprovacao: '',
+            atendido: true,
+            comprovacao: 'Fotos dos encartes/gôndolas na pasta',
           },
         ],
       },
@@ -168,7 +177,7 @@ export const exemploDidatico = {
         produto: 'atende',
         criterios: [
           { criterioId: 'cr-1-exemplo', aceito: true, falta: '' },
-          { criterioId: 'cr-2-exemplo', aceito: true, falta: 'o mercado A basta' },
+          { criterioId: 'cr-2-exemplo', aceito: true, falta: '' },
           { criterioId: 'cr-3-exemplo', aceito: true, falta: '' },
         ],
       },
