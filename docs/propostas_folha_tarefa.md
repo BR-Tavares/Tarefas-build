@@ -1,177 +1,84 @@
 # Propostas para a folha da tarefa (tela do responsável)
 
-18/10/2026 • Para avaliação • Nada aqui está implementado
+18/10/2026 • Versão 2, para avaliação • Nada aqui está implementado
 
-Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7) e a folha como ela funciona hoje em `public/tela-folha.js`.
+Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7) e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
 
-## Como ler
+## O objetivo que orienta as propostas
 
-A régua é a da visão: **cada mecanismo precisa valer o custo que impõe a quem o usa.** A folha é do responsável, é focada e individual, e mostra a tarefa vigente, sem sinais, contagens ou cobrança. O histórico serve ao gestor.
+A folha existe para **permitir o ajuste**: corrigir a rota da tarefa cedo, antes que o desvio vire retrabalho. O centro dela são as **etapas**, porque elas mostram como o responsável entendeu a tarefa, e é sobre elas que gestor e responsável conversam. O cabeçalho é o combinado e fica sempre à vista. As pendências são o canal do ajuste. O registro do dia é só um diário de foco e não deve ocupar a atenção do responsável.
 
-Cada proposta responde a quatro perguntas:
-- **O que se observa:** como a folha está hoje.
-- **Problema:** o que isso custa na prática.
-- **O que muda.**
-- **Custo e ganho para o responsável.**
+Cada proposta abaixo serve a esse objetivo ou tira algo do caminho dele.
 
-Quando a proposta muda o texto do protocolo ou do guia, isso está indicado. As propostas são independentes: dá para aprovar uma e recusar outra.
+## Decisões do gestor que esta versão já incorpora
 
-## Resumo
-
-| # | Proposta | Tipo | Ganho principal |
-|---|---|---|---|
-| P1 | Repetir a atividade de ontem com um toque | Mudar | O dia típico passa a custar 1 toque |
-| P2 | O registro do dia sobe para o topo | Mudar a ordem | Fim da rolagem diária pelo cabeçalho |
-| P3 | Cabeçalho completo na leitura, recolhido no dia a dia | Simplificar | Tela diária curta; resultado esperado deixa de ficar escondido |
-| P4 | O aviso de alteração some depois de visto; sai o número da versão | Remover | Fim de um aviso permanente e de selos que viram ruído |
-| P5 | A situação só aparece quando muda quem age | Remover | Um selo a menos em quase todos os dias |
-| P6 | Sem blocos vazios e sem textos fixos de instrução | Remover | Menos leitura repetida; fim de uma contradição com o protocolo |
-| P7 | Links: atalho só quando falta | Simplificar | Um controle a menos no topo |
-| P8 | Abrir pendência pelo tipo, em um toque | Simplificar | Pendência aberta com menos decisões; nova data com data de verdade |
-| P9 | Pendências: o que pede ação primeiro, fechadas recolhidas | Simplificar | A lista não cresce sem fim |
-| P10 | A entrega aparece na hora dela; em "Entregue", a folha espera | Simplificar | Menos botões fora de hora; fim da entrega duplicada |
-| P11 | Em ajuste, a entrega reabre preenchida | Mudar | Refazer só o que o ajuste pede |
-| P12 | Concluída, a folha vira encerramento | Simplificar | A única ação que resta fica à vista |
+- O cabeçalho fica aberto. É o combinado e é fundamental.
+- O registro do dia é o **foco de hoje**: só o nome da atividade, sem descrição e sem repetir automaticamente o dia anterior.
+- Na tela do responsável, só os avisos que o protocolo prevê.
+- As pendências ficam num menu suspenso. As fechadas não somem.
+- O selo de situação é do gestor (Kanban), não do responsável.
 
 ---
 
-## A. O uso diário
+## P1. As etapas guardam a história do entendimento
 
-### P1. Repetir a atividade de ontem com um toque
+- **O que se observa:** o responsável escreve as etapas numa caixa de texto e, a cada edição, a lista nova apaga a anterior. O app avisa o gestor só na primeira vez que as etapas são salvas (`functions/index.js`). Depois disso, o gestor vê apenas a lista atual e, no painel, a contagem "1/4". A própria folha ainda diz ao responsável "Uma vez, no início, para alinhar o entendimento", o que desestimula revisar o plano.
+- **Problema:** o momento mais valioso para corrigir a rota é quando o entendimento do responsável muda, e hoje ele não deixa rastro. O gestor não sabe se o plano mudou, o que mudou nem se mudou depois de uma resposta dele. A conversa sobre as etapas parte só da foto do dia, e o desvio aparece na entrega, que é o ponto mais caro para corrigir.
+- **O que muda:**
+  - Cada vez que o responsável salva as etapas, o app guarda o plano anterior. A vista do gestor mostra a evolução: "plano revisto em 22/10: saiu *Níveis 4 e 5 medidos*, entrou *Nível 4 medido*".
+  - O painel do gestor marca "plano revisto" na linha da missão, sem notificação, como os sinais que só marcam na lista.
+  - Sai da folha do responsável a frase "Uma vez, no início". Revisar as etapas passa a ser apresentado como parte do trabalho.
+  - O responsável continua vendo só as etapas vigentes, sem histórico.
+- **Custo e ganho:** nenhum custo para o responsável: nenhum campo e nenhum aviso. O gestor ganha o material da conversa, que é o caminho do entendimento e não só o estado atual, e vê o desvio quando o plano muda.
 
-- **O que se observa:** para registrar o dia, o responsável toca no campo, a lista do auto-complete abre e ele toca na sugestão. São dois toques, e o primeiro abre o teclado no celular. A primeira sugestão já é a atividade mais recente (`sugerirAtividades` ordena pelos dias mais recentes), mas só aparece depois que o campo recebe o foco.
-- **Problema:** o caso mais comum é o dia que continua o anterior. O protocolo diz que "há atividades que demoram mesmo" (no exemplo, *secar amostras n1* três dias seguidos). Esse caso custa o mesmo que uma atividade nova, e o teclado abre sem necessidade.
-- **O que muda:** quando hoje ainda não tem registro e existe um registro anterior, a linha mostra, ao lado do campo, um botão com o texto da última atividade (ex.: *secar amostras n1 ✓*). Um toque grava. O campo e a lista continuam iguais para registrar outra coisa. Não aparece há quantos dias a atividade se repete: isso continua só no painel do gestor.
-- **Custo e ganho:** custo zero. Ganho: o dia típico passa de dois toques com teclado para um toque sem teclado. É o mecanismo de uso diário, e o ganho se repete todos os dias da missão.
-- **Cuidado:** o botão grava só com o toque, nunca sozinho. Se o registro virar automático, deixa de dizer o que aconteceu.
+## P2. Toda mudança na tarefa volta para as etapas
 
-### P2. O registro do dia sobe para o topo
+- **O que se observa:** quando o gestor altera o cabeçalho, o código mostra no topo da folha do responsável uma faixa "Versão N: [resumo]" e marca os campos com "mudou na vN". Essa faixa não está prevista no protocolo e, como a condição do código é `g.versao > 1`, fica na tela para sempre depois da primeira alteração. Nada liga a alteração às etapas.
+- **Problema:** a visão diz que respostas e alterações mudam a tarefa e, com ela, as etapas. Hoje o ciclo para no cabeçalho: o gestor muda o combinado, mas ninguém sabe se o entendimento do responsável acompanhou. O ajuste fica pela metade, e a faixa permanente é ruído que o protocolo não pediu.
+- **O que muda:**
+  - A faixa do topo sai.
+  - A mudança aparece onde ela vale: o campo alterado do cabeçalho fica marcado, como o protocolo prevê ("a folha mostra o que mudou").
+  - No bloco de etapas, depois de uma alteração, aparece uma pergunta: "A tarefa mudou. As etapas continuam valendo?" Há duas respostas, **continuam** ou **editar**. A marca no cabeçalho sai depois dessa resposta.
+  - A resposta entra na história das etapas (P1). O gestor vê que a mudança foi absorvida e como.
+- **Custo e ganho:** custa um toque por alteração do gestor, que é um evento raro. Em troca, cada alteração fecha o ciclo: o gestor muda o combinado e vê o novo entendimento. É o aviso do primeiro plano repetido em cada mudança, com a mesma leveza de uma leitura.
 
-- **O que se observa:** a folha tem cinco blocos, e o registro do dia é o último (`tela-folha.js`, bloco 5). Antes dele vêm o cabeçalho inteiro, as etapas, as pendências e a entrega.
-- **Problema:** o único bloco de uso diário é o mais distante. No celular, todo dia o responsável rola por um texto que já conhece para chegar a uma linha. O custo é pequeno por dia, mas se soma em todos os dias e acontece no momento em que ele quer só registrar e voltar ao trabalho.
-- **O que muda:** a linha do registro fica logo abaixo do título da missão. A ordem passa a ser: título e data estimada, registro do dia, etapas, pendências, cabeçalho (ver P3) e entrega. Na primeira abertura, enquanto as etapas não existem, a ordem atual se mantém, porque ali o certo é ler o cabeçalho antes de escrever o plano.
-- **Custo e ganho:** custo zero para o responsável. Ganho: registrar o dia vira abrir o app e tocar, sem rolagem.
-- **Muda o protocolo:** a frase "É o último bloco e o único de uso diário" e a ordem descrita em *A folha, bloco a bloco*. O `guia_uso_responsavel.md` e o `tela_missao_funcionario.svg` também precisam acompanhar.
+## P3. Pendências em menu suspenso
 
-### P3. Cabeçalho completo na leitura, recolhido no dia a dia
+- **O que se observa:** todas as pendências aparecem abertas na folha, uma embaixo da outra, cada uma com a caixa de resposta, inclusive as fechadas.
+- **Problema:** a pendência é o canal do ajuste, e a folha deveria mostrar a conversa em curso. Com o tempo, três ou quatro pendências se acumulam, a resposta que muda o trabalho de hoje se mistura com as resolvidas e o bloco cresce entre as etapas e a entrega.
+- **O que muda:**
+  - O bloco ocupa uma linha: a pendência em curso, com a resposta do gestor quando houver e o botão de fechar. Quando não há pendência em curso, a linha mostra só "abrir pendência".
+  - Todas as pendências, abertas e fechadas, ficam num menu suspenso nessa mesma linha. As fechadas continuam ali, porque as respostas fazem parte do combinado: o que foi esclarecido numa pendência também é acordo.
+  - O formulário só abre quando o responsável aciona uma nova pendência.
+- **Custo e ganho:** custa um toque para consultar uma pendência antiga. O ganho é que a folha mostra só a conversa em curso e não acumula o arquivo, que continua guardado.
 
-- **O que se observa:** o cabeçalho aparece sempre aberto, com necessidade, tarefa, entrega e critérios à vista. **Resultado esperado** e **insumos** ficam escondidos atrás de "Ver resultado esperado e insumos ▾".
-- **Problema:** são dois problemas. No dia a dia, o cabeçalho aberto ocupa a maior parte da tela com um texto que não mudou. Na leitura, a divisão esconde justamente o que o protocolo põe como critério de decisão: "se o plano não se encaixar na realidade, o responsável decide pela necessidade e pelo resultado esperado". Os insumos também são o que ele precisa no início.
-- **O que muda:** o cabeçalho tem dois estados.
-  - **Aberto e completo**, com todos os campos e sem o "ver mais", quando o responsável precisa ler: na primeira abertura (antes das etapas) e quando há uma alteração ainda não vista (ver P4).
-  - **Recolhido** no resto do tempo, numa linha "O combinado (necessidade, entrega, critérios e requisitos) ▾". Um toque abre tudo de uma vez.
-- **Custo e ganho:** custo de um toque nos dias em que ele quiser reler o combinado. Ganho: a tela diária fica curta, e a leitura de quando importa fica inteira, sem um campo-chave escondido.
+## P4. O registro do dia vira "foco de hoje"
+
+- **O que se observa:** o bloco se chama "Registro do dia", e o campo pede "Atividade principal do dia...".
+- **Problema:** "atividade principal" pede um julgamento sobre o dia inteiro (o que foi principal?). O registro não é o objeto da folha: é um diário que mostra ao gestor onde foi o tempo, e não deve tomar atenção do responsável.
+- **O que muda:**
+  - O bloco passa a se chamar **Foco de hoje**, com uma dica curta: "Em que você focou hoje? Só o nome da atividade."
+  - O auto-complete continua, porque é ele que faz a mesma atividade ser escrita do mesmo jeito, e é isso que torna útil a linha do tempo do gestor. As três opções de "sem trabalho na missão" também continuam.
+  - O app não repete o dia anterior. O bloco continua no fim da folha.
+- **Custo e ganho:** custo zero. "Foco" pede uma lembrança, e não uma avaliação do dia, e o registro sai mais rápido e mais consistente.
+
+## P5. Nenhuma marca de gestão na tela do responsável
+
+- **O que se observa:** a folha do responsável mostra o selo de situação ("Em execução", "Impedida", "Entregue"...) e o número da versão ("MS-027 · versão 2", "ALTERAÇÃO → v2").
+- **Problema:** situação e versão são instrumentos do gestor: a situação diz quem age no Kanban com dezenas de tarefas, e a versão é o histórico que a visão reserva à vista dele. Para o responsável são marcas de controle numa tela que deveria mostrar só a tarefa vigente.
+- **O que muda:** o selo de situação e o número de versão saem da tela do responsável. A data estimada fica, com o "+N por impedimento" que o protocolo prevê. Na vista do gestor, nada muda.
+- **Custo e ganho:** custo zero. A tela do responsável fica só com o combinado, o plano e a conversa.
 
 ---
 
-## B. O que sai da tela do responsável
+## O que saiu da versão 1 e por quê
 
-### P4. O aviso de alteração some depois de visto; sai o número da versão
+- **Repetir a atividade de ontem com um toque:** recusada. O registro é de foco, e a repetição automática esvazia o registro.
+- **Registro do dia no topo:** recusada. O centro da folha são as etapas, não o registro.
+- **Cabeçalho recolhido:** recusada. O cabeçalho é o combinado e fica à vista.
+- **Ajustes de links, textos fixos, entrega e encerramento:** saíram por serem detalhe de interface, e não estratégia. Os defeitos reais estão abaixo.
 
-- **O que se observa:**
-  - O aviso do topo ("Versão N: ...") aparece para o responsável sempre que a versão é maior que 1, mesmo depois de visto. A condição em `tela-folha.js` é `versaoEraNaoVista || (papel === 'responsavel' && g.versao > 1 && ultimaAlteracao)`, e a segunda parte é verdadeira para sempre.
-  - Os selos "mudou na vN" ficam ao lado dos campos até a próxima alteração.
-  - O número da versão aparece no código da missão ("MS-027 · versão 2") e na resposta da pendência ("ALTERAÇÃO → v2").
-- **Problema:** o protocolo diz que a alteração aparece como "não vista" **até o responsável abrir a folha**. Hoje ela fica marcada para sempre. Um aviso que nunca sai deixa de ser lido, e o próximo aviso real perde força. O número da versão é histórico, e a visão diz que o histórico serve à vista do gestor; ao responsável basta a tarefa vigente e o que mudou nela.
-- **O que muda:**
-  - O aviso e os selos aparecem só na sessão em que a alteração ainda não tinha sido vista. O texto passa a ser "O gestor alterou a folha: [resumo]".
-  - O número da versão sai da vista do responsável. Na resposta, "ALTERAÇÃO → vN" passa a "Mudou a folha".
-  - A vista do gestor continua com versão, vista ou não vista.
-- **Custo e ganho:** custo zero. Ganho: o aviso volta a significar "algo mudou e você ainda não viu".
-- **Defeito junto:** o rótulo "ALTERAÇÃO → v${g.versao}" usa a versão atual, e não a versão que a resposta criou. Depois de uma segunda alteração, a resposta antiga passa a mostrar a versão errada. Com a proposta, o defeito some.
+## Defeitos encontrados no código (corrigir sem decisão de método)
 
-### P5. A situação só aparece quando muda quem age
-
-- **O que se observa:** o selo de situação ("Em execução", "Impedida", "Entregue", "Em ajuste") aparece sempre ao lado da data estimada.
-- **Problema:** na maior parte da missão a situação é "Em execução", e o selo não diz nada novo. O protocolo define a situação como "quem precisa agir agora"; em execução, quem age é o próprio responsável, que já sabe disso.
-- **O que muda:** o selo aparece só quando a vez não é do responsável ou quando ele precisa saber por quê: Impedida (aguardando o gestor), Entregue (aguardando a revisão) e Em ajuste.
-- **Custo e ganho:** custo zero. Ganho: quando o selo aparece, ele avisa algo.
-
-### P6. Sem blocos vazios e sem textos fixos de instrução
-
-- **O que se observa:**
-  - Os três requisitos aparecem sempre, com "—" quando vazios. "Consultar antes" é opcional no protocolo e aparece mesmo assim.
-  - Textos fixos se repetem todos os dias: "Uma vez, no início, para alinhar o entendimento." abaixo das etapas; "escritas no início · [data]" no título delas; "Você abriu, você fecha." em cada pendência aberta; "Resultado, evidência por critério, desvios." no título da entrega.
-- **Problema:** é leitura sem informação nova. Um dos textos contradiz o protocolo: "Uma vez, no início" sugere que as etapas não se editam, e o protocolo diz que o responsável "pode editar as etapas se o entendimento mudar, sem aprovação". A visão diz que as etapas são a devolução do entendimento e mudam com a tarefa. A data "escritas no início" é histórico, que serve ao gestor. "Você abriu, você fecha" é regra do método dita como ordem, e o protocolo pede linguagem que explique o porquê e não comande.
-- **O que muda:**
-  - Requisito vazio não aparece. Se os três estiverem vazios, o título "Requisitos da tarefa" também sai.
-  - As explicações passam para dentro dos formulários, onde são úteis: a dica das etapas aparece no editor (já existe lá) e a da entrega, no formulário dela.
-  - Saem "Uma vez, no início...", a data de "escritas no início" e "Você abriu, você fecha.". O botão "Fechar pendência" já diz o que fazer; a regra continua no guia.
-- **Custo e ganho:** custo zero. Ganho: menos texto fixo, e a folha para de contradizer o próprio método.
-
-### P7. Links: atalho só quando falta
-
-- **O que se observa:** ao lado do código da missão há sempre um "editar links". Quando falta um link, aparece também um "+ Docs ↗" ou "+ Pasta ↗". O "editar links" continua visível em missão concluída ou cancelada.
-- **Problema:** é um controle permanente no ponto mais visível da folha, para uma ação que acontece uma vez, quando acontece. Em missão encerrada, ele permite mudar onde estão as evidências de uma revisão já feita.
-- **O que muda:** o "editar links" fixo sai. Fica o "+ Docs" ou "+ Pasta" quando falta o link; para trocar um link existente, há uma opção discreta dentro do cabeçalho aberto (P3). Em missão concluída ou cancelada, não há edição de links.
-- **Custo e ganho:** custo de um toque a mais no caso raro de trocar um link. Ganho: um controle a menos no topo e a evidência revisada fica estável.
-
----
-
-## C. Pendências
-
-### P8. Abrir pendência pelo tipo, em um toque
-
-- **O que se observa:** "+ abrir" mostra um formulário com uma lista de tipos (com textos longos), uma lista de alcance do bloqueio e um campo de texto. O tipo já vem marcado como Impedimento. A Consulta aparece mesmo quando o cabeçalho não tem nada em "consultar antes". A Nova data é texto livre, sem campo de data.
-- **Problema:** abrir uma pendência pede escolher numa lista antes de escrever, e o tipo marcado de saída favorece o erro de abrir como impedimento o que era uma dúvida. A Consulta sem "consultar antes" é uma opção que o protocolo não prevê para aquela missão. Na Nova data, a data fica escondida no texto: o gestor precisa ler e digitar de novo na alteração.
-- **O que muda:**
-  - "+ abrir" vira quatro botões lado a lado: **Dúvida**, **Consulta**, **Impedimento** e **Nova data**. O toque já abre o campo de texto com a dica daquele tipo.
-  - **Consulta** só aparece quando há algo em "consultar antes".
-  - **Impedimento** mostra uma escolha de dois botões, "só uma parte" ou "tudo", sem valor pré-marcado.
-  - **Nova data** tem um campo de data e um campo de motivo. Na resposta do gestor, a alteração já vem com a data preenchida.
-- **Custo e ganho:** o mesmo número de campos ou menos. Ganho: menos decisões antes de escrever, menos erro de tipo e uma nova data que o gestor aceita sem redigitar.
-- **Toca a especificação:** a Nova data passa a guardar a data proposta (um campo novo na pendência, preenchido pelo próprio responsável no lugar do texto).
-
-### P9. Pendências: o que pede ação primeiro, fechadas recolhidas
-
-- **O que se observa:** todas as pendências aparecem na ordem em que foram abertas, inclusive as fechadas, para sempre.
-- **Problema:** a lista cresce com a missão, e a pendência que pede ação (o gestor respondeu e falta o responsável confirmar e fechar) se mistura com as já resolvidas.
-- **O que muda:**
-  - Primeiro, as abertas com resposta do gestor: é a vez do responsável. Depois, as abertas sem resposta.
-  - As fechadas ficam recolhidas em "ver pendências fechadas", sem número. Continuam consultáveis, porque uma resposta pode esclarecer o combinado.
-- **Custo e ganho:** custo de um toque para consultar uma fechada. Ganho: o bloco mostra o que está em aberto, e a resposta nova não se perde.
-
----
-
-## D. Entrega e encerramento
-
-### P10. A entrega aparece na hora dela; em "Entregue", a folha espera
-
-- **O que se observa:**
-  - O botão "Preencher" da entrega aparece desde o primeiro dia, com o mesmo peso dos outros.
-  - Depois de entregar, enquanto a revisão não sai (situação Entregue), o botão "Preencher" e o registro do dia continuam disponíveis. Um novo preenchimento cria **outra** entrega, e a revisão passa a apontar para ela.
-- **Problema:** na maior parte da missão a entrega não é a ação do momento, e o botão disputa a atenção. Em Entregue, a vez é do gestor, mas a folha oferece ações ao responsável: o registro do dia não entra mais em nenhum sinal (a análise só calcula os dias sem registro em execução, impedida ou em ajuste) e uma segunda entrega troca, sem aviso, o que o gestor vai revisar.
-- **O que muda:**
-  - Enquanto há etapas abertas, a entrega fica como uma linha discreta ("Preencher a entrega"), sem bloquear nada. Quando todas as etapas estão concluídas, ela ganha destaque.
-  - Em Entregue, o registro do dia e o "Preencher" saem. A folha mostra "Entrega enviada em [data]. A revisão é do gestor." Se o responsável perceber um erro, há um "corrigir a entrega" que edita a mesma entrega, em vez de criar outra (depende de as regras do Firestore permitirem atualizar a entrega antes da revisão).
-- **Custo e ganho:** custo zero. Ganho: a folha mostra a ação do momento, e o gestor revisa sempre a entrega certa.
-
-### P11. Em ajuste, a entrega reabre preenchida
-
-- **O que se observa:** em ajuste, o formulário da entrega traz de volta o resultado e os desvios, mas as evidências por critério voltam vazias: todos os status em "Atendido" e o "onde" em branco. Os ajustes pedidos pelo gestor ficam fora do formulário, no resumo da revisão.
-- **Problema:** o responsável redigita o que já estava certo para corrigir um ponto, e escreve sem ver o que o ajuste pede.
-- **O que muda:** o formulário reabre com as evidências da entrega anterior e mostra os ajustes do gestor no topo. Ele muda só o que o ajuste pediu.
-- **Custo e ganho:** custo zero. Ganho: o retrabalho fica do tamanho do ajuste.
-
-### P12. Concluída, a folha vira encerramento
-
-- **O que se observa:** na missão concluída, a pergunta "O que a folha deveria ter dito desde o início?" fica no fim do bloco de entrega, abaixo de toda a folha. Depois de salva a frase, o formulário continua aberto para edição.
-- **Problema:** a única ação que resta ao responsável fica no fim da tela, depois de tudo o que já acabou. A frase é o que melhora as próximas missões, e é fácil não vê-la.
-- **O que muda:** na missão concluída, a pergunta do encerramento fica no topo, e o resto da folha aparece recolhido, só para consulta. Depois de salva, a frase aparece como texto, com um "editar" discreto.
-- **Custo e ganho:** custo zero. Ganho: a frase é pedida no momento certo e com destaque, sem cobrança.
-
----
-
-## Ordem sugerida
-
-1. **P1, P2 e P3:** juntas, mudam o custo de todos os dias. P2 e P3 pedem a revisão do protocolo, do guia do responsável e do SVG da tela.
-2. **P4, P5, P6 e P7:** só removem ou escondem. Custo baixo de implementação e corrigem dois defeitos (o aviso permanente e o rótulo de versão errado).
-3. **P10:** corrige a entrega duplicada em "Entregue".
-4. **P8, P9, P11 e P12:** melhoram momentos menos frequentes. P8 toca a especificação (data na Nova data).
-
-## O que fica de fora destas propostas
-
-- **Registrar "outra missão" em várias folhas.** Quem tem duas missões registra o dia nas duas. Resolver isso exige a visão entre folhas (FN-03 e FN-04 no `BACKLOG.md`).
-- **Motivo para um intervalo de dias** ("outra missão até sexta"). O protocolo já o lista para reconsiderar; é independente destas propostas.
-- **Espaço do JEV na folha** (RESP-03). Adiado pela decisão D7. Se P2 for aceita, o lugar candidato "acima do registro do dia" passa a ser o topo da folha, o que pede cuidado para não ocupar o espaço do uso diário.
-- **Vista do gestor.** As propostas mudam só a vista do responsável; o que o gestor vê continua igual.
+- Na resposta a uma pendência, o rótulo "ALTERAÇÃO → v${g.versao}" mostra a versão atual, e não a versão que a resposta criou. Com P5, o rótulo some da tela do responsável, mas continua errado na vista do gestor.
+- Na situação Entregue, o botão "Preencher" continua disponível, e um novo preenchimento cria outra entrega. A revisão do gestor passa a apontar para ela sem aviso.
