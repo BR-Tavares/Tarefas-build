@@ -2,7 +2,32 @@
 
 Este documento centraliza todas as melhorias observadas no uso real e as evoluções estratégicas planejadas para as próximas versões (`v1.1`, `v2.0`), seguindo a regra do protocolo: *"Ideias novas vão para o backlog, não para o código da versão em andamento."*
 
-A arquitetura de evolução respeita a separação clara entre dois mundos:
+## 0. Hierarquia dos documentos e decisões vigentes (18/10/2026)
+
+**Qual documento define o quê:**
+
+| Documento | Papel | Tempo verbal |
+|---|---|---|
+| `fundamentos_engenharia_missoes.md` | Orientação teórica e espaço semântico (o *porquê*) | Permanente |
+| **`BACKLOG.md` (este)** | **Define os próximos passos e as decisões das próximas versões (o *quê fazer*)** | Futuro |
+| `especificacao_app_missoes.md` e `protocolo_missoes.md` | Descrevem o que já está implementado e as regras de uso atuais | Presente |
+
+Quando um item deste backlog é implementado, a especificação é atualizada para descrevê-lo. A especificação antiga **não bloqueia** item aprovado aqui; um conflito com ela é resolvido aqui e depois refletido nela.
+
+**Princípio de projeto (lean com acompanhamento Toyota, só o de eficiência máxima):** os responsáveis não são máquinas; têm dinâmica própria, como plantas. Quem se adapta é a interface, não a pessoa. Nada novo é exigido do responsável além do que já existe.
+
+| # | Decisão | Consequência no desenvolvimento |
+|---|---|---|
+| D1 | **A data estimada de entrega é suficiente.** Não haverá data por etapa nem cálculo de margem ou ritmo. | Itens baseados em datas de etapa foram retirados (ver RESP-01). |
+| D2 | **O responsável preenche atividades e pendências conforme o processo ocorre.** Nenhum campo novo obrigatório para ele. | RESP-02 absorvido pela pendência *Dúvida*. |
+| D3 | **O prazo não é o fator limitante; o rumo é.** O objetivo é compreensão e ajuste de rota para evitar retrabalho. | O JEV avalia aderência ao contrato, não atraso. Sinais de data continuam só no painel do gestor. |
+| D4 | **O JEV é o supervisor neutro da tarefa e aparece para o responsável com tom auxiliador.** A forma visual ainda não está definida. | A saída do JEV separa a orientação ao responsável (auxiliadora) da nota ao gestor. |
+| D5 | **O gestor tem o dashboard completo de todas as tarefas da equipe.** | GEST-01 é o painel principal do gestor. |
+| D6 | **"Com ressalvas" não é uma situação nova.** É derivada: revisão `concluida` com `produto ≠ atende` ou com `desvios` preenchido. | Usada para propagar impacto às missões dependentes (GEST-01). |
+
+---
+
+A arquitetura de evolução respeita a separação clara entre três papéis:
 1. **A Tela da Tarefa (Responsável):** Foco na execução da missão, autogestão e qualidade na fonte.
 2. **A Tela de Gestão de Tarefas (Gestor):** Foco no fluxo entre missões, dependências, nivelamento e aprendizados da equipe.
 3. **O Avaliador Independente (IA / JEV):** Um terceiro elemento neutro entre gestor e responsável para avaliar o andamento sem gerar atrito pessoal.
@@ -19,12 +44,13 @@ A arquitetura de evolução respeita a separação clara entre dois mundos:
 
 ## 2. Evoluções na Tela da Tarefa — Visão do Responsável
 
-Na tela do responsável, o objetivo não é vigiar, mas dar **ferramentas de autogestão e dicas baseadas nos conceitos da Toyota** no momento em que ele planeja e executa suas etapas:
+Na tela do responsável não há vigilância nem campos novos (D1, D2). A ajuda chega pela interface e pelo JEV, em tom auxiliador:
 
 | ID | Item / Estratégia | Conceito Base | Como funciona na Tela do Responsável | Status |
 |---|---|---|---|---|
-| **RESP-01** | **Guia dos 3 Conceitos Toyota no Planejamento de Etapas (com Margem de Revisão)** | *Jidoka* (Qualidade na Fonte), *Heijunka* (Ritmo Nivelado) e *Genchi Genbutsu* (Validar Cedo) | Em vez de um alerta frio de "margem zero", apresentar na caixa de **Etapas** um guia rápido/checklist interativo com 3 princípios práticos da Toyota e dicas ao montar o plano:<br>1. **Margem de Autorevisão (*Jidoka*):** *"Você deixou pelo menos 1 dia útil de margem antes do prazo final para revisar seu próprio trabalho com calma?"*<br>2. **Descoberta Cedo (*Genchi Genbutsu / Front-loading*):** *"Sua primeira etapa já testa na prática o ponto mais difícil ou incerto da missão?"*<br>3. **Passo Pequeno e Constante (*Heijunka*):** *"Suas etapas têm entregas curtas (2 a 4 dias) para não acumular tudo na última semana?"* | Proposto |
-| **RESP-02** | **Sinalização de Risco Inicial no Plano (*Backbrief* Rápido)** | *Mission Command Backbrief* | Campo opcional de 1 linha junto ao plano de etapas: *"Ponto de atenção ou dúvida que já enxergo no início"*, permitindo alinhar expectativas no Dia 1 sem precisar abrir um impedimento formal. | Proposto |
+| **RESP-01** | **Conceitos Toyota como perguntas do JEV, não como checklist de datas** | *Genchi Genbutsu* (validar cedo), *Jidoka* (qualidade na fonte) | Sem datas por etapa (D1). Os conceitos viram perguntas de orientação que o JEV usa quando os fatos da folha pedem: *"A primeira etapa já testa o ponto mais incerto?"*, *"Antes de entregar, as evidências de cada critério já estão onde o gestor vai procurar?"*. *Heijunka* (ritmo) fica fora, porque exige datas por etapa. | Revisado (D1) |
+| **RESP-02** | ~~Campo de ponto de atenção no plano~~ | *Backbrief* | Absorvido: a dúvida inicial é aberta como pendência *Dúvida*, que já existe e já notifica o gestor (D2). | Absorvido |
+| **RESP-03** | **Espaço do JEV na folha (forma a definir)** | Supervisor neutro (D4) | Exibe só a orientação ao responsável (1 a 2 frases, tom auxiliador, de preferência em forma de pergunta). Nunca mostra status de atraso nem comparação com outras pessoas. Forma visual a definir: candidatos são um cartão discreto acima do registro do dia ou uma nota ao lado das etapas. | Proposto |
 
 ---
 
@@ -34,9 +60,9 @@ A tela do gestor cuida do **sistema de gestão de múltiplas missões** — evol
 
 | ID | Item / Estratégia | Inspiração | Como funciona na Tela de Gestão | Status |
 |---|---|---|---|---|
-| **GEST-01** | **Quadro de Fluxo (Kanban / Obeya) e Grafo de Dependência entre Missões** | Toyota *Obeya* + SpaceX *WarpDrive* | Transformar o painel de gestão para visualizar o fluxo das missões em colunas/raias de estado (*Aguardando Plano → Em Execução → Com Impedimento → Em Revisão/Entrega → Concluída*) e permitir vincular **`MS-028 depende da MS-027`**. Se a missão anterior atrasar, sofrer *Alteração* ou for entregue *Com ressalvas*, o painel sinaliza imediatamente as missões seguintes afetadas. | Proposto |
-| **GEST-02** | **Memória de Lições na Criação (*Closed-Loop PRACA*)** | NASA *PRACA* + Toyota *Hansei* | Na tela de *Nova Missão*, exibir de forma acessível as últimas frases de encerramento (`O que melhorar na próxima especificação` e `O que dificultou`) das missões anteriores, com 1 clique para incorporar uma lição aprendida nos novos critérios. | Proposto |
-| **GEST-03** | **Templates de Critérios por Natureza da Missão** | NASA *Flight Rules* + Toyota *SBCE* | Botões rápidos na criação da missão para pré-estruturar os campos *Precisa acontecer / Não pode acontecer / Consultar antes* conforme o tipo: **(a) Execução Padrão**, **(b) Ensaio / Pesquisa de Limites (SBCE)** ou **(c) Resolução de Incidente**. | Proposto |
+| **GEST-01** | **Quadro de Fluxo (Kanban / Obeya) e Grafo de Dependência entre Missões** | Toyota *Obeya* + SpaceX *WarpDrive* | Transformar o painel de gestão para visualizar o fluxo das missões em colunas/raias de estado (*Aguardando Plano → Em Execução → Com Impedimento → Em Revisão/Entrega → Concluída*) e permitir vincular **`MS-028 depende da MS-027`**. Se a missão anterior atrasar, sofrer *Alteração* ou for entregue *Com ressalvas* (D6), o painel sinaliza imediatamente as missões seguintes afetadas.<br>**Implementação:** campo `dependeDe: [missaoId]` na missão (gestor grava); função pura `impactos(missoes)` em `analise.js` que gera o sinal `dependencia_impactada`; coluna extra *Aguardando plano* derivada de `primeiroPlanoEm` vazio; o status do JEV aparece em cada cartão (D5). | Proposto |
+| **GEST-02** | **Memória de Lições na Criação (*Closed-Loop PRACA*)** | NASA *PRACA* + Toyota *Hansei* | Na tela de *Nova Missão*, exibir de forma acessível as últimas frases de encerramento (`O que melhorar na próxima especificação` e `O que dificultou`) das missões anteriores, com 1 clique para incorporar uma lição aprendida nos novos critérios.<br>**Já existe:** leitura das 4 últimas frases na Nova Missão. **Falta:** incluir os `desvios` das entregas, o botão de incorporar e a marca de lição aplicada (fecha o ciclo). | Parcial |
+| **GEST-03** | **Templates de Critérios por Natureza da Missão** | NASA *Flight Rules* + Toyota *SBCE* | Botões rápidos na criação da missão para pré-estruturar os campos *Precisa acontecer / Não pode acontecer / Consultar antes* conforme o tipo: **(a) Execução Padrão**, **(b) Ensaio / Pesquisa de Limites (SBCE)** ou **(c) Resolução de Incidente**.<br>O tipo escolhido fica gravado na missão (`natureza`) e serve de ponto de partida para o JEV (IA-01). | Proposto |
 
 ---
 
@@ -46,7 +72,15 @@ Para eliminar a "trica" (atrito pessoal ou desgaste subjetivo) entre gerente e r
 
 | ID | Item / Estratégia | Papel no Protocolo | Como funciona Tecnicamente | Status |
 |---|---|---|---|---|
-| **IA-01** | **Avaliador JEV (IA Leve de Avaliação de Status e Orientação)** | Árbitro Técnico Neutro (sem atrito entre gestor e responsável) | Um modelo de IA leve e rápido (chamado via Cloud Function quando o plano ou o diário é atualizado) lê os dados objetivos da folha (critérios, etapas, datas, margem de revisão, pendências e histórico) e:<br>1. **Escolhe 1 status padronizado** dentro de uma lista fechada (ex.: `No Ritmo com Margem`, `Em Andamento sem Margem de Revisão`, `Risco de Escopo`, `Bloqueado por Decisão`, `Pronto para Revisão Final`).<br>2. **Emite uma orientação curta e imparcial** (1 a 2 frases) útil tanto para o responsável quanto para o gestor.<br>Como a classificação vem do **JEV (IA)** e não de uma cobrança manual do chefe, preserva-se a relação de confiança na equipe. | Proposto |
+| **IA-01** | **Avaliador JEV — supervisor neutro de rumo da tarefa** | Árbitro técnico neutro entre gestor e responsável (D3, D4) | **1. Avalia o tipo de tarefa.** Na emissão e a cada alteração, classifica a natureza da missão (`execucao_padrao`, `ensaio_limites`, `incidente`), partindo do campo `natureza` do GEST-03 quando ele existir. A natureza muda o que conta como estar no rumo: num ensaio, achar um limite é progresso; numa execução padrão, é desvio.<br>**2. Avalia se a tarefa segue no rumo certo**, sem usar o prazo como critério. Compara o que acontece (atividades do dia, etapas, pendências e respostas, alterações, desvios) com o contrato (necessidade, resultado esperado, entrega, critérios, precisa / não pode / consultar antes). Exemplos de deriva: atividades sem relação com a entrega; um critério sem nenhuma atividade que leve a ele; algo próximo de um "consultar antes" sem consulta aberta; uma resposta do gestor que não mudou as atividades seguintes.<br>**3. Escolhe 1 status de uma lista fechada:** `no_rumo`, `rumo_a_confirmar` (poucos registros para julgar), `possivel_desvio_de_escopo`, `decisao_pendente`, `criterio_sem_caminho`, `pronto_para_entregar`.<br>**4. Emite duas saídas:** `orientacaoResponsavel` (tom auxiliador, 1 a 2 frases, de preferência uma pergunta, sem cobrança; ver RESP-03) e `notaGestor` (diagnóstico objetivo, para o painel do GEST-01).<br>**Implementação:** Cloud Function acionada por gravações em `registros`, `pendencias`, `responsavel/estado` e `alteracoes`, no máximo 1 avaliação por missão por dia (*debounce*). Grava `missoes/{id}/avaliacao/atual` e o histórico em `avaliacoes/{AAAA-MM-DD}`. **Só a função grava**: as regras negam escrita de clientes; gestor e responsável leem. Os fatos objetivos (dias na mesma atividade, pendências abertas, critérios atendidos) são calculados por funções puras em `analise.js` e enviados ao modelo junto com o contrato. O modelo escolhe o status apenas dentro da lista fechada, e a saída é validada por esquema. | Proposto |
+---
+
+### Ordem de implementação recomendada
+
+1. **GEST-03** (natureza da missão e modelos de critério): barato, e dá ao JEV o ponto de partida do tipo de tarefa.
+2. **IA-01 + RESP-03** (JEV): primeiro os fatos objetivos em `analise.js` com testes; depois a Cloud Function, as regras de `avaliacao/` e a exibição (orientação ao responsável e nota ao gestor).
+3. **GEST-01** (painel completo da equipe, dependências e status do JEV por cartão).
+4. **GEST-02** (incorporar lições com 1 clique) e **UI-01**.
 
 ---
 

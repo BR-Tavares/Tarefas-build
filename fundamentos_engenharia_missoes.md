@@ -42,7 +42,7 @@ O **Protocolo de Missões** não copia os softwares pesados dessas instituiçõe
 Na Engenharia de Sistemas formal e no **DoDAF v2.0**, uma operação nunca é descrita apenas como uma lista de atividades. Ela exige a articulação de três visões operacionais complementares:
 - **`OV-1` (*High-Level Operational Concept*) → O Propósito / Intenção:** Qual é o efeito desejado no sistema maior após a conclusão desta missão?
 - **`OV-5b` (*Operational Activity Model*) → A Decomposição de Atividades e Entregáveis:** O que entra, o que é transformado e qual evidência verificável sai na outra ponta.
-- **`OV-6a` (*Operational Rules Model*) → O Modelo de Regras deRestrição:** Sob quais regras de negócio e limites de segurança a atividade deve operar?
+- **`OV-6a` (*Operational Rules Model*) → O Modelo de Regras de Restrição:** Sob quais regras de negócio e limites de segurança a atividade deve operar?
 
 Combinado ao conceito de **Design by Contract** (Bertrand Meyer) e à norma **IEEE 29148 (Requirements Engineering)**, isso significa que toda missão bem formada é uma tríade lógica:
 $$\text{Missão} = \langle \text{Pré-condições e Intenção}, \text{Invariantes de Fronteira}, \text{Pós-condições Verificáveis} \rangle$$
