@@ -95,12 +95,25 @@ function renderizarTelaLogin() {
         <p class="texto-campo" style="color:var(--muted);margin-bottom:20px;">
           Folha única por missão · O gestor define o quê; o responsável define o como.
         </p>
-        <button type="button" id="btn-login-google" class="btn btn-primario" style="width:100%;height:40px;font-size:13.5px;">
+        <button type="button" id="btn-login-google" class="btn btn-primario" style="width:100%;height:40px;font-size:13.5px;margin-bottom:10px;">
           Entrar com conta Google
+        </button>
+        <button type="button" id="btn-ver-exemplo-login" class="btn btn-outline-azul" style="width:100%;height:36px;font-size:12.5px;">
+          Ver exemplo didático da folha (sem login) ↗
         </button>
       </div>
     </div>
   `;
+
+  root.querySelector('#btn-ver-exemplo-login')?.addEventListener('click', () => {
+    import('./tela-folha.js').then(({ renderizarTelaFolha }) => {
+      renderizarTelaFolha(root, { ...estadoApp, papel: 'gestor' }, {
+        missaoId: 'MS-000',
+        somenteLeitura: true,
+        aoVoltar: () => renderizarTelaLogin(),
+      });
+    });
+  });
 
   root.querySelector('#btn-login-google')?.addEventListener('click', async () => {
     try {
