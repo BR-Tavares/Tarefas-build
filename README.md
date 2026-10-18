@@ -12,6 +12,7 @@ Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integra
 
 | Documento | Finalidade |
 |---|---|
+| [`fundamentos_engenharia_missoes.md`](./fundamentos_engenharia_missoes.md) | **Fundamentos e Doutrina de Engenharia de Missões (Espaço Semântico para Humanos e Modelos de IA — DoDAF, NASA, SpaceX, Mission Command, Toyota e JEV)** |
 | [`HANDOFF_E_OPERACAO.md`](./HANDOFF_E_OPERACAO.md) | **Manual de Operação, Arquitetura, Segurança, Manutenção, Handoff Técnico e Status** |
 | [`especificacao_app_missoes.md`](./especificacao_app_missoes.md) | Especificação técnica do sistema (v1.2 — o que o app faz e como é construído no Firebase) |
 | [`protocolo_missoes.md`](./protocolo_missoes.md) | Protocolo de Missões (v2.7 — princípios Lean, regras de uso e o porquê de cada campo) |
