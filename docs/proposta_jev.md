@@ -1,6 +1,6 @@
 # Proposta futura — JEV, o avaliador neutro da tarefa
 
-Versão 0.1 • 18/10/2026 • **Proposta futura, não aprovada para implementação** (ver BACKLOG, D7 e IA-01)
+Versão 0.1 • 18/10/2026 • **Proposta futura, não aprovada para implementação** (ver `governanca/BACKLOG.md`, D7 e IA-01)
 
 > Este documento guarda a concepção do JEV para que ela não se perca. Ele entra depois que a tela da tarefa estiver definida. Nada aqui altera o protocolo nem a especificação vigentes.
 

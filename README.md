@@ -8,22 +8,45 @@ Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integra
 
 ---
 
+## Visão Estratégica
+
+> Orienta quem evolui o sistema, humano ou agente de IA. Descreve o olhar do trabalho, não regras nem decisões: as decisões ficam em [`governanca/BACKLOG.md`](./governanca/BACKLOG.md) e o que está implementado, em [`governanca/SPECIFICATION.md`](./governanca/SPECIFICATION.md).
+
+**Objetivo.** Um método de gestão de tarefas de baixo atrito, no estilo Lean/Toyota, para uma equipe pequena que desenvolve plataformas com IA. O sistema ataca o atrito entre as pessoas: ruído de conversa, desvio de foco e combinado não registrado.
+
+**Princípios do olhar**
+- **Foco no processo, não na pessoa.** Cada tarefa tem desafios e dinâmica próprios e merece respeito por si. As pessoas também têm o seu ritmo; quem se adapta é o sistema (*wu wei*: não se puxa o broto). O sistema observa o desvio de rumo: corrige quando a tarefa se afasta do contrato e ajuda quando ela resiste.
+- **Entender antes de acelerar.** O prazo não é o fator limitante. O que importa é entender bem o problema e corrigir a rota cedo, para evitar retrabalho.
+- **Eficiência máxima.** Cada mecanismo precisa valer o custo que impõe a quem o usa.
+
+**A folha da tarefa**
+- **É do responsável.** O gestor define a tarefa no cabeçalho (o quê); a construção dela a partir daí, e a responsabilidade por ela, são do responsável (o como).
+- **É um ambiente focado e individual.** Contém só o que serve à execução desta tarefa. Conversas sobre outros assuntos, melhoria do método e integração entre frentes acontecem fora dela.
+- **É dinâmica.** As pendências geram respostas e alterações que mudam a tarefa e, com ela, as etapas. O histórico de versões serve à vista do gestor.
+- **Sentido dos elementos:** as etapas são a devolução do entendimento da tarefa; o registro do dia é um diário que mostra o tempo consumido em cada atividade (não se relaciona com o prazo); as pendências são o canal de comunicação com o gestor; a data estimada é referência visível ao responsável, não instrumento de cobrança.
+
+**Duas vistas.** O responsável vê a tarefa vigente, sem sinais, contagens ou cobrança. O gestor vê também versões, linha do tempo, sinais e avaliação da tarefa, para saber onde remover obstáculos. Na proposta futura do avaliador neutro ([`docs/proposta_jev.md`](./docs/proposta_jev.md)), a frase de apoio vai ao responsável e o sinal de avaliação da tarefa, só ao gestor.
+
+**Prioridade atual:** a tela da tarefa (responsável). A tela do gestor (Kanban, dependências) e o JEV vêm depois.
+
+---
+
 ## Índice de Documentação Oficial
 
-| Documento | Finalidade |
-|---|---|
-| [`fundamentos_engenharia_missoes.md`](./fundamentos_engenharia_missoes.md) | **Fundamentos e Doutrina de Engenharia de Missões (Espaço Semântico para Humanos e Modelos de IA — DoDAF, NASA, SpaceX, Mission Command, Toyota e JEV)** |
-| [`espaco_semantico_folha.md`](./espaco_semantico_folha.md) | **O olhar sobre a folha da tarefa: definições e lentes de leitura (não são regras nem decisões)** |
-| [`governanca/OPERACAO.md`](./governanca/OPERACAO.md) | **Manual de Operação, Arquitetura, Segurança, Runbook de Testes (JDK 25) e Deploy no Firebase** (Permanente) |
-| [`governanca/STATUS.md`](./governanca/STATUS.md) | **Fotografia do Ambiente em Produção e Homologação dos 14 Critérios de Aceite** (Presente) |
-| [`governanca/HANDOFF.md`](./governanca/HANDOFF.md) | **Passagem de Bastão da Sessão de Trabalho e Próximos Passos Imediatos** (Efêmero) |
-| [`BACKLOG.md`](./BACKLOG.md) | **Backlog vivo de concepção da v1.1/v2.0: Decisões D1–D8, UI Black, Kanban/Obeya, JEV e REA** (Futuro) |
-| [`especificacao_app_missoes.md`](./especificacao_app_missoes.md) | Especificação técnica de requisitos funcionais da v1 |
-| [`protocolo_missoes.md`](./protocolo_missoes.md) | Protocolo de Missões (v2.7 — princípios Lean, regras de uso e o porquê de cada campo) |
-| [`guia_uso_gestor.md`](./guia_uso_gestor.md) | Guia rápido de uso de 1 página para o **Gestor** |
-| [`guia_uso_responsavel.md`](./guia_uso_responsavel.md) | Guia rápido de uso de 1 página para o **Responsável** |
-| [`tela_missao_funcionario.svg`](./tela_missao_funcionario.svg) | Esboço visual de referência da folha do responsável no celular |
-| [`CHANGELOG.md`](./CHANGELOG.md) | Histórico de versões e entregas (padrão Keep a Changelog) |
+| Seção / Pasta | Documento | Finalidade |
+|---|---|---|
+| **Governança** | [`governanca/SPECIFICATION.md`](./governanca/SPECIFICATION.md) | **Especificação Técnica do Sistema** (Contrato formal de requisitos da v1 no padrão SDD) |
+| **Governança** | [`governanca/BACKLOG.md`](./governanca/BACKLOG.md) | **Backlog Vivo de Produto** (Decisões de concepção D1–D8, UI Black, Kanban/Obeya, JEV e REA) |
+| **Governança** | [`governanca/OPERACAO.md`](./governanca/OPERACAO.md) | **Manual de Operação e Runbook** (Arquitetura, segurança, testes JDK 25 e deploy no Firebase) |
+| **Governança** | [`governanca/STATUS.md`](./governanca/STATUS.md) | **Fotografia do Ambiente em Produção** (Estado atual e 14 critérios de aceite validados) |
+| **Governança** | [`governanca/HANDOFF.md`](./governanca/HANDOFF.md) | **Passagem de Bastão** (Efêmero: o que foi feito na sessão e próximos passos imediatos) |
+| **Doutrina & Teoria** | [`docs/fundamentos_engenharia_missoes.md`](./docs/fundamentos_engenharia_missoes.md) | **Fundamentos e Espaço Semântico** (DoDAF, NASA, SpaceX, Mission Command, Toyota e JEV) |
+| **Doutrina & Teoria** | [`docs/protocolo_missoes.md`](./docs/protocolo_missoes.md) | **Protocolo de Missões (v2.7)** (Princípios Lean/Toyota e regras metodológicas da folha) |
+| **Proposta Futura** | [`docs/proposta_jev.md`](./docs/proposta_jev.md) | **Avaliador neutro da tarefa (JEV)** (Não aprovado para implementação) |
+| **Guias Rápidos** | [`docs/guia_uso_gestor.md`](./docs/guia_uso_gestor.md) | Guia rápido de uso de 1 página para o **Gestor** |
+| **Guias Rápidos** | [`docs/guia_uso_responsavel.md`](./docs/guia_uso_responsavel.md) | Guia rápido de uso de 1 página para o **Responsável** |
+| **Referência Visual** | [`docs/tela_missao_funcionario.svg`](./docs/tela_missao_funcionario.svg) | Esboço visual da folha do responsável no celular |
+| **Histórico** | [`CHANGELOG.md`](./CHANGELOG.md) | Histórico de versões e entregas (padrão Keep a Changelog) |
 
 ---
 
