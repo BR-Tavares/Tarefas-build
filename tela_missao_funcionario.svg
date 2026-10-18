@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="1270" viewBox="0 0 820 1270" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<title>Tela da missão — funcionário</title>
+<rect x="0" y="0" width="820" height="1270" rx="0" fill="#FBFBFC" stroke="#FBFBFC" stroke-width="1"/>
+<rect x="20" y="20" width="400" height="1218" rx="36" fill="#F4F5F7" stroke="#C9CED4" stroke-width="2"/>
+<rect x="36" y="40" width="368" height="452" rx="12" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="52" y="64" font-size="12" font-weight="500" fill="#656D76" text-anchor="start">MS-027 · versão 2</text>
+<text x="52" y="90" font-size="18" font-weight="700" fill="#1F2328" text-anchor="start">Calibrar sensor de umidade em</text>
+<text x="52" y="113" font-size="18" font-weight="700" fill="#1F2328" text-anchor="start">solo argiloso</text>
+<rect x="180" y="97" width="62" height="24" rx="12" fill="#E8F1FB" stroke="#0B6BCB" stroke-width="1"/>
+<text x="211.0" y="113" font-size="12" font-weight="600" fill="#0B6BCB" text-anchor="middle">Docs ↗</text>
+<rect x="250" y="97" width="66" height="24" rx="12" fill="#E8F1FB" stroke="#0B6BCB" stroke-width="1"/>
+<text x="283.0" y="113" font-size="12" font-weight="600" fill="#0B6BCB" text-anchor="middle">Pasta ↗</text>
+<rect x="52" y="128" width="92" height="24" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
+<text x="98.0" y="144" font-size="12" font-weight="600" fill="#2E7D32" text-anchor="middle">Em execução</text>
+<rect x="152" y="128" width="145" height="24" rx="12" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="224.5" y="144" font-size="12" font-weight="600" fill="#1F2328" text-anchor="middle">Data estimada 28/10</text>
+<line x1="52" y1="166" x2="388" y2="166" stroke="#E1E4E8"/>
+<text x="52" y="188" font-size="10.5" font-weight="700" fill="#656D76" text-anchor="start">NECESSIDADE</text>
+<text x="52" y="204" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Saber se o sensor v2 mede bem em solo argiloso.</text>
+<text x="52" y="222" font-size="10.5" font-weight="700" fill="#656D76" text-anchor="start">TAREFA</text>
+<text x="52" y="238" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Comparar as leituras com o método gravimétrico.</text>
+<text x="52" y="256" font-size="10.5" font-weight="700" fill="#656D76" text-anchor="start">ENTREGA</text>
+<text x="52" y="272" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Planilha e curva de calibração na pasta.</text>
+<text x="52" y="290" font-size="10.5" font-weight="700" fill="#656D76" text-anchor="start">CRITÉRIO DE CONCLUSÃO</text>
+<text x="52" y="306" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Erro médio ≤ 3 p.p., 4 níveis × 3 rep. — teste</text>
+<rect x="198" y="278" width="76" height="16" rx="8" fill="#E8F1FB" stroke="#0B6BCB" stroke-width="1"/>
+<text x="236" y="290" font-size="10.5" font-weight="600" fill="#0B6BCB" text-anchor="middle">mudou na v2</text>
+<text x="52" y="330" font-size="12" font-weight="600" fill="#0B6BCB" text-anchor="start">Ver resultado esperado e insumos ▾</text>
+<text x="52" y="362" font-size="13" font-weight="700" fill="#1F2328" text-anchor="start">Requisitos da tarefa</text>
+<text x="52" y="386" font-size="10.5" font-weight="700" fill="#2E7D32" text-anchor="start">PRECISA ACONTECER</text>
+<text x="52" y="402" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Registrar todas as leituras, inclusive as descartadas.</text>
+<text x="52" y="420" font-size="10.5" font-weight="700" fill="#C62828" text-anchor="start">NÃO PODE ACONTECER</text>
+<text x="52" y="436" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Usar solo de outra classe textural.</text>
+<text x="52" y="454" font-size="10.5" font-weight="700" fill="#0B6BCB" text-anchor="start">CONSULTAR ANTES</text>
+<text x="52" y="470" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Mudar o número de níveis ou de repetições.</text>
+<rect x="36" y="504" width="368" height="190" rx="12" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="52" y="530" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Etapas</text>
+<text x="388" y="530" font-size="12" font-weight="500" fill="#0B6BCB" text-anchor="end">editar</text>
+<text x="108" y="530" font-size="11" font-weight="500" fill="#656D76" text-anchor="start">escritas no início · 19/10</text>
+<rect x="52" y="552" width="16" height="16" rx="4" fill="#2E7D32" stroke="#2E7D32" stroke-width="1"/>
+<path d="M56 560 l3 3 l6 -7" stroke="#fff" stroke-width="2" fill="none"/>
+<text x="78" y="564" font-size="13" font-weight="500" fill="#656D76" text-anchor="start">Amostras preparadas</text>
+<rect x="52" y="580" width="16" height="16" rx="4" fill="#FFFFFF" stroke="#9AA1A9" stroke-width="1.5"/>
+<text x="78" y="592" font-size="13" font-weight="500" fill="#1F2328" text-anchor="start">Níveis 1 a 3 medidos</text>
+<rect x="52" y="608" width="16" height="16" rx="4" fill="#FFFFFF" stroke="#9AA1A9" stroke-width="1.5"/>
+<text x="78" y="620" font-size="13" font-weight="500" fill="#1F2328" text-anchor="start">Nível 4 medido</text>
+<rect x="52" y="636" width="16" height="16" rx="4" fill="#FFFFFF" stroke="#9AA1A9" stroke-width="1.5"/>
+<text x="78" y="648" font-size="13" font-weight="500" fill="#1F2328" text-anchor="start">Planilha consolidada</text>
+<text x="52" y="680" font-size="11.5" font-weight="500" fill="#656D76" text-anchor="start">Uma vez, no início, para alinhar o entendimento.</text>
+<rect x="36" y="706" width="368" height="200" rx="12" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="52" y="732" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Pendências</text>
+<text x="388" y="732" font-size="12" font-weight="500" fill="#0B6BCB" text-anchor="end">+ abrir</text>
+<rect x="52" y="742" width="190" height="24" rx="12" fill="#FDECEC" stroke="#C62828" stroke-width="1"/>
+<text x="147.0" y="758" font-size="12" font-weight="600" fill="#C62828" text-anchor="middle">IMPEDIMENTO · só o nível 5</text>
+<text x="52" y="786" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">A estufa só seca 3 amostras por ciclo: 5 níveis não</text>
+<text x="52" y="802" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">cabem até 28/10. Sugiro 4 níveis × 3 repetições.</text>
+<rect x="52" y="814" width="336" height="52" rx="8" fill="#E8F1FB" stroke="#E8F1FB" stroke-width="0"/>
+<text x="64" y="834" font-size="11.5" font-weight="700" fill="#0B6BCB" text-anchor="start">Resposta do gestor · ALTERAÇÃO → v2</text>
+<text x="64" y="854" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">De acordo: o critério passa a 4 níveis × 3 rep.</text>
+<rect x="248" y="874" width="140" height="26" rx="13" fill="#FFFFFF" stroke="#0B6BCB" stroke-width="1"/>
+<text x="318" y="891" font-size="12" font-weight="600" fill="#0B6BCB" text-anchor="middle">Fechar pendência</text>
+<text x="52" y="891" font-size="11" font-weight="500" fill="#656D76" text-anchor="start">Você abriu, você fecha.</text>
+<rect x="36" y="918" width="368" height="64" rx="12" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="52" y="944" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Entrega</text>
+<text x="52" y="968" font-size="12" font-weight="400" fill="#656D76" text-anchor="start">Resultado, evidência por critério, desvios.</text>
+<rect x="296" y="928" width="92" height="26" rx="13" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="342" y="945" font-size="12" font-weight="600" fill="#1F2328" text-anchor="middle">Preencher</text>
+<rect x="36" y="994" width="368" height="214" rx="12" fill="#FFFFFF" stroke="#0B6BCB" stroke-width="1.5"/>
+<text x="52" y="1020" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Registro do dia</text>
+<rect x="52" y="1036" width="82" height="38" rx="8" fill="#FFFFFF" stroke="#9AA1A9" stroke-width="1"/>
+<text x="62" y="1060" font-size="12.5" font-weight="600" fill="#1F2328" text-anchor="start">Qui 22/10</text>
+<text x="126" y="1060" font-size="10" font-weight="600" fill="#656D76" text-anchor="end">▾</text>
+<rect x="140" y="1036" width="204" height="38" rx="8" fill="#FFFFFF" stroke="#0B6BCB" stroke-width="1.5"/>
+<text x="152" y="1060" font-size="13" font-weight="500" fill="#1F2328" text-anchor="start">sec</text>
+<line x1="175" y1="1047" x2="175" y2="1063" stroke="#0B6BCB" stroke-width="1.5"/>
+<circle cx="370" cy="1055" r="19" fill="#0B6BCB"/>
+<path d="M361 1055 l6 6 l11 -12" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="140" y="1080" width="204" height="116" rx="8" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<rect x="141" y="1081" width="202" height="26" rx="7" fill="#E8F1FB" stroke="#E8F1FB" stroke-width="0"/>
+<text x="152" y="1099" font-size="12.5" font-weight="600" fill="#0B6BCB" text-anchor="start">secar amostras n1</text>
+<line x1="150" y1="1114" x2="334" y2="1114" stroke="#E1E4E8"/>
+<text x="152" y="1134" font-size="12" font-weight="500" fill="#656D76" text-anchor="start">Sem trabalho: folga ou saúde</text>
+<text x="152" y="1158" font-size="12" font-weight="500" fill="#656D76" text-anchor="start">Sem trabalho: outra missão</text>
+<text x="152" y="1182" font-size="12" font-weight="500" fill="#656D76" text-anchor="start">Sem trabalho: fora de missão</text>
+<text x="446" y="52" font-size="20" font-weight="800" fill="#1F2328" text-anchor="start">Tela da missão — funcionário</text>
+<text x="446" y="74" font-size="12.5" font-weight="500" fill="#656D76" text-anchor="start">Esboço de intenção · celular · dados do exemplo MS-027</text>
+<line x1="412" y1="96" x2="446" y2="96" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="96" r="12" fill="#0B6BCB"/>
+<text x="458" y="101" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+<text x="480" y="100" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Cabeçalho com tudo o que o gestor definiu</text>
+<text x="480" y="117" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Abre direto na missão atribuída, sem lista.</text>
+<text x="480" y="134" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Docs e pasta ao lado do título, a um toque.</text>
+<line x1="412" y1="164" x2="446" y2="164" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="164" r="12" fill="#0B6BCB"/>
+<text x="458" y="169" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+<text x="480" y="168" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Data estimada, não prazo</text>
+<text x="480" y="185" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">É estimativa: se mudar, você informa a nova data.</text>
+<line x1="412" y1="246" x2="446" y2="246" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="246" r="12" fill="#0B6BCB"/>
+<text x="458" y="251" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+<text x="480" y="250" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Descrição resumida, só leitura</text>
+<text x="480" y="267" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">O que mudou na última versão fica marcado.</text>
+<line x1="412" y1="416" x2="446" y2="416" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="416" r="12" fill="#0B6BCB"/>
+<text x="458" y="421" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+<text x="480" y="420" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Requisitos da tarefa</text>
+<text x="480" y="437" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Precisa acontecer, não pode acontecer e o que</text>
+<text x="480" y="454" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">consultar antes. Valem para toda a missão.</text>
+<line x1="412" y1="576" x2="446" y2="576" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="576" r="12" fill="#0B6BCB"/>
+<text x="458" y="581" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+<text x="480" y="580" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Etapas: escritas uma vez, no início</text>
+<text x="480" y="597" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Para alinhar o entendimento com o gestor.</text>
+<text x="480" y="614" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Você marca cada uma quando termina.</text>
+<text x="480" y="631" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Etapa não é atividade do dia.</text>
+<line x1="412" y1="796" x2="446" y2="796" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="796" r="12" fill="#0B6BCB"/>
+<text x="458" y="801" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+<text x="480" y="800" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Pendência e resposta na sua folha</text>
+<text x="480" y="817" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">O gestor responde aqui: resposta (a folha não muda)</text>
+<text x="480" y="834" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">ou alteração (nova versão). Quem abre, fecha.</text>
+<line x1="412" y1="944" x2="446" y2="944" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="944" r="12" fill="#0B6BCB"/>
+<text x="458" y="949" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
+<text x="480" y="948" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Entrega</text>
+<text x="480" y="965" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Quando o trabalho estiver pronto.</text>
+<line x1="412" y1="1048" x2="446" y2="1048" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="1048" r="12" fill="#0B6BCB"/>
+<text x="458" y="1053" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">8</text>
+<text x="480" y="1052" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Registro do dia: uma linha</text>
+<text x="480" y="1069" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Data à esquerda, atividade no meio, ícone de</text>
+<text x="480" y="1086" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">registrar à direita. O auto-complete sugere as</text>
+<text x="480" y="1103" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">atividades já usadas e, no fim, "sem trabalho".</text>
+<line x1="412" y1="1146" x2="446" y2="1146" stroke="#0B6BCB" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="458" cy="1146" r="12" fill="#0B6BCB"/>
+<text x="458" y="1151" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">9</text>
+<text x="480" y="1150" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Sem histórico, contagem ou alerta</text>
+<text x="480" y="1167" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">Você registra e segue. A análise da sequência</text>
+<text x="480" y="1184" font-size="12.5" font-weight="400" fill="#656D76" text-anchor="start">de dias é feita só na tela do gestor.</text>
+<rect x="446" y="1226" width="350" height="26" rx="8" fill="#FFFFFF" stroke="#E1E4E8" stroke-width="1"/>
+<text x="458" y="1244" font-size="12" font-weight="600" fill="#656D76" text-anchor="start">Análise e sinais: só na tela do gestor (analise.js).</text>
+</svg>

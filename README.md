@@ -1,13 +1,28 @@
-# Tarefas-build — App de Missões (PWA v1)
+# Tarefas-build — App de Missões (PWA v1.0.0)
 
 Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integralmente o **Protocolo de Missões v2.7** (`protocolo_missoes.md`) e a **Especificação v1.2** (`especificacao_app_missoes.md`).
 
-- **URL do PWA (Firebase Hosting):** `https://tarefas-build.web.app`
-- **Projeto Firebase:** `tarefas-build` (região `southamerica-east1` — São Paulo)
+- **URL de Produção (Firebase Hosting):** `https://tarefas-build.web.app`
+- **Projeto Firebase / GCP:** `tarefas-build` (região `southamerica-east1` — São Paulo)
+- **Status:** `v1.0.0` publicada em produção (Critérios de Aceite 1 a 14 validados)
 
 ---
 
-## Arquitetura e Estrutura
+## Índice de Documentação Oficial
+
+| Documento | Finalidade |
+|---|---|
+| [`HANDOFF_E_OPERACAO.md`](./HANDOFF_E_OPERACAO.md) | **Manual de Operação, Arquitetura, Segurança, Manutenção, Handoff Técnico e Status** |
+| [`especificacao_app_missoes.md`](./especificacao_app_missoes.md) | Especificação técnica do sistema (v1.2 — o que o app faz e como é construído no Firebase) |
+| [`protocolo_missoes.md`](./protocolo_missoes.md) | Protocolo de Missões (v2.7 — princípios Lean, regras de uso e o porquê de cada campo) |
+| [`guia_uso_gestor.md`](./guia_uso_gestor.md) | Guia rápido de uso de 1 página para o **Gestor** |
+| [`guia_uso_responsavel.md`](./guia_uso_responsavel.md) | Guia rápido de uso de 1 página para o **Responsável** |
+| [`tela_missao_funcionario.svg`](./tela_missao_funcionario.svg) | Esboço visual de referência da folha do responsável no celular |
+| [`CHANGELOG.md`](./CHANGELOG.md) | Histórico de versões e entregas (padrão Keep a Changelog) |
+
+---
+
+## Arquitetura e Estrutura de Código
 
 - `public/analise.js` e `functions/analise.js`: cópia intacta do módulo puro `analise.js`, compartilhado entre o painel do gestor e a Cloud Function agendada de sinais.
 - `public/adaptador.js`: converte os documentos e subcoleções do Firestore nos objetos `{ g, r }` esperados por `analise.js` e resolve os links vigentes (`docsUrl` e `pastaUrl` com timestamp `linksEm`, permitindo edição tanto pelo gestor em `missoes/{id}` quanto pelo responsável em `responsavel/estado` sem quebrar a regra de um único escritor por documento).
@@ -17,7 +32,7 @@ Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integra
 - `public/tela-folha.js`: os 5 blocos da folha da missão (cabeçalho, etapas com aviso do primeiro plano, pendências e respostas/alterações, entrega/revisão/encerramento e registro do dia em uma linha com auto-complete em até 3 toques e suporte offline via `persistentLocalCache`), além da folha espelhada do gestor com painel, linha do tempo e perguntas do Coaching Kata.
 - `public/tela-painel.js`: lista e painel do gestor em tempo real, destacando no topo os sinais que notificam.
 - `public/notificacoes.js` & `public/firebase-messaging-sw.js`: coleta de permissão/token FCM (`equipes/{id}/tokens/{uid}`) e exibição de notificações push.
-- `functions/index.js`: Cloud Functions v2 em `southamerica-east1` para eventos em tempo real e agendamento de hora em hora (8h–18h nos dias úteis).
+- `functions/index.js`: 6 Cloud Functions v2 em `southamerica-east1` para eventos em tempo real e agendamento de hora em hora (8h–18h nos dias úteis).
 - `firestore.rules` & `test/firestore.rules.test.js`: regras de segurança no servidor garantindo um único escritor por documento e isolamento por papel/equipe, testadas no Firebase Firestore Emulator.
 
 ---
@@ -31,31 +46,14 @@ npm run test:analise
 # Testes das regras de segurança no Firebase Firestore Emulator (critérios 1, 6, 12 e 13)
 npm run test:rules
 
-# Suite completa
+# Suíte completa (14 testes)
 npm test
 ```
 
 ---
 
-## Passo a Passo de Administração (Gestor)
+## Resumo de Administração (Gestor)
 
-### 1. Primeiro acesso e criação da equipe
-1. Acesse `https://tarefas-build.web.app` e clique em **Entrar com conta Google**.
-2. No primeiro acesso do projeto, informe o nome da equipe e clique em **Criar equipe**. Sua conta será gravada como `gestorUid` e os feriados nacionais de 2026 e 2027 já serão cadastrados automaticamente.
-
-### 2. Incluir e desativar pessoas (Responsáveis)
-1. No menu superior do gestor, clique em **Equipe**.
-2. Em **Incluir responsável na equipe**, preencha o **Nome** e o **E-mail Google** da pessoa e clique em **Incluir pessoa** (grava `equipes/{id}/membros/{email}` com `papel: "responsavel"` e `ativo: true`).
-3. Para revogar o acesso de alguém sem perder o histórico das missões anteriores, clique em **Desativar** ao lado do nome na lista (`ativo: false`). Para restaurar o acesso, clique em **Reativar**.
-
-### 3. Gerir feriados (nacionais e locais)
-1. Na tela **Equipe**, role até **Feriados e dias sem expediente**.
-2. Para incluir um feriado municipal/estadual ou emenda, escolha a data no seletor e clique em **Adicionar feriado**.
-3. Para remover uma data, clique no `×` ao lado dela.
-
----
-
-## Guias de Uso (1 página cada)
-
-- [Guia de Uso — Gestor](./guia_uso_gestor.md)
-- [Guia de Uso — Responsável](./guia_uso_responsavel.md)
+1. **Primeiro acesso e criação da equipe:** Acesse `https://tarefas-build.web.app`, clique em **Entrar com conta Google** e crie a equipe (os feriados nacionais de 2026/2027 já entram automaticamente).
+2. **Incluir e desativar pessoas:** No menu **Equipe**, cadastre o Nome e o E-mail Google do responsável. Para revogar acesso mantendo o histórico, clique em **Desativar**.
+3. **Gerir feriados:** No menu **Equipe**, adicione feriados estaduais/municipais ou emendas para que `analise.js` não os conte como dias úteis.
