@@ -2,9 +2,9 @@
 
 18/10/2026 • Versão 3, avaliada pelo gestor • Nada aqui está implementado
 
-**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada.
+**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada. P6, vinda de `docs/proposta_metodologias_microtarefas.md`, aguarda avaliação.
 
-Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7) e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
+Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7), a `docs/proposta_metodologias_microtarefas.md` e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
 
 ## O objetivo que orienta as propostas
 
@@ -63,6 +63,31 @@ A forma de mostrar o histórico na tela do gestor fica para depois, junto com a 
 - **Problema:** a situação é um instrumento do gestor: diz quem age, num Kanban com dezenas de tarefas. Na folha do responsável, ela é uma marca de controle que não informa nada a quem está executando.
 - **O que muda:** o selo de situação sai da tela do responsável. O número da versão **fica**, porque "versão 1" mostra que o combinado não mudou. A data estimada também fica, com o "+N por impedimento" que o protocolo prevê. Na vista do gestor, nada muda.
 - **Custo e ganho:** custo zero. A tela do responsável fica só com o combinado, o plano e a conversa.
+
+---
+
+## P6. Exemplo de entrega aceita no cabeçalho — para avaliação
+
+Origem: estratégia 2.2 de `docs/proposta_metodologias_microtarefas.md` (exemplos positivos e negativos).
+
+- **O que se observa:** o cabeçalho descreve a entrega e os critérios em texto. O "não pode acontecer" diz o que é proibido no caminho, mas nada mostra como é uma entrega que serve ou que não serve. No exemplo do protocolo, a frase de encerramento do responsável foi "a folha deveria ter dito a capacidade da estufa", ou seja, faltou algo concreto na leitura inicial.
+- **Problema:** texto descritivo deixa margem para entender a entrega de outro jeito, e essa diferença só aparece na revisão. É o desvio mais caro, porque é descoberto no fim. A visão pede entender antes de acelerar, e um exemplo concreto é a forma mais barata de alinhar o entendimento.
+- **O que muda:** a entrega ganha uma linha opcional, preenchida pelo gestor ao criar a missão: **Exemplo**, uma entrega parecida que foi aceita (ou onde vê-la, no Docs ou na pasta) e, se houver, um erro comum que não serve. Se não houver exemplo, a linha não aparece. Os encerramentos das missões parecidas são a fonte natural desses exemplos.
+- **Custo e ganho:** o responsável não preenche nada e só lê. O custo fica com o gestor, numa linha opcional na criação. O ganho é que a primeira leitura do cabeçalho, que gera as etapas, já parte de algo concreto, e o plano nasce mais perto do que a revisão vai pedir.
+- **Alternativa mais leve:** citar o exemplo em **Insumos**, que já existe. Nesse caso, a P6 vira só uma orientação no guia do gestor, sem campo novo.
+
+## O que a proposta de micro-tarefas traz para a folha
+
+A proposta foi escrita para outro modelo: tarefas num mural aberto, aceitas por voluntários. Os problemas principais dela, a reserva sem execução e o abandono, não existem numa folha individual atribuída. O problema da folha é o entendimento da tarefa. Por isso, só uma estratégia entra como proposta nova.
+
+| Estratégia | Avaliação para a folha |
+|---|---|
+| 2.1 Atomicidade (um verbo, uma entrega) | Reforça a regra das três linhas de critério. É regra da criação da missão (tela do gestor), não da folha do responsável. |
+| 2.2 Exemplos positivos e negativos | **Contribui:** vira a P6. |
+| 2.3 Validação estruturada na entrega | Já existe: critério com forma de verificação e evidência por critério na entrega. Um checklist a mais repetiria a revisão do gestor. |
+| 2.4 Aceite com prazo de expiração | Não cabe. É cobrança por tempo, contra "a folha informa; não cobra". O micro-backbrief já existe: a folha pede as etapas antes de tudo e o gestor recebe o aviso do primeiro plano. |
+| 2.5 Andon de ambiguidade | Já existe: pendência de dúvida e de impedimento. |
+| 2.6 Pré-verificação pelo JEV antes da entrega | Serve ao objetivo, porque pega o desvio antes da revisão, mas já está no backlog (RESP-01 e REA-03) e o JEV está adiado (D7). Quando entrar, deve ser só uma pergunta de apoio, sem bloquear a entrega: a folha é do responsável. |
 
 ---
 
