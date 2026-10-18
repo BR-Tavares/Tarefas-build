@@ -150,17 +150,14 @@ Uma missão inviável não é recusada: o responsável abre um impedimento dizen
 ### 4. Entrega, revisão e encerramento
 
 **Entrega (responsável):**
-- **Resultado:** o que foi obtido, separando o dado da interpretação.
-- **Evidência por critério de conclusão:** atendido / parcial / não atendido, e onde está a evidência (de preferência, no Docs ou na pasta).
-- **Desvios e limites:** o que mudou em relação ao combinado, se algum requisito ficou em risco, e o que o resultado não permite concluir.
+- **Link da entrega:** o trabalho entregue (resultado, relatórios, dados e desvios) vive fora da folha, no documento ou pasta apontada pelo link.
+- **Checklist dos critérios de conclusão:** o responsável marca cada critério como *atendido*, *parcial* ou *não atendido*. Para marcas parcial ou não atendido, é obrigatório registrar uma linha com o "por quê". Onde está a comprovação é opcional, preenchido apenas se a comprovação estiver fora do documento principal entregue.
 
-**Revisão (gestor),** em até 2 dias úteis, **somente pelo que está na folha:** os critérios de conclusão foram atendidos? O que precisava acontecer aconteceu, e o que não podia acontecer não aconteceu? O gestor abre a evidência, não só o resumo. Uma exigência nova vira outra missão, não um ajuste desta. São dois olhares separados:
-1. **A missão foi concluída?** Critérios e requisitos foram cumpridos e as evidências estão lá?
-2. **O que o resultado diz sobre o produto?** Atende, não atende ou é inconclusivo.
-
-Uma missão pode estar concluída mesmo quando o produto falha. Achar a falha costuma ser o melhor resultado de um teste.
-
-A revisão termina como **concluída** ou **em ajuste**. Neste caso, cada ajuste aponta o critério ou o requisito não cumprido.
+**Revisão (gestor),** em até 2 dias úteis, **somente pelo que está na folha e no link:** os critérios de conclusão foram atendidos?
+- Cada critério é avaliado individualmente como **aceito** ou **não aceito** (neste caso, descreve-se "o que falta").
+- Se todos os critérios forem aceitos, a missão é **concluída**. Se algum critério não for aceito, a missão fica **em ajuste** para que o responsável corrija ou atualize a entrega.
+- Uma exigência nova que altere o combinado não gera outra missão: entra por alteração de cabeçalho da mesma missão (nova versão).
+- **Avaliação do produto:** atende, não atende ou inconclusivo. Uma missão pode estar concluída mesmo quando o produto falha. Achar a falha costuma ser o melhor resultado de um teste.
 
 **Encerramento:**
 - **Responsável,** em uma frase: **O que a folha deveria ter dito desde o início?**
