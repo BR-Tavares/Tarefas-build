@@ -1,14 +1,18 @@
 # Propostas para a folha da tarefa (tela do responsável)
 
-18/10/2026 • Versão 3, avaliada pelo gestor • Nada aqui está implementado
+18/10/2026 • Versão 4 • Nada aqui está implementado
 
-**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada. P6, vinda de `docs/proposta_metodologias_microtarefas.md`, e P7, sobre a entrega, aguardam avaliação.
+**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada. P6, P7 e P8 aguardam avaliação.
 
-Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7), a `docs/proposta_metodologias_microtarefas.md` e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
+Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7), `docs/proposta_metodologias_microtarefas.md`, `docs/analise_rejeicoes_smart_contracts_missoes.md` e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
 
 ## O objetivo que orienta as propostas
 
 A folha existe para **permitir o ajuste**: corrigir a rota da tarefa cedo, antes que o desvio vire retrabalho. O centro dela são as **etapas**, porque elas mostram como o responsável entendeu a tarefa, e é sobre elas que gestor e responsável conversam. O cabeçalho é o combinado e fica sempre à vista. As pendências são o canal do ajuste. O registro do dia é só um diário de foco e não deve ocupar a atenção do responsável.
+
+**A folha é um formato que se aprende.** É o lugar onde a tarefa é bem estruturada. Com tarefas simples e depois complexas, o gestor aprende a escrever a tarefa nesse formato e o responsável aprende a atendê-la. Como tudo o que é cobrado está escrito na folha, desaparece o desconforto de não saber o que está sendo cobrado. As dificuldades viram pendências, as respostas ficam registradas, as etapas mostram ao gestor se a tarefa está sendo entendida, e o responsável se sente dono dela. É a correção de rota no estilo Toyota com a redução de atrito do Lean.
+
+Daí sai um teste para cada proposta: **ela deixa o formato mais estável e mais fácil de aprender, e protege o combinado escrito?**
 
 Cada proposta abaixo serve a esse objetivo ou tira algo do caminho dele. A numeração da versão 2 foi mantida, por isso não há P2.
 
@@ -21,6 +25,7 @@ Cada proposta abaixo serve a esse objetivo ou tira algo do caminho dele. A numer
 - Na tela do responsável, só os avisos que o protocolo prevê.
 - As pendências ficam num menu suspenso. As fechadas não somem.
 - O selo de situação é do gestor (Kanban), não do responsável.
+- Os requisitos valem para a missão inteira, e os critérios de conclusão valem para a entrega. Um requisito pode ser mais amplo que um critério, por isso os dois não precisam coincidir. O checklist da entrega (P7) é só dos critérios.
 
 ---
 
@@ -74,6 +79,7 @@ Origem: estratégia 2.2 de `docs/proposta_metodologias_microtarefas.md` (exemplo
 - **Problema:** texto descritivo deixa margem para entender a entrega de outro jeito, e essa diferença só aparece na revisão. É o desvio mais caro, porque é descoberto no fim. A visão pede entender antes de acelerar, e um exemplo concreto é a forma mais barata de alinhar o entendimento.
 - **O que muda:** a entrega ganha uma linha opcional, preenchida pelo gestor ao criar a missão: **Exemplo**, uma entrega parecida que foi aceita (ou onde vê-la, no Docs ou na pasta) e, se houver, um erro comum que não serve. Se não houver exemplo, a linha não aparece. Os encerramentos das missões parecidas são a fonte natural desses exemplos.
 - **Custo e ganho:** o responsável não preenche nada e só lê. O custo fica com o gestor, numa linha opcional na criação. O ganho é que a primeira leitura do cabeçalho, que gera as etapas, já parte de algo concreto, e o plano nasce mais perto do que a revisão vai pedir.
+- **Reforço da análise de rejeições (seção 4.2):** o mesmo vale para o **não pode acontecer**. Um contraexemplo curto, entre parênteses, mostra o erro concreto. Ex.: *Usar solo de outra classe textural (ex.: a amostra arenosa da bancada 2).* Não precisa de campo novo: basta uma dica no formulário de criação.
 - **Alternativa mais leve:** citar o exemplo em **Insumos**, que já existe. Nesse caso, a P6 vira só uma orientação no guia do gestor, sem campo novo.
 
 ## P7. A entrega fica fora da folha; na folha, o link e o checklist dos critérios — para avaliação
@@ -91,8 +97,37 @@ Origem: estratégia 2.2 de `docs/proposta_metodologias_microtarefas.md` (exemplo
   - **"Evidência" passa a se chamar "comprovação".** É a prova de que o critério foi atendido, produzida pela forma de verificação do critério. Exemplo: para *erro médio ≤ 3 p.p. frente ao gravimétrico — verificado por teste*, a comprovação é a planilha com as medições e o cálculo do erro. Normalmente ela está no próprio documento entregue. O campo "onde está a comprovação" fica opcional e só é usado quando ela está em outro lugar (outro arquivo, uma aba específica).
   - **Resultado e desvios e limites** passam para o documento entregue. A folha não os repete.
 - **Custo e ganho:** o responsável cola um link e marca cada critério, em vez de escrever três textos. O gestor abre o trabalho real e responde no mesmo checklist. A folha mostra, critério por critério, o que foi declarado e o que foi aceito, e em ajuste o responsável vê exatamente qual critério falta.
-- **Ponto a decidir:** os requisitos da tarefa (precisa acontecer e não pode acontecer) também entram no checklist? A revisão do protocolo verifica os dois. Incluí-los deixa a revisão completa na folha, mas acrescenta linhas ao fechamento.
+- **Decidido:** os requisitos ficam fora do checklist. Eles valem para a missão inteira e continuam sendo verificados na revisão, como hoje.
+- **Modelo padrão do documento de entrega.** O que sai da folha (resultado, comprovação por critério, desvios e limites) passa a ser a estrutura fixa do documento entregue, com uma seção por critério. É o "formato da resposta" que a análise de rejeições (seção 2.3) aponta como causa de entregas recusadas: sem ele, cada pessoa entrega num formato diferente. O modelo fica na pasta da equipe e é copiado para cada missão. Toda entrega passa a ter a mesma forma, e é assim que o responsável aprende o formato. Quando a integração com o Google entrar (FN-07), o app pode criar a cópia sozinho.
 - **Muda o protocolo e a especificação:** o bloco 4 do protocolo (entrega com resultado, evidência e desvios), a coleção `entregas` (passa a ter o link e, por critério, a marca, o porquê e a comprovação opcional) e a coleção `revisoes` (passa a ter a marca de aceite por critério). O protocolo usa o nome "critérios de conclusão"; se "critérios de aceite" for o nome preferido, a troca vale para todos os documentos.
+
+## P8. A revisão só cobra o que está escrito; exigência nova vira nova missão — para avaliação
+
+Origem: seções 2.1 e 4.4 de `docs/analise_rejeicoes_smart_contracts_missoes.md` (o requisito não escrito e a proteção contra o aumento de escopo na revisão).
+
+- **O que se observa:** o protocolo já diz que a revisão é feita "somente pelo que está na folha" e que "uma exigência nova vira outra missão, não um ajuste desta". O app não sustenta essa regra: na revisão, os ajustes são um texto livre, e nada impede pedir algo que não estava escrito. Também não existe um caminho para transformar a exigência nova em outra missão.
+- **Problema:** a causa mais comum de entrega recusada é o requisito que ficou na cabeça de quem pediu. Quando a revisão aceita texto livre, a regra do protocolo depende da disciplina do gestor no momento de revisar. Se a revisão cobra algo que não estava na folha, o responsável aprende que a folha não é o combinado, e o formato perde o valor. É exatamente o desconforto de não saber o que está sendo cobrado.
+- **O que muda:**
+  - A missão só fica em ajuste quando o gestor marca **não aceito** num critério do checklist (P7). O ajuste aponta sempre um critério que já estava escrito.
+  - Na revisão, um botão **"Exigência nova → nova missão"** cria o rascunho de uma missão derivada, com os links e os insumos desta. A missão atual pode ser concluída normalmente.
+  - O que o gestor percebeu que faltava vai para a frase de encerramento dele ("o que muda na próxima folha?"). Assim, o formato melhora a cada missão.
+- **Custo e ganho:** custo zero para o responsável. O gestor ganha um atalho para a nova missão, em vez de reescrevê-la. O responsável ganha a garantia de que só é cobrado o que está escrito, e é isso que permite a ele se sentir dono da tarefa.
+
+## O que a análise de rejeições traz para a folha
+
+O documento usa a linguagem dos contratos inteligentes, mas os casos reais que ele descreve são úteis. Os casos entram assim:
+
+| Ideia | Avaliação para a folha |
+|---|---|
+| 2.1 Requisito não escrito; 4.4 exigência nova vira nova missão | **Contribui:** vira a P8. O protocolo já tem a regra, e o app passa a sustentá-la. |
+| 2.2 Tudo ou nada na revisão | Resolvido pela P7: aceite por critério. |
+| 2.3 Formato livre da resposta | **Contribui:** vira o modelo padrão do documento de entrega, na P7. |
+| 2.4 Desacordo descoberto tarde | Já coberto pelo aviso do primeiro plano e pela P1 (histórico das etapas). |
+| 4.1 Campo obrigatório de comprovação por critério e entrega bloqueada até 100% | Não entra. Repete na folha o que está no documento (P7), e bloquear a entrega tira do responsável a decisão sobre a própria tarefa. Na pesquisa, achar a falha costuma ser o melhor resultado. |
+| 4.2 Contraexemplos no "não pode acontecer" | **Contribui:** reforça a P6, sem campo novo. |
+| 4.3 Pré-verificação pelo JEV antes da entrega | Já registrada no backlog (RESP-01, REA-03), e o JEV está adiado. Se entrar, só sugere e nunca bloqueia. |
+| 4.5 Dúvida estende a data estimada | Não entra. A data estimada não é usada para cobrar o responsável, e a demora do gestor já aparece no sinal "pendência sem resposta", que cobra o próprio gestor. |
+| A folha como contrato que se verifica como um teste unitário, e a IA como verificador | Não entra como mecanismo. O que serve da ideia já está na regra "o que não está na folha não foi combinado" e na P8. |
 
 ## O que a proposta de micro-tarefas traz para a folha
 
