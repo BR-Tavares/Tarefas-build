@@ -27,6 +27,7 @@ import { renderizarTelaNovaMissao } from './tela-nova-missao.js';
 import { renderizarTelaFolha } from './tela-folha.js';
 import { renderizarTelaPainel } from './tela-painel.js';
 import { registrarTokenNotificacao } from './notificacoes.js';
+import { renderizarSeletorTemaHTML, conectarEventosSeletorTema } from './tema.js';
 
 const paramsUrl = new URLSearchParams(window.location.search);
 const EQUIPE_ID = paramsUrl.get('equipe') || 'principal';
@@ -88,7 +89,10 @@ function renderizarTelaLogin() {
   const root = document.getElementById('app-root');
 
   root.innerHTML = `
-    <div class="container-folha" style="margin-top:48px;">
+    <div class="container-folha" style="margin-top:28px;">
+      <div style="display:flex;justify-content:center;margin-bottom:12px;">
+        ${renderizarSeletorTemaHTML()}
+      </div>
       <div class="card" style="text-align:center;padding:28px 20px;">
         <img src="/icon.svg" alt="Missões" width="56" height="56" style="margin-bottom:12px;" />
         <h1 class="titulo-missao" style="margin-bottom:6px;">App de Missões</h1>
@@ -109,6 +113,8 @@ function renderizarTelaLogin() {
       </div>
     </div>
   `;
+
+  conectarEventosSeletorTema(root);
 
   const abrirExemplo = (papel) => {
     import('./tela-folha.js').then(({ renderizarTelaFolha }) => {
@@ -267,6 +273,7 @@ function renderizarTopbar() {
           ? `<button type="button" class="btn btn-sm btn-outline-azul" id="nav-btn-notif" title="Receber avisos de pendências, entregas e sinais">Ativar avisos 🔔</button>`
           : ''
       }
+      ${renderizarSeletorTemaHTML()}
       <button type="button" class="btn btn-sm" id="nav-btn-sair">Sair</button>
     `;
 
@@ -292,14 +299,18 @@ function renderizarTopbar() {
           ? `<button type="button" class="btn btn-sm btn-outline-azul" id="nav-btn-notif" title="Receber avisos de novas missões e respostas do gestor">Ativar avisos 🔔</button>`
           : ''
       }
+      ${renderizarSeletorTemaHTML()}
       <button type="button" class="btn btn-sm" id="nav-btn-sair">Sair</button>
     `;
   } else {
     nav.innerHTML = `
       <span class="secao-sub">${esc(estadoApp.usuario?.email || '')}</span>
+      ${renderizarSeletorTemaHTML()}
       <button type="button" class="btn btn-sm" id="nav-btn-sair">Sair</button>
     `;
   }
+
+  conectarEventosSeletorTema(nav);
 
   nav.querySelector('#nav-btn-notif')?.addEventListener('click', async () => {
     await registrarTokenNotificacao(EQUIPE_ID, estadoApp.usuario, estadoApp.papel);

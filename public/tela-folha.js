@@ -34,6 +34,7 @@ import {
   collection,
 } from './firebase-config.js';
 import { exemploDidatico } from './exemplo-didatico.js';
+import { renderizarSeletorTemaHTML, conectarEventosSeletorTema } from './tema.js';
 
 // Estado local de UI da folha (para não fechar modais/expanders ao receber snapshot)
 const uiFolha = {
@@ -244,6 +245,10 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
 
   root.innerHTML = `
     <div class="container-folha">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+        ${renderizarSeletorTemaHTML()}
+      </div>
+
       ${htmlTopoGestor}
 
       ${
@@ -1079,6 +1084,8 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
 function configurarEventosFolha(root, estadoApp, ctx) {
   const { papel, equipeId } = estadoApp;
   const { missaoId, g, r, sit, hoje, aoVoltar, aoAbrirEdicaoMissao } = ctx;
+
+  conectarEventosSeletorTema(root);
 
   root.querySelector('#btn-voltar-lista')?.addEventListener('click', () => aoVoltar?.());
 

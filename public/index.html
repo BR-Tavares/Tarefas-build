@@ -12,6 +12,27 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/icon.svg" />
   <link rel="stylesheet" href="/styles.css" />
+  <script>
+    (function() {
+      try {
+        var tema = localStorage.getItem('tarefas_tema_fundo') || 'amarelo';
+        var temas = {
+          amarelo: { bg: '#FBF3C4', surface: '#FFFDEB', border: '#E8DC94', borderStrong: '#A89940' },
+          bege: { bg: '#EDE0D0', surface: '#FAF5EE', border: '#DAC7B2', borderStrong: '#998368' },
+          verde: { bg: '#D5ECD9', surface: '#EDF8EE', border: '#AFD7B6', borderStrong: '#5E9B68' },
+          azul: { bg: '#D2E7FA', surface: '#ECF5FD', border: '#A9CEF3', borderStrong: '#518CC4' },
+          cinza: { bg: '#DFE2E6', surface: '#F4F5F7', border: '#BCC1C8', borderStrong: '#767C85' }
+        };
+        var t = temas[tema] || temas.amarelo;
+        var root = document.documentElement;
+        root.style.setProperty('--bg', t.bg);
+        root.style.setProperty('--surface', t.surface);
+        root.style.setProperty('--border', t.border);
+        root.style.setProperty('--border-strong', t.borderStrong);
+        root.setAttribute('data-tema', tema);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <header id="topbar" class="topbar" style="display:none;">
