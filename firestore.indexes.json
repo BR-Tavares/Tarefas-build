@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "missoes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "responsavelEmail",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "emitidaEm",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

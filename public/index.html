@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#0B6BCB" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Missões" />
+  <title>Missões — Folha Única</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/icon.svg" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header id="topbar" class="topbar" style="display:none;">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span id="brand-titulo">Missões</span>
+      </div>
+      <nav id="nav-acoes" class="nav-links"></nav>
+    </div>
+  </header>
+
+  <main id="app-root">
+    <div class="container-folha" style="margin-top: 48px; text-align: center;">
+      <div class="card">
+        <p class="secao-sub">Carregando aplicativo de missões...</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

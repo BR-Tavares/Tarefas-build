@@ -1,0 +1,160 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function emailVerificado() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email != null;
+    }
+
+    function equipePath(equipeId) {
+      return /databases/$(database)/documents/equipes/$(equipeId);
+    }
+
+    function membroPath(equipeId, email) {
+      return /databases/$(database)/documents/equipes/$(equipeId)/membros/$(email);
+    }
+
+    function missaoPath(equipeId, missaoId) {
+      return /databases/$(database)/documents/equipes/$(equipeId)/missoes/$(missaoId);
+    }
+
+    function isGestor(equipeId) {
+      return emailVerificado()
+        && exists(equipePath(equipeId))
+        && get(equipePath(equipeId)).data.gestorUid == request.auth.uid;
+    }
+
+    function isResponsavelAtivo(equipeId) {
+      return emailVerificado()
+        && exists(membroPath(equipeId, request.auth.token.email))
+        && get(membroPath(equipeId, request.auth.token.email)).data.ativo == true;
+    }
+
+    function isMembroEquipe(equipeId) {
+      return isGestor(equipeId) || isResponsavelAtivo(equipeId);
+    }
+
+    function isDonoResponsavelMissao(equipeId, missaoId) {
+      return isResponsavelAtivo(equipeId)
+        && exists(missaoPath(equipeId, missaoId))
+        && get(missaoPath(equipeId, missaoId)).data.responsavelEmail == request.auth.token.email
+        && get(missaoPath(equipeId, missaoId)).data.emitidaEm != null;
+    }
+
+    function missaoAbertaParaResponsavel(equipeId, missaoId) {
+      return isDonoResponsavelMissao(equipeId, missaoId)
+        && get(missaoPath(equipeId, missaoId)).data.cancelada == null
+        && get(missaoPath(equipeId, missaoId)).data.get('concluidaEm', null) == null;
+    }
+
+    function temApenasAtividade(d) {
+      return d.keys().hasAll(['atividade'])
+        && !d.keys().hasAny(['motivo'])
+        && d.atividade is string
+        && d.atividade.size() >= 1
+        && d.atividade.size() <= 80
+        && d.atividade == d.atividade.trim();
+    }
+
+    function temApenasMotivo(d) {
+      return d.keys().hasAll(['motivo'])
+        && !d.keys().hasAny(['atividade'])
+        && d.motivo in ['folga_saude', 'outra_missao', 'fora_de_missao'];
+    }
+
+    match /equipes/{equipeId} {
+      allow read: if isMembroEquipe(equipeId);
+      allow create: if emailVerificado()
+        && request.resource.data.gestorUid == request.auth.uid;
+      allow update: if isGestor(equipeId)
+        && request.resource.data.gestorUid == resource.data.gestorUid;
+      allow delete: if false;
+
+      match /membros/{membroEmail} {
+        allow read: if isGestor(equipeId)
+          || (isResponsavelAtivo(equipeId) && request.auth.token.email == membroEmail);
+        allow create, update: if isGestor(equipeId)
+          && request.resource.data.papel == 'responsavel'
+          && request.resource.data.ativo is bool;
+        allow delete: if false;
+      }
+
+      match /tokens/{uid} {
+        allow read: if isGestor(equipeId)
+          || (isMembroEquipe(equipeId) && request.auth.uid == uid);
+        allow create, update, delete: if isMembroEquipe(equipeId)
+          && request.auth.uid == uid;
+      }
+
+      match /missoes/{missaoId} {
+        allow read: if isGestor(equipeId)
+          || (isResponsavelAtivo(equipeId)
+              && resource.data.responsavelEmail == request.auth.token.email
+              && resource.data.emitidaEm != null);
+        allow create, update: if isGestor(equipeId);
+        allow delete: if isGestor(equipeId) && resource.data.emitidaEm == null;
+
+        match /alteracoes/{alteracaoId} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if isGestor(equipeId);
+          allow delete: if false;
+        }
+
+        match /respostas/{pendenciaId} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if isGestor(equipeId)
+            && request.resource.data.tipo in ['resposta', 'alteracao'];
+          allow delete: if false;
+        }
+
+        match /revisoes/{entregaId} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if isGestor(equipeId)
+            && request.resource.data.resultado in ['concluida', 'em_ajuste']
+            && request.resource.data.produto in ['atende', 'nao_atende', 'inconclusivo'];
+          allow delete: if false;
+        }
+
+        match /responsavel/{docId} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if docId == 'estado'
+            && (
+              missaoAbertaParaResponsavel(equipeId, missaoId)
+              || (
+                isDonoResponsavelMissao(equipeId, missaoId)
+                && get(missaoPath(equipeId, missaoId)).data.cancelada == null
+                && resource != null
+                && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['fraseResponsavel', 'vistoVersao', 'docsUrl', 'pastaUrl', 'linksEm'])
+              )
+            );
+          allow delete: if false;
+        }
+
+        match /registros/{dia} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if missaoAbertaParaResponsavel(equipeId, missaoId)
+            && dia.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+            && (temApenasAtividade(request.resource.data) || temApenasMotivo(request.resource.data));
+          allow delete: if false;
+        }
+
+        match /pendencias/{pendenciaId} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if missaoAbertaParaResponsavel(equipeId, missaoId)
+            && request.resource.data.tipo in ['duvida', 'consulta', 'impedimento', 'nova_data']
+            && request.resource.data.bloqueio in ['tudo', 'parte', 'nenhum'];
+          allow delete: if false;
+        }
+
+        match /entregas/{entregaId} {
+          allow read: if isGestor(equipeId) || isDonoResponsavelMissao(equipeId, missaoId);
+          allow create, update: if missaoAbertaParaResponsavel(equipeId, missaoId);
+          allow delete: if false;
+        }
+      }
+    }
+  }
+}
