@@ -2,7 +2,7 @@
 
 18/10/2026 • Versão 3, avaliada pelo gestor • Nada aqui está implementado
 
-**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada. P6, vinda de `docs/proposta_metodologias_microtarefas.md`, aguarda avaliação.
+**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada. P6, vinda de `docs/proposta_metodologias_microtarefas.md`, e P7, sobre a entrega, aguardam avaliação.
 
 Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7), a `docs/proposta_metodologias_microtarefas.md` e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
 
@@ -75,6 +75,24 @@ Origem: estratégia 2.2 de `docs/proposta_metodologias_microtarefas.md` (exemplo
 - **O que muda:** a entrega ganha uma linha opcional, preenchida pelo gestor ao criar a missão: **Exemplo**, uma entrega parecida que foi aceita (ou onde vê-la, no Docs ou na pasta) e, se houver, um erro comum que não serve. Se não houver exemplo, a linha não aparece. Os encerramentos das missões parecidas são a fonte natural desses exemplos.
 - **Custo e ganho:** o responsável não preenche nada e só lê. O custo fica com o gestor, numa linha opcional na criação. O ganho é que a primeira leitura do cabeçalho, que gera as etapas, já parte de algo concreto, e o plano nasce mais perto do que a revisão vai pedir.
 - **Alternativa mais leve:** citar o exemplo em **Insumos**, que já existe. Nesse caso, a P6 vira só uma orientação no guia do gestor, sem campo novo.
+
+## P7. A entrega fica fora da folha; na folha, o link e o checklist dos critérios — para avaliação
+
+- **O que se observa:** hoje o formulário de entrega pede, dentro da folha, três textos: **Resultado** (o que foi obtido), **Evidência por critério** (atendido, parcial ou não atendido, e um campo obrigatório "onde está a evidência") e **Desvios e limites**. Na revisão, o gestor marca a missão como concluída ou em ajuste e escreve os ajustes num texto livre, que aponta o critério não cumprido.
+- **Problema:**
+  - O trabalho entregue já existe fora da folha, normalmente num documento do Google ou na pasta. Pedir o resultado e os desvios em texto na folha obriga o responsável a resumir de novo o que já está no documento, e o gestor lê o resumo em vez do documento. O protocolo pede o contrário: "o gestor abre a evidência, não só o resumo".
+  - O resultado da revisão fica num texto livre. Não fica claro, na própria lista de critérios, qual foi aceito e qual não foi.
+  - A palavra "evidência" não explica o que se pede.
+- **O que muda:**
+  - **O trabalho entregue fica fora da folha.** A folha guarda só o **link da entrega**: o documento ou o arquivo na pasta. É o único campo de texto obrigatório.
+  - **Checklist dos critérios de conclusão.** Cada critério do cabeçalho vira uma linha com duas marcas:
+    - **Responsável:** atendido, parcial ou não atendido. Quando marca parcial ou não atendido, escreve uma linha dizendo por quê.
+    - **Gestor, na revisão:** aceito ou não aceito. Quando não aceita, escreve uma linha dizendo o que falta. A missão fica em ajuste.
+  - **"Evidência" passa a se chamar "comprovação".** É a prova de que o critério foi atendido, produzida pela forma de verificação do critério. Exemplo: para *erro médio ≤ 3 p.p. frente ao gravimétrico — verificado por teste*, a comprovação é a planilha com as medições e o cálculo do erro. Normalmente ela está no próprio documento entregue. O campo "onde está a comprovação" fica opcional e só é usado quando ela está em outro lugar (outro arquivo, uma aba específica).
+  - **Resultado e desvios e limites** passam para o documento entregue. A folha não os repete.
+- **Custo e ganho:** o responsável cola um link e marca cada critério, em vez de escrever três textos. O gestor abre o trabalho real e responde no mesmo checklist. A folha mostra, critério por critério, o que foi declarado e o que foi aceito, e em ajuste o responsável vê exatamente qual critério falta.
+- **Ponto a decidir:** os requisitos da tarefa (precisa acontecer e não pode acontecer) também entram no checklist? A revisão do protocolo verifica os dois. Incluí-los deixa a revisão completa na folha, mas acrescenta linhas ao fechamento.
+- **Muda o protocolo e a especificação:** o bloco 4 do protocolo (entrega com resultado, evidência e desvios), a coleção `entregas` (passa a ter o link e, por critério, a marca, o porquê e a comprovação opcional) e a coleção `revisoes` (passa a ter a marca de aceite por critério). O protocolo usa o nome "critérios de conclusão"; se "critérios de aceite" for o nome preferido, a troca vale para todos os documentos.
 
 ## O que a proposta de micro-tarefas traz para a folha
 
