@@ -1,18 +1,14 @@
 # Propostas para a folha da tarefa (tela do responsável)
 
-18/10/2026 • Versão 4 • Nada aqui está implementado
+18/10/2026 • Versão 5 • Encerrada: as decisões estão em `governanca/BLUEPRINT_FOLHA_v1.1.md` • Nada aqui está implementado
 
-**Situação:** P1, P3, P4 e P5 (ajustada) aprovadas. P2 recusada. P6, P7 e P8 aguardam avaliação.
+**Resultado da avaliação:** P1, P3, P4 e P5 (ajustada) aprovadas. P6 aprovada na forma de um exemplo didático de tarefa padrão. P7 aprovada sem o modelo padrão de documento. P2 e P8 recusadas. A missão não tem estado, só versão (0, 1, 2...), e um ajuste é um critério não aceito, nunca outra missão. Onde este documento divergir do blueprint, vale o blueprint.
 
 Base: a seção *Visão Estratégica* do `README.md`, o `docs/protocolo_missoes.md` (v2.7), `docs/proposta_metodologias_microtarefas.md`, `docs/analise_rejeicoes_smart_contracts_missoes.md` e o código atual da folha (`public/tela-folha.js` e `functions/index.js`).
 
 ## O objetivo que orienta as propostas
 
 A folha existe para **permitir o ajuste**: corrigir a rota da tarefa cedo, antes que o desvio vire retrabalho. O centro dela são as **etapas**, porque elas mostram como o responsável entendeu a tarefa, e é sobre elas que gestor e responsável conversam. O cabeçalho é o combinado e fica sempre à vista. As pendências são o canal do ajuste. O registro do dia é só um diário de foco e não deve ocupar a atenção do responsável.
-
-**A folha é um formato que se aprende.** É o lugar onde a tarefa é bem estruturada. Com tarefas simples e depois complexas, o gestor aprende a escrever a tarefa nesse formato e o responsável aprende a atendê-la. Como tudo o que é cobrado está escrito na folha, desaparece o desconforto de não saber o que está sendo cobrado. As dificuldades viram pendências, as respostas ficam registradas, as etapas mostram ao gestor se a tarefa está sendo entendida, e o responsável se sente dono dela. É a correção de rota no estilo Toyota com a redução de atrito do Lean.
-
-Daí sai um teste para cada proposta: **ela deixa o formato mais estável e mais fácil de aprender, e protege o combinado escrito?**
 
 Cada proposta abaixo serve a esse objetivo ou tira algo do caminho dele. A numeração da versão 2 foi mantida, por isso não há P2.
 
