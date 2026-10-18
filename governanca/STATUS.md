@@ -56,4 +56,4 @@ Todos os 14 critérios de aceite da especificação técnica foram validados e a
 ## 4. Bloqueios e Riscos Atuais
 
 - **Nenhum bloqueio técnico em produção.** O sistema está operacional e estável.
-- **Próximos passos de produto:** Concepção da próxima versão no [BACKLOG.md](../BACKLOG.md).
+- **Próximos passos de produto:** Concepção da próxima versão no [BACKLOG.md](./BACKLOG.md).

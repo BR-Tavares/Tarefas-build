@@ -13,7 +13,7 @@
      - `governanca/STATUS.md`: fotografia da versão em produção e dos 14 critérios de aceite.
      - `governanca/HANDOFF.md`: esta passagem de bastão direta e sem ruído.
 2. **Backlog Estratégico Alinhado:**
-   - Centralizado no [BACKLOG.md](../BACKLOG.md) com as decisões de concepção D1–D8, separando o supervisor neutro JEV, o quadro Kanban/Obeya de dependências e a engenharia reversa de demandas (REA).
+   - Centralizado no [BACKLOG.md](./BACKLOG.md) com as decisões de concepção D1–D8, separando o supervisor neutro JEV, o quadro Kanban/Obeya de dependências e a engenharia reversa de demandas (REA).
 3. **Limpeza da Skill:**
    - Removidos arquivos de operação de software da skill `Toyota_para_desenvolvimento`, mantendo nela apenas a metodologia.
 
@@ -29,7 +29,7 @@
 
 ## 3. Próximo Passo Imediato (O que fazer nos primeiros 5 minutos)
 
-1. **Aguardar aprovação do demandante** para as prioridades de concepção da próxima versão definidas no [BACKLOG.md](../BACKLOG.md).
+1. **Aguardar aprovação do demandante** para as prioridades de concepção da próxima versão definidas no [BACKLOG.md](./BACKLOG.md).
 2. **Candidatos imediatos sem risco à estabilidade:**
    - `UI-01` (Estilo Black / Dark Mode): adição de tema escuro via variáveis CSS em `public/styles.css` e botão `☀️/🌙`.
    - `GEST-03` (Modelos de critérios na Nova Missão): botões rápidos no front-end para pré-preencher a tríade de critérios conforme a natureza da missão.

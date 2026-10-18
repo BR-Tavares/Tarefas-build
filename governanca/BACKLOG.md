@@ -12,7 +12,7 @@ Este documento centraliza todas as melhorias observadas no uso real e as evoluç
 |---|---|---|
 | `fundamentos_engenharia_missoes.md` | Orientação teórica e espaço semântico (o *porquê*) | Permanente |
 | **`BACKLOG.md` (este)** | **Define os próximos passos e as decisões das próximas versões (o *quê fazer*)** | Futuro |
-| `especificacao_app_missoes.md` e `protocolo_missoes.md` | Descrevem o que já está implementado e as regras de uso atuais | Presente |
+| `governanca/SPECIFICATION.md` e `docs/protocolo_missoes.md` | Descrevem o que já está implementado e as regras de uso atuais | Presente |
 
 Quando um item deste backlog é implementado, a especificação é atualizada para descrevê-lo. A especificação antiga **não bloqueia** item que o demandante aprovar aqui; um conflito com ela é resolvido aqui e depois refletido nela.
 

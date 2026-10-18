@@ -1,6 +1,6 @@
 # Tarefas-build — App de Missões (PWA v1.0.0)
 
-Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integralmente o **Protocolo de Missões v2.7** (`protocolo_missoes.md`) e a **Especificação v1.2** (`especificacao_app_missoes.md`).
+Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integralmente o **Protocolo de Missões v2.7** (`docs/protocolo_missoes.md`) e a **Especificação v1.2** (`governanca/SPECIFICATION.md`).
 
 - **URL de Produção (Firebase Hosting):** `https://tarefas-build.web.app`
 - **Projeto Firebase / GCP:** `tarefas-build` (região `southamerica-east1` — São Paulo)
