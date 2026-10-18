@@ -1,7 +1,7 @@
 // Tela Nova Missão / Editar Rascunho / Alterar Cabeçalho (Gestor)
 
 import { esc, mostrarAviso } from './dom.js';
-import { hojeSP, somaDiasUteis } from './feriados.js';
+import { hojeSP } from './feriados.js';
 import { situacao } from './analise.js';
 import { montarObjetosAnalise, ROTULO_VERIFICACAO } from './adaptador.js';
 import { db, doc, setDoc, updateDoc, collection } from './firebase-config.js';

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'missoes-pwa-v1';
+const CACHE_NAME = 'missoes-pwa-v2';
 const ASSETS = [
   '/',
   '/index.html',
