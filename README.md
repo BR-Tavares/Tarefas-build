@@ -18,6 +18,7 @@ Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integra
 | [`guia_uso_gestor.md`](./guia_uso_gestor.md) | Guia rápido de uso de 1 página para o **Gestor** |
 | [`guia_uso_responsavel.md`](./guia_uso_responsavel.md) | Guia rápido de uso de 1 página para o **Responsável** |
 | [`tela_missao_funcionario.svg`](./tela_missao_funcionario.svg) | Esboço visual de referência da folha do responsável no celular |
+| [`BACKLOG.md`](./BACKLOG.md) | **Backlog de melhorias identificadas pelo usuário (ex.: Estilo Black) e roteiro da v1.1 / v2.0** |
 | [`CHANGELOG.md`](./CHANGELOG.md) | Histórico de versões e entregas (padrão Keep a Changelog) |
 
 ---
