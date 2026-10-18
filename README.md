@@ -13,13 +13,15 @@ Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integra
 | Documento | Finalidade |
 |---|---|
 | [`fundamentos_engenharia_missoes.md`](./fundamentos_engenharia_missoes.md) | **Fundamentos e Doutrina de Engenharia de Missões (Espaço Semântico para Humanos e Modelos de IA — DoDAF, NASA, SpaceX, Mission Command, Toyota e JEV)** |
-| [`HANDOFF_E_OPERACAO.md`](./HANDOFF_E_OPERACAO.md) | **Manual de Operação, Arquitetura, Segurança, Manutenção, Handoff Técnico e Status** |
-| [`especificacao_app_missoes.md`](./especificacao_app_missoes.md) | Especificação técnica do sistema (v1.2 — o que o app faz e como é construído no Firebase) |
+| [`governanca/OPERACAO.md`](./governanca/OPERACAO.md) | **Manual de Operação, Arquitetura, Segurança, Runbook de Testes (JDK 25) e Deploy no Firebase** (Permanente) |
+| [`governanca/STATUS.md`](./governanca/STATUS.md) | **Fotografia do Ambiente em Produção e Homologação dos 14 Critérios de Aceite** (Presente) |
+| [`governanca/HANDOFF.md`](./governanca/HANDOFF.md) | **Passagem de Bastão da Sessão de Trabalho e Próximos Passos Imediatos** (Efêmero) |
+| [`BACKLOG.md`](./BACKLOG.md) | **Backlog vivo de concepção da v1.1/v2.0: Decisões D1–D8, UI Black, Kanban/Obeya, JEV e REA** (Futuro) |
+| [`especificacao_app_missoes.md`](./especificacao_app_missoes.md) | Especificação técnica de requisitos funcionais da v1 |
 | [`protocolo_missoes.md`](./protocolo_missoes.md) | Protocolo de Missões (v2.7 — princípios Lean, regras de uso e o porquê de cada campo) |
 | [`guia_uso_gestor.md`](./guia_uso_gestor.md) | Guia rápido de uso de 1 página para o **Gestor** |
 | [`guia_uso_responsavel.md`](./guia_uso_responsavel.md) | Guia rápido de uso de 1 página para o **Responsável** |
 | [`tela_missao_funcionario.svg`](./tela_missao_funcionario.svg) | Esboço visual de referência da folha do responsável no celular |
-| [`BACKLOG.md`](./BACKLOG.md) | **Backlog de melhorias identificadas pelo usuário (ex.: Estilo Black) e roteiro da v1.1 / v2.0** |
 | [`CHANGELOG.md`](./CHANGELOG.md) | Histórico de versões e entregas (padrão Keep a Changelog) |
 
 ---
