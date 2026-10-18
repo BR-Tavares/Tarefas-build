@@ -272,9 +272,19 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
       ${
         ehExemplo
           ? `
-        <div class="aviso-topo" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;">
-          <div><strong>Exemplo didático — valores ilustrativos</strong> (somente leitura)</div>
-          <button type="button" id="btn-fechar-exemplo" class="btn btn-sm btn-primario">Voltar à minha missão</button>
+        <div class="aviso-topo" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div><strong>Exemplo didático MS-000</strong> (somente leitura)</div>
+            <div style="display:inline-flex;background:rgba(0,0,0,0.06);padding:2px;border-radius:6px;">
+              <button type="button" id="btn-toggle-visao-resp" class="btn btn-sm ${papel === 'responsavel' ? 'btn-primario' : ''}" style="height:26px;font-size:11.5px;padding:0 8px;">
+                Vista do Responsável
+              </button>
+              <button type="button" id="btn-toggle-visao-gest" class="btn btn-sm ${papel === 'gestor' ? 'btn-primario' : ''}" style="height:26px;font-size:11.5px;padding:0 8px;">
+                Vista do Gestor
+              </button>
+            </div>
+          </div>
+          <button type="button" id="btn-fechar-exemplo" class="btn btn-sm btn-outline-azul">← Voltar</button>
         </div>
       `
           : ''
@@ -1222,9 +1232,21 @@ function configurarEventosFolha(root, estadoApp, ctx) {
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
   });
 
+  root.querySelector('#btn-toggle-visao-resp')?.addEventListener('click', () => {
+    renderizarTelaFolha(root, { ...estadoApp, papel: 'responsavel' }, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
+  });
+
+  root.querySelector('#btn-toggle-visao-gest')?.addEventListener('click', () => {
+    renderizarTelaFolha(root, { ...estadoApp, papel: 'gestor' }, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
+  });
+
   root.querySelector('#btn-fechar-exemplo')?.addEventListener('click', () => {
     uiFolha.vendoExemploDidatico = false;
-    renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: false });
+    if (aoVoltar) {
+      aoVoltar();
+    } else {
+      renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: false });
+    }
   });
 
   // Etapas (responsável)

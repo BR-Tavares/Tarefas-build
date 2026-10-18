@@ -95,25 +95,33 @@ function renderizarTelaLogin() {
         <p class="texto-campo" style="color:var(--muted);margin-bottom:20px;">
           Folha única por missão · O gestor define o quê; o responsável define o como.
         </p>
-        <button type="button" id="btn-login-google" class="btn btn-primario" style="width:100%;height:40px;font-size:13.5px;margin-bottom:10px;">
+        <button type="button" id="btn-login-google" class="btn btn-primario" style="width:100%;height:40px;font-size:13.5px;margin-bottom:12px;">
           Entrar com conta Google
         </button>
-        <button type="button" id="btn-ver-exemplo-login" class="btn btn-outline-azul" style="width:100%;height:36px;font-size:12.5px;">
-          Ver exemplo didático da folha (sem login) ↗
-        </button>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <button type="button" id="btn-ver-resp-login" class="btn btn-outline-azul" style="flex:1;height:36px;font-size:12px;">
+            Folha do Responsável ↗
+          </button>
+          <button type="button" id="btn-ver-gest-login" class="btn" style="flex:1;height:36px;font-size:12px;border:1px solid var(--border);">
+            Folha do Gestor ↗
+          </button>
+        </div>
       </div>
     </div>
   `;
 
-  root.querySelector('#btn-ver-exemplo-login')?.addEventListener('click', () => {
+  const abrirExemplo = (papel) => {
     import('./tela-folha.js').then(({ renderizarTelaFolha }) => {
-      renderizarTelaFolha(root, { ...estadoApp, papel: 'gestor' }, {
+      renderizarTelaFolha(root, { ...estadoApp, papel }, {
         missaoId: 'MS-000',
         somenteLeitura: true,
         aoVoltar: () => renderizarTelaLogin(),
       });
     });
-  });
+  };
+
+  root.querySelector('#btn-ver-resp-login')?.addEventListener('click', () => abrirExemplo('responsavel'));
+  root.querySelector('#btn-ver-gest-login')?.addEventListener('click', () => abrirExemplo('gestor'));
 
   root.querySelector('#btn-login-google')?.addEventListener('click', async () => {
     try {
