@@ -1,52 +1,58 @@
 // Gerenciador de Tema e Cores de Fundo Pastel com Alto Contraste
-// Suporta: amarelo, bege, verde, azul, cinza e padrao (branco/cinza neutro)
-// Otimizado para leitura em celulares ao ar livre sob luz solar direta.
+// Suporta: amarelo, bege, verde, azul, cinza
+// Altera tanto o fundo da interface (--bg) quanto o fundo da própria folha e de seus cartões (--surface),
+// com amostras bem diferenciadas e visíveis.
 
 export const TEMAS_PASTEL = {
   amarelo: {
     id: 'amarelo',
     nome: 'Amarelo pastel',
-    corAmostra: '#FFF9D2',
-    bg: '#FBF3C4',
-    surface: '#FFFDEB',
-    border: '#E8DC94',
-    borderStrong: '#A89940',
+    corAmostra: '#FDE047', // amarelo vibrante e inconfundível no botão
+    bg: '#FEF9C3',        // fundo externo da tela
+    surface: '#FEF08A',   // fundo da folha e cartões (amarelo pastel nítido)
+    surfaceInner: '#FEF9C3',
+    border: '#EAB308',
+    borderStrong: '#CA8A04',
   },
   bege: {
     id: 'bege',
     nome: 'Bege pastel',
-    corAmostra: '#F5ECE1',
-    bg: '#EDE0D0',
-    surface: '#FAF5EE',
-    border: '#DAC7B2',
-    borderStrong: '#998368',
+    corAmostra: '#D7BA89', // bege/areia nítido
+    bg: '#F5EBE1',
+    surface: '#EAD7C0',   // fundo da folha e cartões (bege pastel nítido)
+    surfaceInner: '#F5EBE1',
+    border: '#C8A97E',
+    borderStrong: '#997345',
   },
   verde: {
     id: 'verde',
     nome: 'Verde pastel',
-    corAmostra: '#E2F3E5',
-    bg: '#D5ECD9',
-    surface: '#EDF8EE',
-    border: '#AFD7B6',
-    borderStrong: '#5E9B68',
+    corAmostra: '#86EFAC', // verde pastel nítido
+    bg: '#DCFCE7',
+    surface: '#BBF7D0',   // fundo da folha e cartões (verde pastel nítido)
+    surfaceInner: '#DCFCE7',
+    border: '#4ADE80',
+    borderStrong: '#16A34A',
   },
   azul: {
     id: 'azul',
     nome: 'Azul pastel',
-    corAmostra: '#E0F0FE',
-    bg: '#D2E7FA',
-    surface: '#ECF5FD',
-    border: '#A9CEF3',
-    borderStrong: '#518CC4',
+    corAmostra: '#93C5FD', // azul celeste nítido
+    bg: '#DBEAFE',
+    surface: '#BFDBFE',   // fundo da folha e cartões (azul pastel nítido)
+    surfaceInner: '#DBEAFE',
+    border: '#60A5FA',
+    borderStrong: '#2563EB',
   },
   cinza: {
     id: 'cinza',
     nome: 'Cinza claro',
-    corAmostra: '#EAECEF',
-    bg: '#DFE2E6',
-    surface: '#F4F5F7',
-    border: '#BCC1C8',
-    borderStrong: '#767C85',
+    corAmostra: '#CBD5E1', // cinza nítido
+    bg: '#F1F5F9',
+    surface: '#E2E8F0',   // fundo da folha e cartões (cinza pastel nítido)
+    surfaceInner: '#F8FAFC',
+    border: '#94A3B8',
+    borderStrong: '#475569',
   },
 };
 
@@ -66,6 +72,7 @@ export function aplicarTema(idTema) {
 
   root.style.setProperty('--bg', tema.bg);
   root.style.setProperty('--surface', tema.surface);
+  root.style.setProperty('--surface-inner', tema.surfaceInner || tema.bg);
   root.style.setProperty('--border', tema.border);
   root.style.setProperty('--border-strong', tema.borderStrong);
   root.setAttribute('data-tema', tema.id);
@@ -93,18 +100,18 @@ export function renderizarSeletorTemaHTML(temaAtivoId = obterTemaAtual()) {
         type="button"
         class="paleta-cor-quadrado ${t.id === temaAtivoId ? 'ativo' : ''}"
         data-tema-id="${t.id}"
-        title="Fundo ${t.nome}"
-        aria-label="Fundo ${t.nome}"
+        title="Fundo da folha: ${t.nome}"
+        aria-label="Fundo da folha: ${t.nome}"
         aria-pressed="${t.id === temaAtivoId ? 'true' : 'false'}"
-        style="background:${t.corAmostra};"
+        style="background:${t.corAmostra} !important;"
       ></button>
     `
     )
     .join('');
 
   return `
-    <div class="paleta-fundo-container" title="Escolha a cor do fundo para facilitar a leitura ao ar livre">
-      <span class="paleta-rotulo">Fundo:</span>
+    <div class="paleta-fundo-container" title="Escolha a cor da folha para facilitar a leitura ao ar livre">
+      <span class="paleta-rotulo">Cor da folha:</span>
       <div class="paleta-cores-grade">
         ${opcoes}
       </div>
