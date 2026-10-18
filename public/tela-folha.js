@@ -34,7 +34,7 @@ import {
   deleteDoc,
   collection,
 } from './firebase-config.js';
-import { exemploDidatico } from './exemplo-didatico.js';
+import { exemploDidatico, alternarExemplo } from './exemplo-didatico.js';
 import { renderizarSeletorTemaHTML, conectarEventosSeletorTema } from './tema.js';
 
 // Estado local de UI da folha (para não fechar modais/expanders ao receber snapshot)
@@ -65,7 +65,7 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
   } = estadoApp;
   const { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura = false } = opcoes;
 
-  const ehExemplo = uiFolha.vendoExemploDidatico || missaoId === 'MS-000';
+  const ehExemplo = uiFolha.vendoExemploDidatico || missaoId === 'MS-000' || missaoId === 'MS-BOLO';
   const missaoDoc = ehExemplo ? exemploDidatico.missaoDoc : missoesMap[missaoId];
   if (!missaoDoc) {
     root.innerHTML = `
@@ -281,8 +281,16 @@ export function renderizarTelaFolha(root, estadoApp, opcoes = {}) {
         ehExemplo
           ? `
         <div class="aviso-topo" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div><strong>Exemplo didático MS-000</strong> (somente leitura)</div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div><strong>Exemplo ${esc(g.codigo)}</strong> (somente leitura)</div>
+            <div style="display:inline-flex;background:rgba(0,0,0,0.06);padding:2px;border-radius:6px;gap:2px;">
+              <button type="button" id="btn-exemplo-bolo" class="btn btn-sm ${g.codigo === 'MS-BOLO' ? 'btn-primario' : ''}" style="height:26px;font-size:11px;padding:0 7px;">
+                Bolo (Lean/TPS)
+              </button>
+              <button type="button" id="btn-exemplo-cesta" class="btn btn-sm ${g.codigo === 'MS-000' ? 'btn-primario' : ''}" style="height:26px;font-size:11px;padding:0 7px;">
+                Cesta Alimentos
+              </button>
+            </div>
             <div style="display:inline-flex;background:rgba(0,0,0,0.06);padding:2px;border-radius:6px;">
               <button type="button" id="btn-toggle-visao-resp" class="btn btn-sm ${papel === 'responsavel' ? 'btn-primario' : ''}" style="height:26px;font-size:11.5px;padding:0 8px;">
                 Vista do Responsável
@@ -1153,6 +1161,16 @@ function configurarEventosFolha(root, estadoApp, ctx) {
   root.querySelector('#btn-abrir-exemplo')?.addEventListener('click', () => {
     uiFolha.vendoExemploDidatico = true;
     renderizarTelaFolha(root, estadoApp, { missaoId, aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
+  });
+
+  root.querySelector('#btn-exemplo-bolo')?.addEventListener('click', () => {
+    alternarExemplo('bolo');
+    renderizarTelaFolha(root, estadoApp, { missaoId: 'MS-BOLO', aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
+  });
+
+  root.querySelector('#btn-exemplo-cesta')?.addEventListener('click', () => {
+    alternarExemplo('cesta');
+    renderizarTelaFolha(root, estadoApp, { missaoId: 'MS-000', aoVoltar, aoAbrirEdicaoMissao, somenteLeitura: true });
   });
 
   root.querySelector('#btn-toggle-visao-resp')?.addEventListener('click', () => {

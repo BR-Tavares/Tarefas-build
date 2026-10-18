@@ -119,7 +119,7 @@ function renderizarTelaLogin() {
   const abrirExemplo = (papel) => {
     import('./tela-folha.js').then(({ renderizarTelaFolha }) => {
       renderizarTelaFolha(root, { ...estadoApp, papel }, {
-        missaoId: 'MS-000',
+        missaoId: 'MS-BOLO',
         somenteLeitura: true,
         aoVoltar: () => renderizarTelaLogin(),
       });

@@ -115,7 +115,12 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
           </div>
           ${
             !ehAlteracao && !ehEdicaoRascunho
-              ? `<button type="button" id="btn-preencher-ms027" class="btn btn-sm btn-outline-azul">Carregar exemplo MS-027</button>`
+              ? `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" id="btn-preencher-bolo" class="btn btn-sm btn-outline-azul" title="Carregar exemplo completo baseado em Lean e TPS">Exemplo: Fazer Bolo (Lean/TPS)</button>
+                <button type="button" id="btn-preencher-ms027" class="btn btn-sm btn-outline-azul" title="Carregar exemplo técnico de calibração">Exemplo: Sensor Solo</button>
+              </div>
+            `
               : ''
           }
         </div>
@@ -254,6 +259,43 @@ export function renderizarTelaNovaMissao(root, estadoApp, opcoes = {}) {
 
   root.querySelector('#btn-cancelar-form')?.addEventListener('click', () => {
     if (aoConcluir) aoConcluir();
+  });
+
+  root.querySelector('#btn-preencher-bolo')?.addEventListener('click', () => {
+    root.querySelector('#mis-titulo').value = 'Produzir lote piloto de 10 bolos de cenoura com cobertura';
+    root.querySelector('#mis-data').value = '2026-10-23';
+    root.querySelector('#mis-docs').value = 'https://docs.google.com/document/d/pop-bolo-cenoura-tps';
+    root.querySelector('#mis-pasta').value = 'https://drive.google.com/drive/folders/lote-piloto-bolo-cenoura';
+    root.querySelector('#mis-necessidade').value =
+      'Validar a padronização do processo produtivo (Standard Work) e os parâmetros de forneamento do bolo de cenoura para a nova linha da cafeteria, garantindo repetibilidade de sabor, textura e rentabilidade sem desperdício de insumos.';
+    root.querySelector('#mis-tarefa').value =
+      'Executar mise en place 5S, emulsão líquida, incorporação de secos com poka-yoke de peneiramento, forneamento com monitoramento jidoka de temperatura, cobertura temperada e inspeção sensorial cega.';
+    root.querySelector('#mis-entrega').value =
+      '10 unidades embaladas e identificadas com etiqueta de lote e validade na bancada de expedição + planilha de controle do lote e relatório fotográfico de corte do miolo na pasta do Drive.';
+    const condInputs = root.querySelectorAll('.criterio-condicao');
+    if (condInputs[0]) {
+      condInputs[0].value = 'Todas as 10 unidades apresentam peso líquido de 450 g ± 15 g após cocção, cobertura e resfriamento.';
+    }
+    if (condInputs[1]) {
+      condInputs[1].value = 'Temperatura interna do miolo atinge entre 93 °C e 96 °C ao término do assamento, sem ponto cru ou queimado na crosta.';
+    }
+    if (condInputs[2]) {
+      condInputs[2].value = 'Cobertura de chocolate com brilho homogêneo, espessura entre 2 mm e 4 mm, sem rachaduras ou cristalização.';
+    }
+    root.querySelector('#mis-precisa').value = [
+      'Trabalho Padronizado (Standard Work): Pesar todos os ingredientes secos e líquidos em balança digital calibrada antes de ligar o forno (mise en place 100% conferido).',
+      'Poka-Yoke (À prova de falhas): Peneirar a farinha de trigo e o fermento químico em malha fina para impedir a formação de grumos na massa.',
+      'Jidoka (Autonomação / Parada de linha): Se a temperatura do forno oscilar além de ± 5 °C do padrão (180 °C), interromper o lote imediatamente e acionar manutenção antes do forneamento.',
+      '5S e Gestão Visual: Manter a bancada limpa e setorizada durante todo o ciclo produtivo (limpeza imediata de qualquer derramamento).',
+      'Rastreabilidade: Registrar o número do lote e data de validade de cada matéria-prima utilizada na planilha de produção.',
+    ].join('\n');
+    root.querySelector('#mis-naopode').value = [
+      'Não abrir a porta do forno antes de completar 30 minutos de assamento (evita colapso térmico da aeração do miolo).',
+      'Não bater a massa após adicionar o fermento (misturar delicadamente à mão por no máximo 45 segundos para não desenvolver glúten em excesso).',
+      'Não desenformar os bolos com temperatura da forma superior a 35 °C (previne fissuras estruturais e perda de unidades).',
+      'Não estocar sobras de ingredientes abertos sem vedação hermética e etiqueta com data.',
+      'Não reaproveitar calda ou aparas que tenham tido contato com superfícies não sanitizadas.',
+    ].join('\n');
   });
 
   root.querySelector('#btn-preencher-ms027')?.addEventListener('click', () => {
