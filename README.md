@@ -13,6 +13,7 @@ Implementação da v1 do **App de Missões (PWA no Firebase)**, seguindo integra
 | Documento | Finalidade |
 |---|---|
 | [`fundamentos_engenharia_missoes.md`](./fundamentos_engenharia_missoes.md) | **Fundamentos e Doutrina de Engenharia de Missões (Espaço Semântico para Humanos e Modelos de IA — DoDAF, NASA, SpaceX, Mission Command, Toyota e JEV)** |
+| [`espaco_semantico_folha.md`](./espaco_semantico_folha.md) | **O olhar sobre a folha da tarefa: definições e lentes de leitura (não são regras nem decisões)** |
 | [`governanca/OPERACAO.md`](./governanca/OPERACAO.md) | **Manual de Operação, Arquitetura, Segurança, Runbook de Testes (JDK 25) e Deploy no Firebase** (Permanente) |
 | [`governanca/STATUS.md`](./governanca/STATUS.md) | **Fotografia do Ambiente em Produção e Homologação dos 14 Critérios de Aceite** (Presente) |
 | [`governanca/HANDOFF.md`](./governanca/HANDOFF.md) | **Passagem de Bastão da Sessão de Trabalho e Próximos Passos Imediatos** (Efêmero) |
