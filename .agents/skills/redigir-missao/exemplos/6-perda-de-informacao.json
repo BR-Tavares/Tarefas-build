@@ -1,0 +1,74 @@
+{
+  "cenario": "6 — Risco de perda de informação na divisão",
+  "esperado": "DIVIDIR",
+  "original": {
+    "titulo": "Validar firmware v3 do sensor em bancada e em campo",
+    "descricao": {
+      "necessidade": "Liberar o firmware v3 para os 40 sensores do piloto sem perder leituras no campo.",
+      "tarefa": "Validar o firmware v3 em bancada e depois em 5 sensores de campo durante 7 dias.",
+      "entrega": "Relatório de validação com os registros de bancada e de campo na pasta da missão.",
+      "criterios": [
+        { "condicao": "Bancada: 72 h sem travamento e perda de pacote ≤ 1%", "verificacao": "teste" },
+        { "condicao": "Campo: 5 sensores por 7 dias com perda de leitura ≤ 2% e bateria ≥ 80% ao fim", "verificacao": "teste" }
+      ]
+    },
+    "requisitos": {
+      "precisa": [
+        "Registrar a versão do firmware em cada leitura.",
+        "Manter um sensor com o firmware v2 como referência em cada teste."
+      ],
+      "naoPode": [
+        "Instalar o firmware v3 no campo antes de passar na bancada.",
+        "Alterar os parâmetros de calibração do sensor."
+      ]
+    }
+  },
+  "plano": {
+    "avaliacao": { "veredito": "DIVIDIR", "justificativa": "Bancada e campo têm critérios, locais e impedimentos próprios; a bancada é a porta para o campo, e um travamento na bancada deve parar a missão antes de mobilizar o campo." },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Validar firmware v3 do sensor em bancada",
+        "descricao": {
+          "necessidade": "Liberar o firmware v3 para o teste de campo do piloto sem risco de travamento.",
+          "tarefa": "Validar o firmware v3 em bancada.",
+          "entrega": "Registros e resumo do teste de bancada na pasta da missão.",
+          "criterios": [
+            { "condicao": "Bancada: 72 h sem travamento e perda de pacote ≤ 1%", "verificacao": "teste" }
+          ]
+        },
+        "requisitos": {
+          "precisa": [
+            "Registrar a versão do firmware em cada leitura.",
+            "Manter um sensor com o firmware v2 como referência em cada teste."
+          ],
+          "naoPode": ["Alterar os parâmetros de calibração do sensor."]
+        }
+      },
+      {
+        "chave": "B",
+        "titulo": "Validar firmware v3 do sensor em campo",
+        "descricao": {
+          "necessidade": "Liberar o firmware v3 para os 40 sensores do piloto sem perder leituras no campo. Parte da entrega de 'Validar firmware v3 do sensor em bancada'.",
+          "tarefa": "Validar o firmware v3 em 5 sensores de campo durante 7 dias.",
+          "entrega": "Relatório de validação de campo, com os registros, na pasta da missão.",
+          "criterios": [
+            { "condicao": "Campo: 5 sensores por 7 dias com perda de leitura ≤ 2% e bateria ≥ 80% ao fim", "verificacao": "teste" }
+          ]
+        },
+        "requisitos": {
+          "precisa": [
+            "Registrar a versão do firmware em cada leitura.",
+            "Manter um sensor com o firmware v2 como referência em cada teste."
+          ],
+          "naoPode": [
+            "Instalar o firmware v3 no campo antes de passar na bancada.",
+            "Alterar os parâmetros de calibração do sensor."
+          ]
+        }
+      }
+    ],
+    "dependencias": [ { "missao": "B", "dependeDe": ["A"] } ]
+  },
+  "essenciais": ["72 h", "perda de pacote ≤ 1%", "5 sensores", "7 dias", "perda de leitura ≤ 2%", "bateria ≥ 80%", "40 sensores"]
+}

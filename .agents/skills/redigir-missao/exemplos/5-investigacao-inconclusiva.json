@@ -1,0 +1,35 @@
+{
+  "cenario": "5 — Investigação inconclusiva",
+  "esperado": "SIMPLIFICAR",
+  "original": {
+    "titulo": "Encontrar dados de produtividade de pastagem no MS",
+    "descricao": {
+      "necessidade": "Calibrar o modelo de lotação com dados reais de produtividade de pastagem no Mato Grosso do Sul.",
+      "tarefa": "Encontrar a série de produtividade de pastagem por município do MS de 2020 a 2025.",
+      "entrega": "Planilha com a série na pasta da missão.",
+      "criterios": [
+        { "condicao": "Série 2020–2025 completa para todos os municípios do MS", "verificacao": "inspecao" }
+      ]
+    },
+    "requisitos": { "precisa": [], "naoPode": ["Usar dados de outro estado como se fossem do MS."] }
+  },
+  "plano": {
+    "avaliacao": { "veredito": "SIMPLIFICAR", "justificativa": "Um resultado só, mas o critério exige que o dado exista; a missão de busca tem de terminar também quando a série não existe ou é parcial." },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Levantar dados de produtividade de pastagem por município no MS",
+        "descricao": {
+          "necessidade": "Calibrar o modelo de lotação com dados reais de produtividade de pastagem no Mato Grosso do Sul.",
+          "tarefa": "Levantar as fontes de produtividade de pastagem por município do MS de 2020 a 2025 e o que cada uma cobre.",
+          "entrega": "Planilha de fontes e dados encontrados na pasta da missão.",
+          "criterios": [
+            { "condicao": "Para cada fonte consultada: cobertura (anos e municípios), link e data de acesso; se nada servir, 'indisponível' com as fontes tentadas", "verificacao": "inspecao" },
+            { "condicao": "Cada dado marcado como fato (com fonte), estimativa (com premissa), hipótese ou indisponível", "verificacao": "inspecao" }
+          ]
+        },
+        "requisitos": { "precisa": [], "naoPode": ["Usar dados de outro estado como se fossem do MS."] }
+      }
+    ]
+  }
+}

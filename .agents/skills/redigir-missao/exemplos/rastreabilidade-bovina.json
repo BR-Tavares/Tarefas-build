@@ -1,0 +1,109 @@
+{
+  "cenario": "Caso obrigatório: rastreabilidade bovina",
+  "esperado": "DIVIDIR",
+  "original": {
+    "titulo": "Selecionar tecnologia de rastreabilidade bovina para PoC",
+    "descricao": {
+      "necessidade": "Escolher a tecnologia economicamente mais viável para uma PoC de rastreabilidade bovina integrada ao BR-Corte e à operação de pastagem.",
+      "tarefa": "Levantar custos reais de aquisição e operação de cinco tecnologias (brinco visual, RFID LF com bastão, RFID UHF de passagem, balança de passagem WOW e visão computacional), estimar seus benefícios econômicos, comparar as alternativas e recomendar a tecnologia ou combinação de tecnologias para a PoC.",
+      "entrega": "Relatório comparativo com a recomendação, na pasta da missão.",
+      "criterios": [
+        { "condicao": "Custos de aquisição, operação e manutenção das 5 tecnologias, cada preço com fonte e data", "verificacao": "inspecao" },
+        { "condicao": "Benefícios econômicos de cada tecnologia, com as premissas documentadas", "verificacao": "analise" },
+        { "condicao": "Recomendação da tecnologia ou combinação para a PoC, justificada pela comparação", "verificacao": "analise" }
+      ]
+    },
+    "requisitos": {
+      "precisa": [
+        "Incluir custos de manutenção e reposição, não só o de aquisição.",
+        "Documentar as premissas de cada estimativa.",
+        "Considerar a integração dos dados com o BR-Corte e a rotina de manejo em pastagem."
+      ],
+      "naoPode": [
+        "Apresentar benefício estimado como comprovado.",
+        "Comparar a balança WOW como se identificasse o animal sozinha."
+      ]
+    }
+  },
+  "plano": {
+    "avaliacao": {
+      "veredito": "DIVIDIR",
+      "justificativa": "Custos e benefícios são entregas úteis por si, com critérios e fontes próprios, e podem correr em paralelo; a recomendação é uma decisão que depende das duas. Separar mostra cedo qual lado travou (fornecedor sem preço ou falta de dado de benefício)."
+    },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Levantar custos das tecnologias de rastreabilidade bovina",
+        "descricao": {
+          "necessidade": "A escolha da tecnologia para a PoC de rastreabilidade integrada ao BR-Corte e à pastagem depende do custo real de cada alternativa.",
+          "tarefa": "Levantar o custo de aquisição, operação e manutenção de brinco visual, RFID LF com bastão, RFID UHF de passagem, balança de passagem WOW e visão computacional.",
+          "entrega": "Planilha de custos por tecnologia, na pasta da missão.",
+          "criterios": [
+            { "condicao": "Para cada uma das 5 tecnologias: aquisição, operação e manutenção com fonte e data, ou 'indisponível' com as tentativas feitas", "verificacao": "inspecao" },
+            { "condicao": "Cada valor marcado como fato (com fonte), estimativa (com premissa) ou indisponível", "verificacao": "inspecao" }
+          ]
+        },
+        "requisitos": {
+          "precisa": [
+            "Incluir custos de manutenção e reposição, não só o de aquisição.",
+            "Documentar as premissas de cada estimativa.",
+            "Custear a balança WOW junto com o método de identificação que ela exige (ex.: RFID ou brinco).",
+            "Considerar a integração dos dados com o BR-Corte e a rotina de manejo em pastagem."
+          ],
+          "naoPode": []
+        }
+      },
+      {
+        "chave": "B",
+        "titulo": "Estimar benefícios econômicos das tecnologias de rastreabilidade bovina",
+        "descricao": {
+          "necessidade": "A escolha da tecnologia para a PoC de rastreabilidade depende do retorno esperado de cada alternativa na operação de pastagem integrada ao BR-Corte.",
+          "tarefa": "Estimar o benefício econômico de brinco visual, RFID LF com bastão, RFID UHF de passagem, balança de passagem WOW e visão computacional.",
+          "entrega": "Planilha de benefícios por tecnologia, com as premissas, na pasta da missão.",
+          "criterios": [
+            { "condicao": "Para cada uma das 5 tecnologias: benefício em R$/animal/ano com premissas, ou 'dados insuficientes' com o que faltou", "verificacao": "analise" },
+            { "condicao": "Cada benefício marcado como comprovado (com fonte), estimado (com premissa) ou hipótese a validar", "verificacao": "inspecao" }
+          ]
+        },
+        "requisitos": {
+          "precisa": [
+            "Documentar as premissas de cada estimativa.",
+            "Considerar a integração dos dados com o BR-Corte e a rotina de manejo em pastagem."
+          ],
+          "naoPode": [
+            "Apresentar benefício estimado como comprovado.",
+            "Comparar a balança WOW como se identificasse o animal sozinha."
+          ]
+        }
+      },
+      {
+        "chave": "C",
+        "titulo": "Recomendar tecnologia de rastreabilidade bovina para a PoC",
+        "descricao": {
+          "necessidade": "Decidir a tecnologia ou combinação da PoC de rastreabilidade integrada ao BR-Corte e à operação de pastagem. Parte das entregas de 'Levantar custos das tecnologias de rastreabilidade bovina' e 'Estimar benefícios econômicos das tecnologias de rastreabilidade bovina'.",
+          "tarefa": "Comparar as 5 alternativas por custo e benefício e recomendar a tecnologia ou combinação de tecnologias para a PoC.",
+          "entrega": "Nota de recomendação com a tabela comparativa, na pasta da missão.",
+          "criterios": [
+            { "condicao": "Tabela com custo, benefício e saldo das 5 alternativas, com os valores e as marcações das duas planilhas", "verificacao": "inspecao" },
+            { "condicao": "Recomendação da tecnologia ou combinação, justificada pela tabela, ou 'sem recomendação conclusiva' com a informação que falta para decidir", "verificacao": "analise" }
+          ]
+        },
+        "requisitos": {
+          "precisa": [
+            "Considerar a integração dos dados com o BR-Corte e a rotina de manejo em pastagem."
+          ],
+          "naoPode": [
+            "Apresentar benefício estimado como comprovado.",
+            "Comparar a balança WOW como se identificasse o animal sozinha."
+          ]
+        }
+      }
+    ],
+    "dependencias": [ { "missao": "C", "dependeDe": ["A", "B"] } ]
+  },
+  "essenciais": [
+    "brinco visual", "RFID LF com bastão", "RFID UHF de passagem", "balança de passagem WOW", "visão computacional",
+    "BR-Corte", "pastagem", "fonte e data", "manutenção", "premissas", "método de identificação",
+    "combinação de tecnologias", "comprovado", "estimado"
+  ]
+}

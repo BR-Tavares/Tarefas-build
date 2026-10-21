@@ -1,0 +1,40 @@
+{
+  "cenario": "1 — Missão simples",
+  "esperado": "MANTER",
+  "original": {
+    "titulo": "Calibrar sensor de umidade em solo argiloso",
+    "descricao": {
+      "necessidade": "Saber se o sensor v2 mede bem em solo argiloso para ir ao piloto com agricultores.",
+      "tarefa": "Comparar as leituras do sensor com o método gravimétrico em amostras de solo argiloso.",
+      "entrega": "Planilha e curva de calibração na pasta da missão.",
+      "criterios": [
+        { "condicao": "Erro médio ≤ 3 p.p. frente ao gravimétrico, em 5 níveis × 3 repetições", "verificacao": "teste" }
+      ]
+    },
+    "requisitos": {
+      "precisa": ["Registrar todas as leituras, inclusive as descartadas, com o motivo."],
+      "naoPode": ["Usar solo de outra classe textural."]
+    }
+  },
+  "plano": {
+    "avaliacao": { "veredito": "MANTER", "justificativa": "Um resultado (a curva com erro conhecido), verificável por teste; dividir só criaria passagens." },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Calibrar sensor de umidade em solo argiloso",
+        "descricao": {
+          "necessidade": "Saber se o sensor v2 mede bem em solo argiloso para ir ao piloto com agricultores.",
+          "tarefa": "Comparar as leituras do sensor com o método gravimétrico em amostras de solo argiloso.",
+          "entrega": "Planilha e curva de calibração na pasta da missão.",
+          "criterios": [
+            { "condicao": "Erro médio ≤ 3 p.p. frente ao gravimétrico, em 5 níveis × 3 repetições", "verificacao": "teste" }
+          ]
+        },
+        "requisitos": {
+          "precisa": ["Registrar todas as leituras, inclusive as descartadas, com o motivo."],
+          "naoPode": ["Usar solo de outra classe textural."]
+        }
+      }
+    ]
+  }
+}

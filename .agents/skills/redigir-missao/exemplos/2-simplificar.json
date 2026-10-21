@@ -1,0 +1,42 @@
+{
+  "cenario": "2 — Missão redundante",
+  "esperado": "SIMPLIFICAR",
+  "original": {
+    "titulo": "Manual",
+    "descricao": {
+      "necessidade": "Como todos sabem, a empresa vem crescendo bastante nos últimos anos e muitos clientes novos chegaram, alguns de outras regiões, e o time de suporte tem recebido ligações sobre a instalação do medidor de vazão, que é um produto importante para nós e que queremos que os clientes usem bem, por isso é importante ter um manual.",
+      "tarefa": "Escrever com cuidado, usando o Google Docs e seguindo o padrão visual da empresa, um manual de instalação do medidor de vazão que seja completo e de qualidade, sem usar jargão técnico, entregando em PDF.",
+      "entrega": "Manual de instalação em PDF.",
+      "criterios": [
+        { "condicao": "Manual completo e de qualidade", "verificacao": "inspecao" },
+        { "condicao": "Não usar jargão técnico.", "verificacao": "inspecao" }
+      ]
+    },
+    "requisitos": {
+      "precisa": ["Seguir o padrão visual da empresa."],
+      "naoPode": ["Não usar jargão técnico."]
+    }
+  },
+  "plano": {
+    "avaliacao": { "veredito": "SIMPLIFICAR", "justificativa": "Um resultado só (o manual), mas a necessidade não diz o problema, a tarefa mistura método, limites e formato, e os critérios são vagos ou repetem requisito." },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Redigir manual de instalação do medidor de vazão",
+        "descricao": {
+          "necessidade": "Reduzir as ligações ao suporte sobre a instalação do medidor de vazão, que hoje vêm de clientes novos.",
+          "tarefa": "Redigir o manual de instalação do medidor de vazão para o cliente que instala sozinho.",
+          "entrega": "Manual em PDF na pasta da missão.",
+          "criterios": [
+            { "condicao": "Cobre do desembalar à primeira leitura válida, com uma foto ou figura por passo", "verificacao": "inspecao" },
+            { "condicao": "Um cliente novo instala o medidor só com o manual, sem ligar para o suporte", "verificacao": "demonstracao" }
+          ]
+        },
+        "requisitos": {
+          "precisa": ["Seguir o padrão visual da empresa."],
+          "naoPode": ["Usar jargão técnico sem explicação."]
+        }
+      }
+    ]
+  }
+}

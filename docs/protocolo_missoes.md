@@ -98,7 +98,7 @@ São cinco blocos, na ordem da tela do responsável. Cada bloco indica quem o pr
 - **Entrega:** o quê, em que formato e onde. Se a missão tem pasta, o padrão é entregar nela.
 - **Critérios de conclusão:** as condições que a **entrega** precisa cumprir, uma por linha, no formato **"[condição] — verificado por [inspeção / análise / demonstração / teste]"**.
   Ex.: *Erro médio ≤ 3 p.p. frente ao gravimétrico, em 5 níveis × 3 repetições — verificado por teste.*
-  Se os critérios não cabem em três linhas, a missão está grande demais e deve ser dividida.
+  Se os critérios não cabem em três linhas, a missão está grande ou redundante: junte os critérios repetidos ou divida a missão quando houver resultados independentes (uma missão, um resultado).
 - **Insumos:** o que já está disponível e onde; o que estiver no Docs ou na pasta basta citar pelo nome. Antes de emitir uma missão parecida com outra já encerrada, o gestor relê o encerramento dela (bloco 4).
 
 **Requisitos da tarefa**

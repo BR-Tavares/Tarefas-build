@@ -1,0 +1,56 @@
+{
+  "cenario": "3 — Missão com múltiplos resultados",
+  "esperado": "DIVIDIR",
+  "original": {
+    "titulo": "Implementar exportação CSV e preparar a equipe de campo",
+    "descricao": {
+      "necessidade": "A equipe de campo precisa entregar as leituras ao agrônomo sem redigitar dados.",
+      "tarefa": "Implementar a exportação das leituras em CSV no app e preparar o guia de uso para a equipe de campo.",
+      "entrega": "Versão do app com exportação publicada e guia de uso na pasta.",
+      "criterios": [
+        { "condicao": "CSV abre no Excel e no LibreOffice com acentos corretos e uma linha por leitura", "verificacao": "teste" },
+        { "condicao": "Guia de 1 página, testado por um técnico de campo que exporta sem ajuda", "verificacao": "demonstracao" }
+      ]
+    },
+    "requisitos": {
+      "precisa": ["Manter o formato de data AAAA-MM-DD em todas as colunas de data."],
+      "naoPode": ["Exportar o e-mail ou o nome do produtor no CSV."]
+    }
+  },
+  "plano": {
+    "avaliacao": { "veredito": "DIVIDIR", "justificativa": "Implementação e guia têm critérios independentes e naturezas diferentes (software e orientação de uso); o guia depende da exportação pronta." },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Implementar exportação das leituras em CSV",
+        "descricao": {
+          "necessidade": "A equipe de campo precisa entregar as leituras ao agrônomo sem redigitar dados.",
+          "tarefa": "Implementar no app a exportação das leituras em CSV.",
+          "entrega": "Versão do app com a exportação publicada.",
+          "criterios": [
+            { "condicao": "CSV abre no Excel e no LibreOffice com acentos corretos e uma linha por leitura", "verificacao": "teste" }
+          ]
+        },
+        "requisitos": {
+          "precisa": ["Manter o formato de data AAAA-MM-DD em todas as colunas de data."],
+          "naoPode": ["Exportar o e-mail ou o nome do produtor no CSV."]
+        }
+      },
+      {
+        "chave": "B",
+        "titulo": "Redigir guia de exportação para a equipe de campo",
+        "descricao": {
+          "necessidade": "A exportação só reduz redigitação se a equipe de campo souber usá-la. Parte da entrega de 'Implementar exportação das leituras em CSV'.",
+          "tarefa": "Redigir o guia de uso da exportação CSV para a equipe de campo.",
+          "entrega": "Guia de uso na pasta da missão.",
+          "criterios": [
+            { "condicao": "Guia de 1 página, testado por um técnico de campo que exporta sem ajuda", "verificacao": "demonstracao" }
+          ]
+        },
+        "requisitos": { "precisa": [], "naoPode": ["Exportar o e-mail ou o nome do produtor no CSV."] }
+      }
+    ],
+    "dependencias": [ { "missao": "B", "dependeDe": ["A"] } ]
+  },
+  "essenciais": ["CSV", "Excel", "LibreOffice", "acentos", "1 página", "sem ajuda", "AAAA-MM-DD", "nome do produtor"]
+}

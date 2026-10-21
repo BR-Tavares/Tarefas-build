@@ -1,0 +1,40 @@
+{
+  "cenario": "4 — Falsa complexidade",
+  "esperado": "MANTER",
+  "original": {
+    "titulo": "Medir umidade gravimétrica do talhão 3",
+    "descricao": {
+      "necessidade": "Ter a umidade real do talhão 3 para conferir o sensor instalado antes da irrigação de novembro.",
+      "tarefa": "Coletar, secar e pesar amostras de solo de 15 pontos do talhão 3 e calcular a umidade gravimétrica de cada ponto.",
+      "entrega": "Tabela de umidade por ponto, com as pesagens, na pasta da missão.",
+      "criterios": [
+        { "condicao": "Umidade gravimétrica dos 15 pontos, com peso úmido, peso seco e coordenada de cada um", "verificacao": "inspecao" }
+      ]
+    },
+    "requisitos": {
+      "precisa": ["Coletar todas as amostras no mesmo dia."],
+      "naoPode": ["Secar amostras acima de 105 °C."]
+    }
+  },
+  "plano": {
+    "avaliacao": { "veredito": "MANTER", "justificativa": "Os quatro verbos são etapas de um único resultado (a tabela de umidade); nenhuma parte tem valor ou critério sozinha." },
+    "missoes": [
+      {
+        "chave": "A",
+        "titulo": "Medir umidade gravimétrica do talhão 3",
+        "descricao": {
+          "necessidade": "Ter a umidade real do talhão 3 para conferir o sensor instalado antes da irrigação de novembro.",
+          "tarefa": "Coletar, secar e pesar amostras de solo de 15 pontos do talhão 3 e calcular a umidade gravimétrica de cada ponto.",
+          "entrega": "Tabela de umidade por ponto, com as pesagens, na pasta da missão.",
+          "criterios": [
+            { "condicao": "Umidade gravimétrica dos 15 pontos, com peso úmido, peso seco e coordenada de cada um", "verificacao": "inspecao" }
+          ]
+        },
+        "requisitos": {
+          "precisa": ["Coletar todas as amostras no mesmo dia."],
+          "naoPode": ["Secar amostras acima de 105 °C."]
+        }
+      }
+    ]
+  }
+}

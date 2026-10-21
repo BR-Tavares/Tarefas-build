@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "test:analise": "node --test test/analise.test.js",
+    "test:missao": "node --test test/redigir-missao.test.js",
     "test:rules": "firebase emulators:exec --only firestore \"node --test test/firestore.rules.test.js\"",
-    "test": "npm run test:analise && npm run test:rules",
+    "test": "npm run test:analise && npm run test:missao && npm run test:rules",
     "deploy:hosting": "firebase deploy --only hosting,firestore:rules",
     "deploy:all": "firebase deploy"
   },
