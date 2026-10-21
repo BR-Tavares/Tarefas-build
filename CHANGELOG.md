@@ -2,6 +2,17 @@
 
 Todas as alterações relevantes deste projeto seguem o padrão [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/) e o versionamento semântico.
 
+## [Não lançado]
+
+### Modificado (Changed)
+- **Skill `redigir-missao` (`.agents/skills/redigir-missao/SKILL.md`):** princípio "uma missão, um resultado"; distinção Missão · Etapa · Atividade; avaliação antes de finalizar (cinco perguntas de qualidade e granularidade, com veredito MANTER / SIMPLIFICAR / DIVIDIR e justificativa); tratamento da incerteza (resultado negativo ou inconclusivo, fato / estimativa / hipótese / indisponível); plano de divisão com dependências fora da missão gravada. Removidas as cotas fixas de requisitos ("1 a 3", "2 a 4"). Contrato JSON da missão inalterado.
+- **Protocolo (`docs/protocolo_missoes.md`):** mais de três critérios passa a indicar "juntar critérios repetidos ou dividir", não só dividir.
+
+### Adicionado (Added)
+- `.agents/skills/redigir-missao/verificar.js`: conferência objetiva da missão e do plano (contrato, critério vago, critério repetido, dependências e ciclos), sem decidir o veredito.
+- `.agents/skills/redigir-missao/exemplos/`: seis cenários e o caso da rastreabilidade bovina.
+- `test/redigir-missao.test.js` e script `npm run test:missao`.
+
 ## [1.1.0] - 2026-10-18
 
 ### Modificado (Changed)
